@@ -159,5 +159,11 @@ class Menu {
 				),
 			)
 		);
+
+		wp_localize_script(
+			$scripts[0]['handle'],
+			'__PUBLIC_URL__',
+			$this->assets_url
+		);
 	}
 }
