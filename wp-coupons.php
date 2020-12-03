@@ -11,3 +11,5 @@
  *
  * @package         Wp_Coupons
  */
+
+require __DIR__ . '/vendor/autoload.php';

@@ -1,0 +1,17 @@
+{
+  "name": "josef37/wp-coupons",
+  "type": "wordpress-plugin",
+  "license": "GPLv2+",
+  "authors": [
+    {
+      "name": "Josef Wittmann",
+      "email": "josef.wittmann@tutanota.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "WPCoupons\\": "src/"
+    }
+  }
+}
