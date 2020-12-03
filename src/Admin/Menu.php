@@ -162,7 +162,7 @@ class Menu {
 
 		wp_localize_script(
 			$scripts[0]['handle'],
-			'__PUBLIC_URL__',
+			'WP_COUPON_PUBLIC_URL',
 			$this->assets_url
 		);
 	}

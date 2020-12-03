@@ -2,6 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const replaceStream = require("replacestream");
 
+const publicUrlName = 'WP_COUPON_PUBLIC_URL';
+
 const main = async () => {
   const directory = path.join(__dirname, "..", "build", "static", "js");
   const files = fs
@@ -17,17 +19,15 @@ const main = async () => {
         .pipe(
           replaceStream(
             '"__PUBLIC_URL_PLACEHOLDER__"',
-            // the whitespace is added in order to prevent invalid code:
-            // returnwindow.__PUBLIC_URL__
-            " window.__PUBLIC_URL__ "
+            // the whitespace is added in order to prevent invalid code like `returnwindow.__PUBLIC_URL__`
+            ` window.${publicUrlName} `
           )
         )
         .pipe(
           replaceStream(
             '"__PUBLIC_URL_PLACEHOLDER__/"',
-            // the whitespace is added in order to prevent invalid code:
-            // returnwindow.__PUBLIC_URL__+"/"
-            ' window.__PUBLIC_URL__+"/"'
+            // the whitespace is added in order to prevent invalid code like `returnwindow.__PUBLIC_URL__+"/"`
+            ` window.${publicUrlName}+"/"`
           )
         )
         .pipe(fs.createWriteStream(tmpFile));
