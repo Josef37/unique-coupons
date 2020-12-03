@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const replaceStream = require("replacestream");
 
-const publicUrlName = 'WP_COUPON_PUBLIC_URL';
+const publicUrlName = 'WP_COUPONS.PUBLIC_URL';
 
 const main = async () => {
   const directory = path.join(__dirname, "..", "build", "static", "js");

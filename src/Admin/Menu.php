@@ -75,15 +75,9 @@ class Menu {
 	 * @returns array('handle' => string, 'url' => string)
 	 */
 	private function get_assets() {
-		return array_map(
-			function( $entrypoint ) {
-				return array(
-					'handle' => $entrypoint,
-					'url'    => $this->assets_url . '/' . $entrypoint,
-				);
-			},
-			$this->get_entrypoints()
-		);
+		$entrypoints = $this->get_entrypoints();
+		$assets      = array_map( array( $this, 'get_asset_from_entrypoint' ), $entrypoints );
+		return $assets;
 	}
 
 	/**
@@ -93,6 +87,16 @@ class Menu {
 		$asset_manifest_url = $this->assets_url . '/asset-manifest.json';
 		$asset_manifest     = Utils::get_json( $asset_manifest_url );
 		return $asset_manifest['entrypoints'];
+	}
+
+	/**
+	 * Determines `handle` and `url` for an asset entrypoint.
+	 */
+	private function get_asset_from_entrypoint( $entrypoint ) {
+		return array(
+			'handle' => $entrypoint,
+			'url'    => $this->assets_url . '/' . $entrypoint,
+		);
 	}
 
 	/**
@@ -107,6 +111,9 @@ class Menu {
 		);
 	}
 
+	/**
+	 * Enqueues scripts in order in footer. Without version, because Webpack adds hash to filename.
+	 */
 	private function enqueue_scripts_in_order( $scripts ) {
 		$this->enqueue_assets_in_order(
 			$scripts,
@@ -116,6 +123,9 @@ class Menu {
 		);
 	}
 
+	/**
+	 * Enqueues styles in order. Without version, because Webpack adds hash to filename.
+	 */
 	private function enqueue_styles_in_order( $styles ) {
 		$this->enqueue_assets_in_order(
 			$styles,
@@ -125,45 +135,47 @@ class Menu {
 		);
 	}
 
+	/**
+	 * Executes callback for each asset dependend on its successor.
+	 */
 	private function enqueue_assets_in_order( $assets, $enqueue_callback ) {
-		$assets_count = count( $assets );
+		$dependencies = array();
 
-		for ( $i = 0; $i < $assets_count; $i++ ) {
-			$asset        = $assets[ $i ];
-			$dependencies = 0 < $i ? array( $assets[ $i - 1 ]['handle'] ) : array();
-
+		foreach ( $assets as $asset ) {
 			$enqueue_callback(
 				$asset['handle'],
 				$asset['url'],
 				$dependencies
 			);
+
+			$dependencies = array( $asset['handle'] );
 		}
 	}
 
+	/**
+	 * Pass data to the first script.
+	 */
 	private function localize_scripts( $scripts ) {
 		if ( empty( $scripts ) ) {
 			return;
 		}
 
-		wp_localize_script(
-			$scripts[0]['handle'],
-			'WP_COUPONS',
-			array(
-				'strings' => array(
-					'saved' => __( 'Settings Saved', 'wp-coupons' ),
-					'error' => __( 'Error', 'wp-coupons' ),
-				),
-				'api'     => array(
-					'url'   => esc_url( rest_url( 'wp-coupons/v1/settings' ) ),
-					'nonce' => wp_create_nonce( 'wp_rest' ),
-				),
-			)
+		$handle = $scripts[0]['handle'];
+
+		$object_name = 'WP_COUPONS';
+
+		$object = array(
+			'PUBLIC_URL' => $this->assets_url,
+			'strings'    => array(
+				'saved' => __( 'Settings Saved', 'wp-coupons' ),
+				'error' => __( 'Error', 'wp-coupons' ),
+			),
+			'api'        => array(
+				'url'   => esc_url( rest_url( 'wp-coupons/v1/settings' ) ),
+				'nonce' => wp_create_nonce( 'wp_rest' ),
+			),
 		);
 
-		wp_localize_script(
-			$scripts[0]['handle'],
-			'WP_COUPON_PUBLIC_URL',
-			$this->assets_url
-		);
+		wp_localize_script( $handle, $object_name, $object );
 	}
 }
