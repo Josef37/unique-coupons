@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components"
-import { Switch, Route, Link, useParams } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import CouponGroup from './pages/coupon-group.component';
 import Dashboard from './pages/dashboard.component';
 import Settings from './pages/settings.component';
@@ -11,6 +11,12 @@ const NormalizedDiv = styled.div`
 
 function App() {
 	return <NormalizedDiv>
+		<ul>
+			<li><Link to="/">Dashboard</Link></li>
+			<li><Link to="/settings">Settings</Link></li>
+			<li><Link to="/group/1">Group 1</Link></li>
+			<li><Link to="/group/2">Group 2</Link></li>
+		</ul>
 		<Switch>
 			<Route path="/settings">
 				<Settings />
@@ -20,8 +26,6 @@ function App() {
 			} />
 			<Route>
 				<Dashboard />
-				<Link to="/settings">Settings</Link>
-				<Link to="/group/1">Group</Link>
 			</Route>
 		</Switch>
 	</NormalizedDiv>;
