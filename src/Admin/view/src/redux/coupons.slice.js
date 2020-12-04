@@ -37,7 +37,10 @@ const couponsSlice = createSlice({
 	}
 });
 
-export const { selectById: selectCouponGroupById } = couponGroupsAdapter.getSelectors(state => state.coupons.couponGroups)
+export const {
+	selectById: selectCouponGroupById,
+	selectIds: selectCouponGroupsIds
+} = couponGroupsAdapter.getSelectors(state => state.coupons.couponGroups)
 export const { selectById: selectCouponById } = couponsAdapter.getSelectors(state => state.coupons.coupons)
 
 export const { updateGroupTemplate, addCoupons } = couponsSlice.actions

@@ -1,22 +1,15 @@
 import React from 'react';
-import styled from "styled-components"
 import { Switch, Route, Link } from "react-router-dom";
 import CouponGroup from './pages/coupon-group.component';
 import AddCoupons from './pages/add-coupons.component';
 import Dashboard from './pages/dashboard.component';
 import Settings from './pages/settings.component';
 
-const NormalizedDiv = styled.div`
-  line-height: initial;
-`;
-
 function App() {
-	return <NormalizedDiv>
+	return <div>
 		<ul>
 			<li><Link to="/">Dashboard</Link></li>
 			<li><Link to="/settings">Settings</Link></li>
-			<li><Link to="/group/1">Group 1</Link></li>
-			<li><Link to="/group/2">Group 2</Link></li>
 		</ul>
 		<Switch>
 			<Route path="/settings">
@@ -32,7 +25,7 @@ function App() {
 				<Dashboard />
 			</Route>
 		</Switch>
-	</NormalizedDiv>;
+	</div>;
 }
 
 export default App;
