@@ -3,7 +3,7 @@ import ActivationToggle from '../components/activation-toggle.component';
 import TemplateEditor from '../components/template-editor.component';
 import CouponsList from '../components/coupons-list.component';
 
-const CouponGroup = () => {
+const CouponGroup = ({ groupId }) => {
 	return <div>
 		<h2>Coupon Group</h2>
 		<ActivationToggle />
