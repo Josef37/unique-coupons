@@ -7,7 +7,7 @@ const initialCouponGroups = {
 			description: "Group 1 Description",
 			template: "This is a template for group 1",
 			isActive: true,
-			coupons: [1, 2, 3]
+			couponIds: [1, 2, 3]
 		},
 		2: {
 			id: 2,
@@ -15,7 +15,7 @@ const initialCouponGroups = {
 			description: "Group 2 Description",
 			template: "This is a template for group 2",
 			isActive: true,
-			coupons: [4, 5, 6]
+			couponIds: [4, 5, 6]
 		}
 	}
 }

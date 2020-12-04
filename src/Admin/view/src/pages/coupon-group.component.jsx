@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from "react-redux";
 import { selectCouponGroupById } from "../redux/coupons.slice";
+import { Link } from "react-router-dom";
 import TemplateEditor from '../components/template-editor.component';
 import CouponsList from '../components/coupons-list.component';
 
@@ -19,6 +20,7 @@ const CouponGroup = ({ groupId }) => {
 		</div>
 		<TemplateEditor groupId={groupId} />
 		<CouponsList groupId={groupId} />
+		<Link to={`/add-coupons/${groupId}`}>Add Coupons</Link>
 	</div>;
 }
 

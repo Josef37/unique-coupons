@@ -2,6 +2,7 @@ import React from 'react';
 import styled from "styled-components"
 import { Switch, Route, Link } from "react-router-dom";
 import CouponGroup from './pages/coupon-group.component';
+import AddCoupons from './pages/add-coupons.component';
 import Dashboard from './pages/dashboard.component';
 import Settings from './pages/settings.component';
 
@@ -23,6 +24,9 @@ function App() {
 			</Route>
 			<Route path="/group/:groupId" render={({ match }) =>
 				<CouponGroup groupId={match.params.groupId} />
+			} />
+			<Route path="/add-coupons/:groupId" render={({ match }) =>
+				<AddCoupons groupId={match.params.groupId} />
 			} />
 			<Route>
 				<Dashboard />
