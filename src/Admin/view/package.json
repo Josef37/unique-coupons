@@ -18,6 +18,7 @@
     "replacestream": "^4.0.3",
     "source-map-explorer": "^2.5.1",
     "styled-components": "^5.2.1",
+    "styled-normalize": "^8.0.7",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
