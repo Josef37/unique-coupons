@@ -33,6 +33,10 @@ const couponsSlice = createSlice({
 		addCoupons: (state, { payload: { groupId, coupons } }) => {
 			addCouponsToGroup(state, groupId, coupons);
 			couponsAdapter.addMany(state.coupons, coupons)
+		},
+		editGroup: (state, { payload: { groupId, ...changes } }) => {
+			console.log({ id: groupId, changes })
+			couponGroupsAdapter.updateOne(state.couponGroups, { id: groupId, changes })
 		}
 	}
 });
@@ -43,7 +47,7 @@ export const {
 } = couponGroupsAdapter.getSelectors(state => state.coupons.couponGroups)
 export const { selectById: selectCouponById } = couponsAdapter.getSelectors(state => state.coupons.coupons)
 
-export const { updateGroupTemplate, addCoupons } = couponsSlice.actions
+export const { updateGroupTemplate, addCoupons, editGroup } = couponsSlice.actions
 
 export default couponsSlice.reducer
 

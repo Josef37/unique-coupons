@@ -12,7 +12,7 @@ const initialCouponGroups = {
 		2: {
 			id: 2,
 			name: "Group 2",
-			description: "Group 2 Description",
+			description: "Group 2 Description, but longer",
 			template: "This is a template for group 2",
 			isActive: false,
 			couponIds: [4, 5, 6]
