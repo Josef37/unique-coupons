@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import CouponGroupsList from '../components/coupongroups-list.component';
+import Paper from '@material-ui/core/Paper'
+import Box from '@material-ui/core/Box'
+import CouponGroupRow from '../components/coupon-group-row.component';
 import { selectCouponGroupsIds } from "../redux/coupons.slice"
 
 const Dashboard = () => {
@@ -8,7 +10,13 @@ const Dashboard = () => {
 
 	return <div>
 		<h2>Dashboard</h2>
-		{couponGroupIds.map(id => <CouponGroupsList key={id} groupId={id} />)}
+		<Box marginX={3}>
+			<Paper>
+				{couponGroupIds.map(id =>
+					<CouponGroupRow key={id} groupId={id} />
+				)}
+			</Paper>
+		</Box>
 	</div>
 }
 
