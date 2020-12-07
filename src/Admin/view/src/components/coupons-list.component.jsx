@@ -1,16 +1,16 @@
 import React from 'react';
-import { useStore } from 'react-redux';
-import { selectCouponGroupById, selectCouponById } from '../redux/coupons.slice';
+import { useSelector } from 'react-redux';
+import { selectCouponGroupById } from '../redux/coupons.slice';
+import CouponRow from './coupon-row.component';
+import ActionTable from './action-table.component';
 
 const CouponsList = ({ groupId }) => {
-	const state = useStore().getState()
-	const { couponIds } = selectCouponGroupById(state, groupId)
-	const coupons = couponIds.map(couponId => selectCouponById(state, couponId))
+	const { couponIds } = useSelector(state => selectCouponGroupById(state, groupId))
 
-	return coupons.map(({ id, value, expiresAt }) => <div key={id}>
-		Value: <b>{value}</b>
-		Expires at: <b>{new Date(expiresAt).toDateString()}</b>
-	</div>)
+	return <ActionTable
+		ids={couponIds}
+		Row={({ id }) => <CouponRow couponId={id} />}
+	/>
 }
 
 export default CouponsList;
