@@ -4,18 +4,18 @@ import AddIcon from "@material-ui/icons/Add"
 import { Link } from "react-router-dom"
 import { makeStyles } from '@material-ui/core/styles'
 
-const AddCouponGroupButton = () => {
+const AddButton = ({ to, label, children }) => {
 	const classes = useStyles()
 
 	return <Fab
 		component={Link}
-		to="/add-coupon-group"
+		to={to}
 		color="primary"
 		variant="extended"
-		aria-label="add new coupon group"
+		aria-label={label}
 	>
 		<AddIcon className={classes.extendedIcon} />
-		Add a new coupon group
+		{children}
 	</Fab>
 }
 
@@ -25,4 +25,4 @@ const useStyles = makeStyles(theme => ({
 	}
 }))
 
-export default AddCouponGroupButton;
+export default AddButton;

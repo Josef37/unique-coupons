@@ -1,12 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { selectCouponGroupById, editGroup } from "../redux/coupons.slice";
 import TemplateEditor from '../components/template-editor.component';
 import CouponsList from '../components/coupons-list.component';
 import EditText from '../components/edit-text.component';
+import AddButton from '../components/add-button.component';
 
 const CouponGroupPage = ({ groupId }) => {
 	const { name, description, isActive } = useSelector(state => selectCouponGroupById(state, groupId))
@@ -32,7 +32,7 @@ const CouponGroupPage = ({ groupId }) => {
 		/>
 		<TemplateEditor groupId={groupId} />
 		<CouponsList groupId={groupId} />
-		<Link to={`/add-coupons/${groupId}`}>Add Coupons</Link>
+		<AddButton to={`/add-coupons/${groupId}`} label="add coupons to this group">Add coupons to this group</AddButton>
 	</div>;
 }
 
