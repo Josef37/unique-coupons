@@ -49,7 +49,7 @@ const ActionTable = ({ ids, Row }) => {
 const rowStyles = `
 	display: flex;
 	align-items: center;
-	gap: 2em;
+	gap: 1em;
 `
 
 const RowContainer = styled.div`

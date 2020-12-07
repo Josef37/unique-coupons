@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import Checkbox from '@material-ui/core/Checkbox';
+import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { selectCouponGroupById, editGroup } from "../redux/coupons.slice";
 import TemplateEditor from '../components/template-editor.component';
@@ -24,9 +24,9 @@ const CouponGroupPage = ({ groupId }) => {
 			onEditDone={description => dispatch(editGroup({ groupId, description }))}
 		/>
 		<FormControlLabel
-			control={<Checkbox
+			control={<Switch
 				checked={isActive}
-				onChange={e => dispatch(editGroup({ groupId, isActive: e.target.checked }))}
+				onChange={() => dispatch(editGroup({ groupId, isActive: !isActive }))}
 			/>}
 			label="Is active?"
 		/>
