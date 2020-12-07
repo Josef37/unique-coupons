@@ -8,9 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 
-const EditText = ({ text: initialText, onEditDone, variant }) => {
+const EditText = ({ text: initialText, placeholder, onEditDone, variant, isEditingInitially }) => {
 	const [text, setText] = useState(initialText)
-	const [isEditing, setEditing] = useState(false)
+	const [isEditing, setEditing] = useState(isEditingInitially || false)
 	const classes = useStyles({ variant })
 
 	const acceptEdit = useCallback(() => {
@@ -41,6 +41,7 @@ const EditText = ({ text: initialText, onEditDone, variant }) => {
 					value={text}
 					onChange={e => setText(e.target.value)}
 					autoFocus
+					placeholder={placeholder}
 					className={classes.root}
 				/>
 				<IconButton
@@ -59,7 +60,9 @@ const EditText = ({ text: initialText, onEditDone, variant }) => {
 		</form>
 	} else {
 		return <Container>
-			<Typography variant={variant} className={classes.text}>{text}</Typography>
+			<Typography variant={variant} className={classes.text}>
+				{text || <i onClick={startEditing}>{placeholder}</i>}
+			</Typography>
 			<IconButton
 				onClick={startEditing}
 				aria-label="edit text"
@@ -82,7 +85,10 @@ const useStyles = makeStyles(theme => ({
 	root: props => ({
 		'& .MuiInput-input': {
 			...theme.typography[props.variant],
-			height: 'unset'
+			height: 'unset',
+			'&::placeholder': {
+				fontStyle: 'italic'
+			}
 		},
 		marginRight: theme.spacing(1),
 		width: "100%"

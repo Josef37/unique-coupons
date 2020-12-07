@@ -1,15 +1,11 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCouponGroupById, editGroup } from "../redux/coupons.slice";
+import Box from '@material-ui/core/Box';
 
-const TemplateEditor = ({ groupId }) => {
-	const { template } = useSelector(state => selectCouponGroupById(state, groupId))
-	const dispatch = useDispatch()
-
-	return <div>
+const TemplateEditor = ({ template, handleChange }) => {
+	return <Box marginBottom={2}>
 		<h3>Template Editor</h3>
-		<textarea value={template} onChange={e => dispatch(editGroup({ groupId, template: e.target.value }))} />
-	</div>;
+		<textarea value={template} onChange={e => handleChange(e.target.value)} />
+	</Box>;
 }
 
-export default TemplateEditor;
+export default TemplateEditor

@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice, nanoid } from "@reduxjs/toolkit";
 import _ from "lodash";
 
 import { initialCouponGroups, initialCoupons } from "../data";
@@ -26,8 +26,16 @@ const couponsSlice = createSlice({
 			couponsAdapter.addMany(state.coupons, coupons)
 		},
 		editGroup: (state, { payload: { groupId, ...changes } }) => {
-			console.log({ id: groupId, changes })
 			couponGroupsAdapter.updateOne(state.couponGroups, { id: groupId, changes })
+		},
+		addGroup: (state, { payload: couponGroup }) => {
+			/** @todo replace */
+			const id = nanoid()
+			couponGroupsAdapter.addOne(state.couponGroups, {
+				id,
+				couponIds: [],
+				...couponGroup
+			})
 		}
 	}
 });
@@ -38,7 +46,7 @@ export const {
 } = couponGroupsAdapter.getSelectors(state => state.coupons.couponGroups)
 export const { selectById: selectCouponById } = couponsAdapter.getSelectors(state => state.coupons.coupons)
 
-export const { addCoupons, editGroup } = couponsSlice.actions
+export const { addCoupons, editGroup, addGroup } = couponsSlice.actions
 
 export default couponsSlice.reducer
 
