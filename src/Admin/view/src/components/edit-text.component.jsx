@@ -83,9 +83,14 @@ const useStyles = makeStyles(theme => ({
 		'& .MuiInput-input': {
 			...theme.typography[props.variant],
 			height: 'unset'
-		}
+		},
+		marginRight: theme.spacing(1),
+		width: "100%"
 	}),
-	text: { padding: `7px 0 8px` }
+	text: {
+		padding: `7px 0 8px`,
+		marginRight: theme.spacing(1)
+	}
 }))
 
 export default EditText;
