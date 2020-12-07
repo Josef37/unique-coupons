@@ -30,8 +30,6 @@ class Menu {
 	public function __construct( $assets_url, $root_element_id ) {
 		$this->assets_url      = $assets_url;
 		$this->root_element_id = $root_element_id;
-
-		add_action( 'admin_menu', array( $this, 'add_menu_page' ) );
 	}
 
 	/**
