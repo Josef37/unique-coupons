@@ -67,6 +67,7 @@ class Menu {
 
 		$styles = $this->get_assets_ending_with( $assets, '.css' );
 		$this->enqueue_styles_in_order( $styles );
+		$this->enqueue_material_ui_dependencies();
 	}
 
 	/**
@@ -177,5 +178,12 @@ class Menu {
 		);
 
 		wp_localize_script( $handle, $object_name, $object );
+	}
+
+	/**
+	 * Load "Roboto" font needed for Material-UI.
+	 */
+	private function enqueue_material_ui_dependencies() {
+		wp_enqueue_style( 'roboto-font', 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap' );
 	}
 }
