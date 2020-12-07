@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCouponGroupById, updateGroupTemplate } from "../redux/coupons.slice";
+import { selectCouponGroupById, editGroup } from "../redux/coupons.slice";
 
 const TemplateEditor = ({ groupId }) => {
 	const { template } = useSelector(state => selectCouponGroupById(state, groupId))
@@ -8,7 +8,7 @@ const TemplateEditor = ({ groupId }) => {
 
 	return <div>
 		<h3>Template Editor</h3>
-		<textarea value={template} onChange={e => dispatch(updateGroupTemplate({ groupId, template: e.target.value }))} />
+		<textarea value={template} onChange={e => dispatch(editGroup({ groupId, template: e.target.value }))} />
 	</div>;
 }
 

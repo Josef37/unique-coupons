@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { addCoupons } from '../redux/coupons.slice';
 import { nanoid } from '@reduxjs/toolkit';
 
-const AddCoupons = ({ groupId }) => {
+const AddCouponsPage = ({ groupId }) => {
 	const dispatch = useDispatch()
 	const [expiresAtInput, setExpiresAtInput] = useState()
 	const [couponsInput, setCouponsInput] = useState("")
@@ -36,4 +36,4 @@ const AddCoupons = ({ groupId }) => {
 	</div>;
 }
 
-export default AddCoupons;
+export default AddCouponsPage;

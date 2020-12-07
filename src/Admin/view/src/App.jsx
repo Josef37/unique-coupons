@@ -2,10 +2,11 @@ import React from 'react';
 import { Switch, Route } from "react-router-dom";
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import CouponGroup from './pages/coupon-group.component';
-import AddCoupons from './pages/add-coupons.component';
-import Dashboard from './pages/dashboard.component';
-import Settings from './pages/settings.component';
+import CouponGroupPage from './pages/coupon-group.component';
+import AddCouponsPage from './pages/add-coupons.component';
+import DashboardPage from './pages/dashboard.component';
+import SettingsPage from './pages/settings.component';
+import AddCouponGroupPage from './pages/add-coupon-group.component';
 import NavTabs from './components/nav-tabs.component';
 
 function App() {
@@ -18,16 +19,19 @@ function App() {
 			<Box padding={3}>
 				<Switch>
 					<Route exact path="/settings">
-						<Settings />
+						<SettingsPage />
 					</Route>
 					<Route exact path="/group/:groupId" render={({ match }) =>
-						<CouponGroup groupId={match.params.groupId} />
+						<CouponGroupPage groupId={match.params.groupId} />
 					} />
 					<Route exact path="/add-coupons/:groupId" render={({ match }) =>
-						<AddCoupons groupId={match.params.groupId} />
+						<AddCouponsPage groupId={match.params.groupId} />
 					} />
+					<Route exact path="/add-coupon-group">
+						<AddCouponGroupPage />
+					</Route>
 					<Route exact path="/">
-						<Dashboard />
+						<DashboardPage />
 					</Route>
 					<Route>
 						<div>Invalid route</div>

@@ -1,17 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import Paper from '@material-ui/core/Paper'
-import CouponGroupRow from '../components/coupon-group-row.component';
-import { selectCouponGroupsIds } from "../redux/coupons.slice"
+import CouponGroupsList from '../components/coupon-groups-list.component';
+import AddCouponGroupButton from '../components/add-coupon-group-button.component';
 
-const Dashboard = () => {
-	const couponGroupIds = useSelector(selectCouponGroupsIds)
-
-	return <Paper>
-		{couponGroupIds.map(id =>
-			<CouponGroupRow key={id} groupId={id} />
-		)}
-	</Paper>
+const DashboardPage = () => {
+	return <>
+		<CouponGroupsList />
+		<AddCouponGroupButton />
+	</>
 }
 
-export default Dashboard;
+export default DashboardPage;

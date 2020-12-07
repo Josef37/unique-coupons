@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Checkbox from "@material-ui/core/Checkbox"
 import { selectCouponGroupById } from '../redux/coupons.slice';
 
-const CouponGroupsList = ({ groupId }) => {
+const CouponGroupRow = ({ groupId }) => {
 	const { id, name, description, isActive, couponIds }
 		= useSelector(state => selectCouponGroupById(state, groupId))
 
@@ -27,7 +27,9 @@ const Row = styled.div`
 	align-items: center;
 	gap: 2em;
 	padding: 1em;
-	border-bottom: 1px solid #ccc;
+	&:not(:last-child) {
+		border-bottom: 1px solid #ccc;
+	}
 	&:hover {
 		background: #eee;
 	}
@@ -40,4 +42,4 @@ const Description = styled.span`
 `
 const SizeDescription = styled.span``
 
-export default CouponGroupsList;
+export default CouponGroupRow;
