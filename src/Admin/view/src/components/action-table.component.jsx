@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { styled } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -46,29 +46,27 @@ const ActionTable = ({ ids, Row }) => {
 		</Box>
 }
 
-const rowStyles = `
-	display: flex;
-	align-items: center;
-	gap: 1em;
-`
+const rowStyles = {
+	display: "flex",
+	alignItems: "center",
+	gap: "1em",
+}
 
-const RowContainer = styled.div`
-	${rowStyles}
-
-	padding: 1em;
-	&:not(:last-child) {
-		border-bottom: 1px solid #ccc;
+const RowContainer = styled("div")({
+	...rowStyles,
+	padding: "1em",
+	"&:not(:last-child)": {
+		borderBottom: "1px solid #ccc"
+	},
+	"&:hover": {
+		background: "#eee"
 	}
-	&:hover {
-		background: #eee;
-	}
-`
+})
 
-const HeaderRow = styled.div`
-	${rowStyles}
+const HeaderRow = styled("div")({
+	...rowStyles,
+	padding: "0.4em 1em",
+	borderBottom: "1px solid #888",
+})
 
-	padding: 0.4em 1em;
-	border-bottom: 1px solid #888;
-`
-
-export default ActionTable;
+export default ActionTable

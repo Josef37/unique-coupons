@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { styled } from '@material-ui/core/styles';
 import Switch from "@material-ui/core/Switch"
-import styled from 'styled-components';
 import { selectCouponGroupById, editGroup } from '../redux/coupons.slice';
 
 const CouponGroupRow = ({ groupId }) => {
@@ -27,16 +27,16 @@ const CouponGroupRow = ({ groupId }) => {
 	</Row>
 }
 
-const Row = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 1em;
-`
-const Title = styled.h3`
-	margin: 0;
-`
-const Description = styled.span`
-	font-style: italic;
-`
+const Row = styled("div")({
+	display: "flex",
+	alignItems: "center",
+	gap: "1em",
+})
+const Title = styled("h3")({
+	margin: 0,
+})
+const Description = styled("span")({
+	fontStyle: "italic",
+})
 
 export default CouponGroupRow;
