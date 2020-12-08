@@ -44,7 +44,9 @@ class Loader {
 	private function load_admin() {
 		$react_assets_url = $this->plugin_root_url . 'src/Admin/view/build';
 		$root_element_id  = 'wp-coupons-root';
-		$menu             = new Admin\Menu( $react_assets_url, $root_element_id );
+
+		$asset_loader = new Admin\Menu\LiveAssetLoader( $react_assets_url );
+		$menu         = new Admin\Menu\Menu( $root_element_id, $asset_loader );
 
 		add_action( 'admin_menu', array( $menu, 'add_menu_page' ) );
 	}
