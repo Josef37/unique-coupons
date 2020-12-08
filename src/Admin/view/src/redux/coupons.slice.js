@@ -1,7 +1,16 @@
-import { createEntityAdapter, createSlice, nanoid } from "@reduxjs/toolkit";
+import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
+import * as WP_Rest from "../api/wp-rest";
 
+/** @todo remove */
 import { initialCouponGroups, initialCoupons } from "../data";
+
+export const addGroup = createAsyncThunk(
+	'coupons/addGroup',
+	async (couponGroup, thunkAPI) => {
+		return WP_Rest.addGroup(couponGroup)
+	}
+)
 
 const couponGroupsAdapter = createEntityAdapter()
 const couponsAdapter = createEntityAdapter()
@@ -11,7 +20,7 @@ const initialState = {
 	coupons: couponsAdapter.getInitialState()
 }
 
-// Load dummy data in development mode.
+/** @todo remove: Load dummy data in development mode. */
 if (process.env.NODE_ENV === 'development') {
 	initialState.couponGroups = initialCouponGroups
 	initialState.coupons = initialCoupons
@@ -27,15 +36,11 @@ const couponsSlice = createSlice({
 		},
 		editGroup: (state, { payload: { groupId, ...changes } }) => {
 			couponGroupsAdapter.updateOne(state.couponGroups, { id: groupId, changes })
-		},
-		addGroup: (state, { payload: couponGroup }) => {
-			/** @todo replace */
-			const id = nanoid()
-			couponGroupsAdapter.addOne(state.couponGroups, {
-				id,
-				couponIds: [],
-				...couponGroup
-			})
+		}
+	},
+	extraReducers: {
+		[addGroup.fulfilled]: (state, { payload: couponGroup }) => {
+			couponGroupsAdapter.addOne(state.couponGroups, couponGroup)
 		}
 	}
 });
@@ -46,7 +51,7 @@ export const {
 } = couponGroupsAdapter.getSelectors(state => state.coupons.couponGroups)
 export const { selectById: selectCouponById } = couponsAdapter.getSelectors(state => state.coupons.coupons)
 
-export const { addCoupons, editGroup, addGroup } = couponsSlice.actions
+export const { addCoupons, editGroup } = couponsSlice.actions
 
 export default couponsSlice.reducer
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { unwrapResult } from '@reduxjs/toolkit';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -21,6 +22,20 @@ const AddCouponGroupPage = () => {
 	const dispatch = useDispatch()
 	const history = useHistory()
 	const [error, setError] = useState("")
+	const [isFetching, setFetching] = useState(false)
+
+	const handleAdd = () => {
+		if (!name) {
+			setError('Name is empty. Accept changes first.');
+			return;
+		}
+		setFetching(true);
+		dispatch(addGroup(input))
+			.then(unwrapResult)
+			.then(({ id }) => history.push(`/group/${id}`))
+			.catch(({ message }) => setError(message))
+			.finally(() => setFetching(false));
+	}
 
 	return <div>
 		<EditText
@@ -50,16 +65,8 @@ const AddCouponGroupPage = () => {
 		/>
 		<ActionButton
 			Icon={DoneIcon}
-			onClick={() => {
-				if (!name) {
-					setError('Name is empty. Accept changes first.')
-					return
-				}
-
-				dispatch(addGroup(input))
-				/** @todo reroute to new group page */
-				history.push('/')
-			}}
+			isLoading={isFetching}
+			onClick={handleAdd}
 		>
 			Add this coupon group
 		</ActionButton>
