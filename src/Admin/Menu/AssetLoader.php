@@ -116,6 +116,9 @@ abstract class AssetLoader {
 
 	/**
 	 * Load "Roboto" font needed for Material-UI.
+	 *
+	 * Even when using Shadow DOM, the font has to be included in the Light DOM.
+	 * See https://stackoverflow.com/a/55360574/5312432
 	 */
 	protected function enqueue_material_ui_dependencies() {
 		wp_enqueue_style( 'roboto-font', 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap', array(), null );

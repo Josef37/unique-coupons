@@ -1,19 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { Provider as StoreProvider } from "react-redux";
+import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
+import { StylesProvider } from '@material-ui/core/styles';
 import App from './App';
 import store from './redux/store';
+import { jss, appRoot } from './configure-shadow-dom';
 
 ReactDOM.render(
 	<React.StrictMode>
-		<Provider store={store}>
-			<HashRouter>
-				<CssBaseline />
-				<App />
-			</HashRouter>
-		</Provider>
+		<StoreProvider store={store}>
+			<StylesProvider jss={jss}>
+				<HashRouter>
+					<ScopedCssBaseline>
+						<App />
+					</ScopedCssBaseline>
+				</HashRouter>
+			</StylesProvider>
+		</StoreProvider>
 	</React.StrictMode>,
-	document.getElementById('wp-coupons-root')
+	appRoot
 );
