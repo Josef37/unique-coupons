@@ -25,6 +25,7 @@ class Loader {
 	 */
 	public function run() {
 		add_action( 'init', array( $this, 'register_models' ) );
+		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 		$this->maybe_load_admin();
 		$this->maybe_load_frontend();
 	}
@@ -33,6 +34,13 @@ class Loader {
 		Model\Coupon::register();
 		Model\CouponGroup::register();
 		Model\User::register();
+	}
+
+	public function register_routes() {
+		$version   = 1;
+		$namespace = $this->plugin_name . '/v' . $version;
+
+		new Routes\AddCouponsRoute( $namespace );
 	}
 
 	private function maybe_load_admin() {
@@ -46,7 +54,8 @@ class Loader {
 		$root_element_id  = 'wp-coupons-root';
 
 		$asset_loader = new Admin\Menu\LiveAssetLoader( $react_assets_url );
-		$menu         = new Admin\Menu\Menu( $root_element_id, $asset_loader );
+		// $asset_loader = new Admin\Menu\DevAssetLoader();
+		$menu = new Admin\Menu\Menu( $root_element_id, $asset_loader );
 
 		add_action( 'admin_menu', array( $menu, 'add_menu_page' ) );
 	}

@@ -10,7 +10,7 @@ class User {
 			'user',
 			'wp_coupon',
 			array(
-				'type'         => 'object',
+				'type'         => 'array',
 				'description'  => 'For each coupon group, it stores stats for popups and retrieved coupons',
 				'single'       => true,
 				'show_in_rest' => array(

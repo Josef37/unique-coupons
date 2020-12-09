@@ -47,4 +47,32 @@ class Utils {
 
 		return $json;
 	}
+
+	/**
+	 * Checks if any element in the array fulfills the predicate.
+	 *
+	 * @see https://stackoverflow.com/a/39877269/5312432
+	 */
+	public static function array_any( array $array, callable $fn ) {
+		foreach ( $array as $value ) {
+			if ( $fn( $value ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if all elements in the array fulfill the predicate.
+	 *
+	 * @see https://stackoverflow.com/a/39877269/5312432
+	 */
+	public static function array_every( array $array, callable $fn ) {
+		foreach ( $array as $value ) {
+			if ( ! $fn( $value ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
