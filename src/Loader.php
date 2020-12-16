@@ -25,7 +25,7 @@ class Loader {
 	 */
 	public function run() {
 		add_action( 'init', array( $this, 'register_models' ) );
-		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
+		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 		$this->maybe_load_admin();
 		$this->maybe_load_frontend();
 	}
@@ -36,11 +36,11 @@ class Loader {
 		Model\User::register();
 	}
 
-	public function register_routes() {
+	public function register_rest_routes() {
 		$version   = 1;
 		$namespace = $this->plugin_name . '/v' . $version;
 
-		new Routes\AddCouponsRoute( $namespace );
+		( new Routes\AddCouponsRoute( $namespace ) )->register_routes();
 	}
 
 	private function maybe_load_admin() {

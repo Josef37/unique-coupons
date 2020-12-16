@@ -51,4 +51,31 @@ class CouponGroup {
 			)
 		);
 	}
+
+	/**
+	 * @param int $group_id Term ID of the group to get.
+	 * @throws \Exception
+	 * @return \WP_Term
+	 */
+	public static function get( $group_id ) {
+		$group_term = get_term( $group_id, 'wp_coupon_group' );
+		if ( is_wp_error( $group_term ) ) {
+			throw new \Exception( $group_term->get_error_message() );
+		} elseif ( empty( $group_term ) ) {
+			throw new \Exception( "Failed to get coupon group with ID {$group_id}" );
+		}
+		return $group_term;
+	}
+
+	/**
+	 * Checks if a group exists with the given ID.
+	 */
+	public static function exists( $group_id ) {
+		try {
+			self::get( $group_id );
+		} catch ( \Exception $ex ) {
+			return false;
+		}
+		return true;
+	}
 }

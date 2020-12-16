@@ -24,15 +24,13 @@ class Coupon {
 			'wp_coupon',
 			'expires_at',
 			array(
-				'type'         => 'number',
+				'type'         => 'string',
 				'description'  => 'Last day of coupon validity (in site\'s time-zone), stored in MySQL date format Y-m-d (e.g. 2020-12-24).',
 				'single'       => true,
 				'show_in_rest' => array(
 					'schema' => array(
-						'type'        => 'number',
-						'arg_options' => array(
-							'validate_callback' => '__return_false',
-						),
+						'type'    => 'string',
+						'pattern' => \WPCoupons\Utils::get_date_regex(),
 					),
 				),
 			)
@@ -87,5 +85,13 @@ class Coupon {
 
 		$id = $id_or_error;
 		return $id;
+	}
+
+	/**
+	 * Deletes the coupon and skips trash.
+	 */
+	public static function delete( $id ) {
+		$skip_trash = true;
+		wp_delete_post( $id, $skip_trash );
 	}
 }

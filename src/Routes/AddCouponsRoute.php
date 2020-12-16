@@ -3,28 +3,25 @@ namespace WPCoupons\Routes;
 
 use Exception;
 use WPCoupons\Model\Coupon;
+use WPCoupons\Model\CouponGroup;
 
-class AddCouponsRoute {
+class AddCouponsRoute extends \WP_REST_Controller {
 	public function __construct( $namespace ) {
+		$this->namespace = $namespace;
+	}
+
+	public function register_routes() {
 		register_rest_route(
-			$namespace,
+			$this->namespace,
 			'/add-coupons',
 			array(
-				'methdos'             => \WP_REST_Server::CREATABLE,
-				'callback'            => array( $this, 'callback' ),
-				'permission_callback' => array( $this, 'permission_callback' ),
-				'args'                => array(
-					'group_id'      => array(
-						'required'          => true,
-						'validate_callback' => array( $this, 'validate_group_id' ),
-						'sanitize_callback' => array( $this, 'sanitize_group_id' ),
-					),
-					'coupon_values' => array(
-						'required'          => true,
-						'validate_callback' => array( $this, 'validate_coupon_values' ),
-						'sanitize_callback' => array( $this, 'sanitize_coupon_values' ),
-					),
+				array(
+					'methods'             => \WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'handle_request' ),
+					'permission_callback' => array( $this, 'is_user_permitted' ),
+					'args'                => $this->get_request_schema(),
 				),
+				'schema' => array( $this, 'get_response_schema' ),
 			)
 		);
 	}
@@ -33,60 +30,82 @@ class AddCouponsRoute {
 	 * @param \WP_REST_Request $request
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public function callback( $request ) {
+	public function handle_request( $request ) {
 		$group_id      = $request->get_param( 'group_id' );
 		$coupon_values = $request->get_param( 'coupon_values' );
 		$expires_at    = $request->get_param( 'expires_at' );
 
-		$group_term = get_term( $group_id, 'wp_coupon_group' );
-		if ( empty( $group_term ) ) {
-			return new \WP_Error( 'no_term', "Term with id {$group_id} does not exist in taxonomy wp_coupon_group.", array( 'status' => 404 ) );
+		if ( ! CouponGroup::exists( $group_id ) ) {
+			return new \WP_Error( 'no_group', 'Could not find group with ID {$group_id} in taxonomy wp_coupon_group.', array( 'status' => 404 ) );
 		}
 
-		$coupon_ids = array();
 		try {
-			foreach ( $coupon_values as $coupon_value ) {
-				$coupon_ids[] = Coupon::insert(
-					array(
-						'value'      => $coupon_value,
-						'group_id'   => $group_id,
-						'expires_at' => $expires_at,
-					)
-				);
-			}
+			$coupon_ids = $this->add_coupons( $group_id, $coupon_values, $expires_at );
 		} catch ( Exception $ex ) {
-			foreach ( $coupon_ids as $id ) {
-				$skip_trash = true;
-				wp_delete_post( $id, $skip_trash );
-			}
+			$this->revert_add_coupons( $coupon_ids );
 			return new \WP_Error( 'failed_insert', $ex->getMessage() );
 		}
 
 		return \rest_ensure_response( $coupon_ids );
 	}
 
+	protected function add_coupons( $group_id, $coupon_values, $expires_at ) {
+		$coupon_ids = array();
+		foreach ( $coupon_values as $coupon_value ) {
+			$coupon_ids[] = Coupon::insert(
+				array(
+					'value'      => $coupon_value,
+					'group_id'   => $group_id,
+					'expires_at' => $expires_at,
+				)
+			);
+		}
+		return $coupon_ids;
+	}
+
+	protected function revert_add_coupons( $coupon_ids ) {
+		foreach ( $coupon_ids as $id ) {
+			Coupon::delete( $id );
+		}
+	}
+
 	/**
 	 * @param \WP_REST_Request $request
 	 * @return WP_Error|bool
 	 */
-	public function permission_callback( $request ) {
+	public function is_user_permitted( $request ) {
 		return current_user_can( 'create_posts' );
 	}
 
-	public function validate_group_id( $param, $request, $key ) {
-		return is_numeric( $param );
+	public function get_request_schema() {
+		return array(
+			'group_id'      => array(
+				'required' => true,
+				'type'     => 'integer',
+			),
+			'coupon_values' => array(
+				'required' => true,
+				'type'     => 'array',
+				'items'    => array(
+					'type' => 'string',
+				),
+			),
+			'expires_at'    => array(
+				'required' => true,
+				'type'     => 'string',
+				'pattern'  => \WPCoupons\Utils::get_date_regex(),
+			),
+		);
 	}
 
-	public function sanitize_group_id( $param, $request, $key ) {
-		return absint( $param );
-	}
-
-	public function validate_coupon_values( $param, $request, $key ) {
-		return wp_is_numeric_array( $param )
-			&& \WPCoupons\Utils::array_every( $param, 'is_string' );
-	}
-
-	public function sanitize_coupon_values( $param, $request, $key ) {
-		return absint( $param );
+	public function get_response_schema() {
+		return array(
+			'title'       => 'coupon_ids',
+			'description' => 'IDs of new coupons',
+			'type'        => 'array',
+			'items'       => array(
+				'type' => 'integer',
+			),
+		);
 	}
 }

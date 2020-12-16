@@ -105,9 +105,10 @@ abstract class AssetLoader {
 				'error' => __( 'Error', 'wp-coupons' ),
 			),
 			'api'        => array(
+				'nonce'  => wp_create_nonce( 'wp_rest' ),
 				'coupon' => esc_url( rest_url( 'wp/v2/wp_coupon' ) ),
 				'group'  => esc_url( rest_url( 'wp/v2/wp_coupon_group' ) ),
-				'nonce'  => wp_create_nonce( 'wp_rest' ),
+				'addCoupons'  => esc_url( rest_url( 'wp-coupons/v1/add-coupons' ) ),
 			),
 		);
 
