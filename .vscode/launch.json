@@ -1,0 +1,43 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FireFox",
+      "type": "firefox",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "reAttach": true,
+      "webRoot": "${workspaceFolder}/src"
+    },
+    {
+      "name": "Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      }
+    },
+    {
+      "name": "Listen for XDebug",
+      "type": "php",
+      "request": "launch",
+      "port": 9003,
+      "pathMappings": {
+        "/srv/www/createrawvision/public_html/wp-content/plugins/wp-coupons": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Launch currently open script",
+      "type": "php",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${fileDirname}",
+      "port": 9003
+    }
+  ]
+}
