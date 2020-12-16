@@ -6,7 +6,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Snackbar from '@material-ui/core/Snackbar';
 import DoneIcon from '@material-ui/icons/Done';
-import EditText from '../components/edit-text.component';
+import TextField from '@material-ui/core/TextField'
+import Box from '@material-ui/core/Box'
+import { useStyles } from '../components/edit-text.component';
 import ActionButton from '../components/action-button.component';
 import { addGroup } from '../redux/coupons.slice';
 import TemplateEditor from '../components/template-editor.component';
@@ -26,32 +28,35 @@ const AddCouponGroupPage = () => {
 
 	const handleAdd = () => {
 		if (!name) {
-			setError('Name is empty. Accept changes first.');
-			return;
+			setError('Name is empty. Accept changes first.')
+			return
 		}
 		setFetching(true);
 		dispatch(addGroup(input))
 			.then(unwrapResult)
 			.then(({ id }) => history.push(`/group/${id}`))
 			.catch(({ message }) => setError(message))
-			.finally(() => setFetching(false));
+			.finally(() => setFetching(false))
 	}
 
 	return <div>
-		<EditText
-			isEditingInitially
-			variant="h3"
-			text={name}
-			placeholder="Group Title"
-			onEditDone={name => setInput({ ...input, name })}
-		/>
-		<EditText
-			isEditingInitially={true}
-			variant="subtitle1"
-			text={description}
-			placeholder="Group Description (optional)"
-			onEditDone={description => setInput({ ...input, description })}
-		/>
+		<Box marginBottom={1.5}>
+			<TextField
+				value={name}
+				onChange={e => setInput({ ...input, name: e.target.value })}
+				autoFocus
+				placeholder="Group Title"
+				className={useStyles({ variant: "h3" }).root}
+			/>
+		</Box>
+		<Box marginBottom={1.5}>
+			<TextField
+				value={description}
+				onChange={e => setInput({ ...input, description: e.target.value })}
+				placeholder="Group Description (optional)"
+				className={useStyles({ variant: "subtitle1" }).root}
+			/>
+		</Box>
 		<FormControlLabel
 			control={<Switch
 				checked={isActive}

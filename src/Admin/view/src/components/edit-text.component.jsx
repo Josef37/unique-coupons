@@ -81,7 +81,7 @@ const Container = (props) =>
 		{...props}
 	/>
 
-const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles(theme => ({
 	root: props => ({
 		'& .MuiInput-input': {
 			...theme.typography[props.variant],

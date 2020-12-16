@@ -1,3 +1,7 @@
+import { format } from "date-fns"
+
+const dateString = format(new Date(), 'yyyy-MM-dd')
+
 const initialCouponGroups = {
 	ids: [1, 2],
 	entities: {
@@ -26,32 +30,32 @@ const initialCoupons = {
 		1: {
 			id: 1,
 			value: "1-1",
-			expiresAt: Date.now()
+			expiresAt: dateString
 		},
 		2: {
 			id: 2,
 			value: "1-2",
-			expiresAt: Date.now()
+			expiresAt: dateString
 		},
 		3: {
 			id: 3,
 			value: "1-3",
-			expiresAt: Date.now()
+			expiresAt: dateString
 		},
 		4: {
 			id: 4,
 			value: "2-1",
-			expiresAt: Date.now()
+			expiresAt: dateString
 		},
 		5: {
 			id: 5,
 			value: "2-2",
-			expiresAt: Date.now()
+			expiresAt: dateString
 		},
 		6: {
 			id: 6,
 			value: "2-3",
-			expiresAt: Date.now()
+			expiresAt: dateString
 		}
 	}
 }

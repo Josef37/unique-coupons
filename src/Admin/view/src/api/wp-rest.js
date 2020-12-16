@@ -1,37 +1,44 @@
+const WP_API = window.WP_COUPONS.api
+
 class WpRest {
 	addGroup = async (couponGroup) => {
-		const response = await this.post(
-			window.WP_COUPONS.api.group,
+		const jsonResponse = await this.post(
+			WP_API.group,
 			this.transformNewGroupRequestBody(couponGroup)
 		)
-		const responseJson = await response.json()
-		if (!response.ok) {
-			throw new Error(responseJson.message)
-		}
-		return this.transformNewGroupResponse(responseJson)
+		return this.transformNewGroupResponse(jsonResponse)
 	}
 
-	addCoupons = async (coupons) => {
-
+	addCoupons = async ({ couponValues, groupId, expiresAt }) => {
+		const couponIds = await this.post(
+			WP_API.addCoupons,
+			this.transformAddCouponsRequestBody(groupId, couponValues, expiresAt)
+		)
+		return couponIds
 	}
 
 	fetch = async (url, method, body) => {
-		return fetch(
+		const response = await fetch(
 			url,
 			{
 				method,
 				headers: {
 					'Content-Type': 'application/json',
-					'X-WP-Nonce': window.WP_COUPONS.api.nonce
+					'X-WP-Nonce': WP_API.nonce
 				},
 				body: JSON.stringify(body)
 			}
 		)
+		const jsonResponse = await response.json()
+		if (!response.ok) {
+			throw new Error(jsonResponse.message)
+		}
+		return jsonResponse
 	}
-	get = async (url, body) => fetch(url, 'GET', body)
-	post = async (url, body) => fetch(url, 'POST', body)
+	get = async (url, body) => this.fetch(url, 'GET', body)
+	post = async (url, body) => this.fetch(url, 'POST', body)
 
-	transformNewGroupRequestBody = couponGroup => {
+	transformNewGroupRequestBody = (couponGroup) => {
 		const { name, description, template, isActive } = couponGroup
 		return {
 			name,
@@ -42,18 +49,20 @@ class WpRest {
 			}
 		}
 	}
-	transformNewGroupResponse = (responseJson) => {
-		const {
-			id,
-			name,
-			description,
-			meta: {
-				template,
-				is_active: isActive
-			}
-		} = responseJson
-		return { id, name, description, template, isActive, couponIds: [] }
-	}
+	transformNewGroupResponse = (responseJson) => ({
+		id: responseJson.id,
+		name: responseJson.name,
+		description: responseJson.description,
+		template: responseJson.meta.template,
+		isActive: responseJson.meta.is_active,
+		couponIds: []
+	})
+
+	transformAddCouponsRequestBody = (groupId, couponValues, expiresAt) => ({
+		group_id: groupId,
+		coupon_values: couponValues,
+		expires_at: expiresAt
+	})
 }
 
-export default WpRest
+export default new WpRest()

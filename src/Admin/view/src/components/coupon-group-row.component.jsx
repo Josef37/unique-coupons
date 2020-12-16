@@ -10,7 +10,7 @@ const CouponGroupRow = ({ groupId }) => {
 		= useSelector(state => selectCouponGroupById(state, groupId))
 	const dispatch = useDispatch()
 
-	return <Row isActive={isActive}>
+	return <Row>
 		<Switch
 			checked={isActive}
 			onChange={() => dispatch(editGroup({ groupId, isActive: !isActive }))}
