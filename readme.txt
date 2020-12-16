@@ -1,6 +1,5 @@
 === WP Coupons ===
 Contributors: josefwittmann
-Donate link: https://example.com/
 Tags: coupon, coupons
 Requires at least: 5.3
 Tested up to: 5.5.3
