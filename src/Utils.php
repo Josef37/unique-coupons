@@ -47,4 +47,42 @@ class Utils {
 
 		return $json;
 	}
+
+	/**
+	 * Checks if any element in the array fulfills the predicate.
+	 *
+	 * @see https://stackoverflow.com/a/39877269/5312432
+	 */
+	public static function array_any( array $array, callable $fn ) {
+		foreach ( $array as $value ) {
+			if ( $fn( $value ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if all elements in the array fulfill the predicate.
+	 *
+	 * @see https://stackoverflow.com/a/39877269/5312432
+	 */
+	public static function array_every( array $array, callable $fn ) {
+		foreach ( $array as $value ) {
+			if ( ! $fn( $value ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Checks if the given string is a date between 1900-01-01 and 2099-12-31.
+	 * Does not account for month lenghs (e.g. 2020-11-31 is valid).
+	 *
+	 * @see https://www.regular-expressions.info/dates.html
+	 */
+	public static function get_date_regex() {
+		return '^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$';
+	}
 }

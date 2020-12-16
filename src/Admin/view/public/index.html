@@ -9,10 +9,18 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>React App</title>
+	<title>🔨🚧 WP Coupons Dev</title>
+	<!-- Even when using Shadow DOM, the font has to be included in the Light DOM. See https://stackoverflow.com/a/55360574/5312432 -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
 	<script>
-		window.WP_COUPONS = { PUBLIC_URL: "" };
+		window.WP_COUPONS = {
+			PUBLIC_URL: "",
+			api: {
+				coupon: "http://crv.test/wp-json/wp/v2/wp_coupon",
+				group: "http://crv.test/wp-json/wp/v2/wp_coupon_group",
+				nonce: "4679e5bb0b"
+			}
+		};
 	</script>
 </head>
 
