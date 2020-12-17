@@ -1,21 +1,16 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
-import WP_Rest from "../api/wp-rest";
-
-/** @todo remove */
-import { initialCouponGroups, initialCoupons } from "../data";
+import WpRest from "../api/wp-rest";
 
 export const addGroup = createAsyncThunk(
 	'coupons/addGroup',
-	async (couponGroup, thunkApi) => {
-		return WP_Rest.addGroup(couponGroup)
-	}
+	WpRest.addGroup
 )
 
 export const addCoupons = createAsyncThunk(
 	'coupons/addCoupons',
-	async ({ couponValues, expiresAt, groupId }, thunkApi) => {
-		const couponIds = await WP_Rest.addCoupons({ couponValues, expiresAt, groupId })
+	async ({ couponValues, expiresAt, groupId }) => {
+		const couponIds = await WpRest.addCoupons({ couponValues, expiresAt, groupId })
 		return {
 			groupId,
 			coupons: _.zipWith(couponIds, couponValues, (id, value) => ({ id, value, expiresAt }))
@@ -23,18 +18,39 @@ export const addCoupons = createAsyncThunk(
 	}
 )
 
+export const getGroups = createAsyncThunk(
+	'coupons/getGroups',
+	WpRest.getGroups
+)
+
+export const getCoupons = createAsyncThunk(
+	'coupons/getCoupons',
+	async (groupId) => ({
+		groupId,
+		coupons: await WpRest.getCoupons(groupId)
+	})
+)
+
+/* {
+	id: 123,
+	name: "Special Christmas Offer",
+	description: "50 % before christmas on everything",
+	template: "Get your 50% offer today: %coupon%",
+	isActive: true,
+	couponIds: [123, 124, 125]
+} */
 const couponGroupsAdapter = createEntityAdapter()
+
+/* {
+	id: 123,
+	value: "coupon1234",
+	expiresAt: "2020-12-25"
+} */
 const couponsAdapter = createEntityAdapter()
 
 const initialState = {
 	couponGroups: couponGroupsAdapter.getInitialState(),
 	coupons: couponsAdapter.getInitialState()
-}
-
-/** @todo remove: Load dummy data in development mode. */
-if (process.env.NODE_ENV === 'development') {
-	initialState.couponGroups = initialCouponGroups
-	initialState.coupons = initialCoupons
 }
 
 const couponsSlice = createSlice({
@@ -50,8 +66,14 @@ const couponsSlice = createSlice({
 			couponGroupsAdapter.addOne(state.couponGroups, couponGroup)
 		},
 		[addCoupons.fulfilled]: (state, { payload: { groupId, coupons } }) => {
-			addCouponsToGroup(state, groupId, coupons);
-			couponsAdapter.addMany(state.coupons, coupons)
+			addCouponsToState(state, groupId, coupons)
+		},
+		[getGroups.fulfilled]: (state, { payload: couponGroups }) => {
+			couponGroupsAdapter.setAll(state.couponGroups, couponGroups)
+		},
+		[getCoupons.fulfilled]: (state, { payload: { groupId, coupons } }) => {
+			removeCouponsInGroup(state, groupId)
+			addCouponsToState(state, groupId, coupons)
 		},
 	}
 });
@@ -66,9 +88,11 @@ export const { editGroup } = couponsSlice.actions
 
 export default couponsSlice.reducer
 
-/**
- * Updates the referenced coupon ids for the coupon group.
- */
+function addCouponsToState(state, groupId, coupons) {
+	addCouponsToGroup(state, groupId, coupons);
+	couponsAdapter.addMany(state.coupons, coupons);
+}
+
 function addCouponsToGroup(state, groupId, coupons) {
 	const newCouponsIds = _.map(coupons, 'id');
 	const currentCouponIds = state.couponGroups.entities[groupId].couponIds;
@@ -80,3 +104,9 @@ function addCouponsToGroup(state, groupId, coupons) {
 	});
 }
 
+function removeCouponsInGroup(state, groupId) {
+	const coupons = state.couponGroups.entities[groupId].coupons
+	const couponIds = _.map(coupons, 'id')
+	couponGroupsAdapter.updateOne(state.couponGroups, { id: groupId, changes: { couponIds: [] } })
+	couponsAdapter.removeMany(state.coupons, couponIds)
+}

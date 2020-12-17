@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import _ from 'lodash'
 import { format, isMatch } from "date-fns"
 import { useDispatch, useSelector } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -16,7 +15,8 @@ import BackLink from '../components/back-link.component';
 const todaysDateString = format(new Date(), "yyyy-MM-dd")
 
 const AddCouponsPage = ({ groupId }) => {
-	const { name: groupName } = useSelector(state => selectCouponGroupById(state, groupId))
+	const group = useSelector(state => selectCouponGroupById(state, groupId))
+	const isValidGroupId = undefined !== group
 	const [expiresAtInput, setExpiresAtInput] = useState(todaysDateString)
 	const [couponsInput, setCouponsInput] = useState("")
 	const [error, setError] = useState("")
@@ -33,7 +33,7 @@ const AddCouponsPage = ({ groupId }) => {
 			setError(`Format the date input like ${todaysDateString}`)
 			return
 		}
-		const couponValues = _.words(couponsInput)
+		const couponValues = couponsInput.split(/\r?\n/).filter(value => value !== "")
 		const expiresAt = expiresAtInput
 
 		setFetching(true)
@@ -44,6 +44,10 @@ const AddCouponsPage = ({ groupId }) => {
 			.finally(() => setFetching(false))
 	}
 
+	if (!isValidGroupId) {
+		return <Typography variant="body1">There is no group with ID {groupId}</Typography>
+	}
+	const { name: groupName } = group
 	return <div>
 		<BackLink to={`/group/${groupId}`}>Back to Group "{groupName}"</BackLink>
 		<Typography
@@ -74,7 +78,7 @@ const AddCouponsPage = ({ groupId }) => {
 				variant="outlined"
 				rows="4"
 				rowsMax="16"
-				helperText="Separated by whitespace"
+				helperText="One coupon per line"
 				onChange={e => setCouponsInput(e.target.value)}
 			/>
 		</Label>

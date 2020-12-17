@@ -4,16 +4,26 @@ import { Link } from "react-router-dom"
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AddIcon from "@material-ui/icons/Add"
-import { selectCouponGroupById, editGroup } from "../redux/coupons.slice";
+import { selectCouponGroupById, editGroup, getCoupons } from "../redux/coupons.slice";
 import TemplateEditor from '../components/template-editor.component';
 import CouponsList from '../components/coupons-list.component';
 import EditText from '../components/edit-text.component';
 import ActionButton from '../components/action-button.component';
+import Typography from '@material-ui/core/Typography';
 
 const CouponGroupPage = ({ groupId }) => {
-	const { name, description, template, isActive } = useSelector(state => selectCouponGroupById(state, groupId))
+	const group = useSelector(state => selectCouponGroupById(state, groupId))
+	const isValidGroupId = undefined !== group
 	const dispatch = useDispatch()
+	React.useEffect(() => {
+		console.log("valid group id", isValidGroupId)
+		if (isValidGroupId) dispatch(getCoupons(groupId))
+	}, [dispatch, isValidGroupId, groupId])
 
+	if (!isValidGroupId) {
+		return <Typography variant="body1">There is no group with ID {groupId}</Typography>
+	}
+	const { name, description, template, isActive } = group
 	return <div>
 		<EditText
 			variant="h3"

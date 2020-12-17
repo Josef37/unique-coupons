@@ -71,20 +71,20 @@ class Coupon {
 			'post_title'  => $value,
 			'post_status' => $status,
 			'post_type'   => 'wp_coupon',
-			'tax_input'   => array( 'wp_coupon_group' => $group_id ),
+			'tax_input'   => array( 'wp_coupon_group' => array( (int) $group_id ) ),
 			'meta_input'  => array( 'expires_at' => $expires_at ),
 		);
 		$do_return_error = true;
 
-		$id_or_error = wp_insert_post( $postarr, $do_return_error );
+		$post_id_or_error = wp_insert_post( $postarr, $do_return_error );
 
-		if ( is_wp_error( $id_or_error ) ) {
-			$error = $id_or_error;
+		if ( is_wp_error( $post_id_or_error ) ) {
+			$error = $post_id_or_error;
 			throw new \Exception( $error->get_error_message() );
 		}
 
-		$id = $id_or_error;
-		return $id;
+		$post_id = $post_id_or_error;
+		return $post_id;
 	}
 
 	/**
