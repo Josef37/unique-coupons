@@ -31,6 +31,14 @@ export const getCoupons = createAsyncThunk(
 	})
 )
 
+export const editGroup = createAsyncThunk(
+	'coupons/editGroup',
+	async ({ groupId, ...changes }) => {
+		await WpRest.editGroup(groupId, changes)
+		return { groupId, ...changes }
+	}
+)
+
 /* {
 	id: 123,
 	name: "Special Christmas Offer",
@@ -56,11 +64,7 @@ const initialState = {
 const couponsSlice = createSlice({
 	name: 'coupons',
 	initialState,
-	reducers: {
-		editGroup: (state, { payload: { groupId, ...changes } }) => {
-			couponGroupsAdapter.updateOne(state.couponGroups, { id: groupId, changes })
-		}
-	},
+	reducers: {},
 	extraReducers: {
 		[addGroup.fulfilled]: (state, { payload: couponGroup }) => {
 			couponGroupsAdapter.addOne(state.couponGroups, couponGroup)
@@ -75,6 +79,9 @@ const couponsSlice = createSlice({
 			removeCouponsInGroup(state, groupId)
 			addCouponsToState(state, groupId, coupons)
 		},
+		[editGroup.fulfilled]: (state, { payload: { groupId, ...changes } }) => {
+			couponGroupsAdapter.updateOne(state.couponGroups, { id: groupId, changes })
+		}
 	}
 });
 
@@ -83,8 +90,6 @@ export const {
 	selectIds: selectCouponGroupsIds
 } = couponGroupsAdapter.getSelectors(state => state.coupons.couponGroups)
 export const { selectById: selectCouponById } = couponsAdapter.getSelectors(state => state.coupons.coupons)
-
-export const { editGroup } = couponsSlice.actions
 
 export default couponsSlice.reducer
 

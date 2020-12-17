@@ -16,7 +16,6 @@ const CouponGroupPage = ({ groupId }) => {
 	const isValidGroupId = undefined !== group
 	const dispatch = useDispatch()
 	React.useEffect(() => {
-		console.log("valid group id", isValidGroupId)
 		if (isValidGroupId) dispatch(getCoupons(groupId))
 	}, [dispatch, isValidGroupId, groupId])
 

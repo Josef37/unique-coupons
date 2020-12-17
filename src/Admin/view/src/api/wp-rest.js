@@ -1,10 +1,12 @@
+import _ from "lodash"
+
 const WP_API = window.WP_COUPONS.api
 
 class WpRest {
 	addGroup = async (couponGroup) => {
 		const jsonResponse = await this.post(
 			WP_API.group,
-			this.transformNewGroupRequestBody(couponGroup)
+			this.transformGroupRequestBody(couponGroup)
 		)
 		return this.transformGroupResponse(jsonResponse)
 	}
@@ -38,6 +40,14 @@ class WpRest {
 			}
 		)
 		return this.transformGetCouponsResponse(jsonResponse)
+	}
+
+	editGroup = async (groupId, changes) => {
+		const jsonResponse = await this.post(
+			`${WP_API.group}/${groupId}`,
+			this.transformGroupRequestBody(changes)
+		)
+		return this.transformGroupResponse(jsonResponse)
 	}
 
 	fetch = async (url, init) => {
@@ -77,16 +87,13 @@ class WpRest {
 		})
 	}
 
-	transformNewGroupRequestBody = (couponGroup) => {
-		const { name, description, template, isActive } = couponGroup
-		return {
-			name,
-			description,
-			meta: {
-				template,
-				is_active: isActive
-			}
-		}
+	transformGroupRequestBody = (couponGroup) => {
+		const requestObj = {}
+		if ('name' in couponGroup) _.set(requestObj, 'name', couponGroup.name)
+		if ('description' in couponGroup) _.set(requestObj, 'description', couponGroup.description)
+		if ('template' in couponGroup) _.set(requestObj, 'meta.template', couponGroup.template)
+		if ('isActive' in couponGroup) _.set(requestObj, 'meta.is_active', couponGroup.isActive)
+		return requestObj
 	}
 
 	transformGroupResponse = (responseJson) => ({
