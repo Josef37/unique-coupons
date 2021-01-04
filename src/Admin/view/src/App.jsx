@@ -16,12 +16,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CenteredContainer from './components/centered-container.component';
 
 function App() {
-	const [isFetching, setFetching] = useState(false)
+	const [isFetching, setFetching] = useState(true)
 	const [error, setError] = useState("")
-
 	const dispatch = useDispatch()
 	useEffect(() => {
-		setFetching(true)
 		dispatch(getGroups())
 			.then(unwrapResult)
 			.catch(({ message }) => setError(message))

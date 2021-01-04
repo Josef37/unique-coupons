@@ -14,9 +14,8 @@ const robotoFontLink = document.createElement('link')
 robotoFontLink.setAttribute("rel", "stylesheet")
 robotoFontLink.setAttribute("href", "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap")
 
+// The shadow DOM has to be configured beforehand to allow style-loader to inject styles into shadow DOM.
 const shadowHost = document.getElementById('wp-coupons-root')
-shadowHost.attachShadow({ mode: "open" })
-
 const shadowRoot = shadowHost.shadowRoot
 shadowRoot.appendChild(robotoFontLink)
 shadowRoot.appendChild(styleInsertionPoint)

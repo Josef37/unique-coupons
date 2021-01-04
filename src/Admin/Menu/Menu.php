@@ -49,5 +49,6 @@ class Menu {
 	public function render_admin() {
 		$this->asset_loader->enqueue_assets();
 		echo '<div id="' . esc_attr( $this->root_element_id ) . '"></div>';
+		echo '<script>document.getElementById("' . esc_js( $this->root_element_id ) . '").attachShadow({ mode: "open" })</script>';
 	}
 }
