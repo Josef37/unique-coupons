@@ -119,7 +119,9 @@ class WpRest {
 		return responseJson.map(coupon => ({
 			id: coupon.id,
 			value: coupon.title.rendered,
-			expiresAt: coupon.meta.expires_at
+			expiresAt: coupon.meta.expires_at,
+			status: coupon.status,
+			userId: coupon.meta.user_id
 		}))
 	}
 }

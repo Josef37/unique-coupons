@@ -52,7 +52,9 @@ const couponGroupsAdapter = createEntityAdapter()
 /* {
 	id: 123,
 	value: "coupon1234",
-	expiresAt: "2020-12-25"
+	expiresAt: "2020-12-25",
+	status: "publish",
+	userId: 54
 } */
 const couponsAdapter = createEntityAdapter()
 
@@ -110,8 +112,7 @@ function addCouponsToGroup(state, groupId, coupons) {
 }
 
 function removeCouponsInGroup(state, groupId) {
-	const coupons = state.couponGroups.entities[groupId].coupons
-	const couponIds = _.map(coupons, 'id')
+	const couponIds = state.couponGroups.entities[groupId].couponIds
 	couponGroupsAdapter.updateOne(state.couponGroups, { id: groupId, changes: { couponIds: [] } })
 	couponsAdapter.removeMany(state.coupons, couponIds)
 }

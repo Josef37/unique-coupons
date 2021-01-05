@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Checkbox from '@material-ui/core/Checkbox'
 
-const ActionTable = ({ ids, Row }) => {
+const ActionTable = ({ ids, Row, isFetching }) => {
 	const [selectedIds, setSelectedIds] = useState(new Set())
 
 	const isSelected = id => selectedIds.has(id)
@@ -22,28 +22,30 @@ const ActionTable = ({ ids, Row }) => {
 	const deselectAllIds = () => setSelectedIds(new Set())
 	const toggleAllIds = () => allIdsSelected() ? deselectAllIds() : selectAllIds()
 
-	return ids.length === 0
-		? null
-		: <Box marginBottom={2}>
-			<Paper>
-				<HeaderRow>
-					<Checkbox
-						checked={allIdsSelected()}
-						indeterminate={indeterminateSelection()}
-						onChange={toggleAllIds}
-						aria-label={(allIdsSelected() ? "deselect" : "select") + " all rows"}
-					/>
-				</HeaderRow>
-				{ids.map(id => <RowContainer key={id}>
+	return <Box marginBottom={2}>
+		<Paper>
+			<HeaderRow>
+				<Checkbox
+					checked={allIdsSelected() && !noIdsSelected()}
+					indeterminate={indeterminateSelection()}
+					onChange={toggleAllIds}
+					aria-label={(allIdsSelected() ? "deselect" : "select") + " all rows"}
+				/>
+			</HeaderRow>
+			{isFetching && <RowContainer>Loading entries</RowContainer>}
+			{ids.length === 0
+				? <RowContainer>No entries</RowContainer>
+				: ids.map(id => <RowContainer key={id}>
 					<Checkbox
 						checked={isSelected(id)}
 						onChange={() => toggleRow(id)}
 						aria-label={(isSelected(id) ? "deselect" : "select") + " this row"}
 					/>
 					<Row id={id} />
-				</RowContainer>)}
-			</Paper>
-		</Box>
+				</RowContainer>)
+			}
+		</Paper>
+	</Box>
 }
 
 const rowStyles = {
