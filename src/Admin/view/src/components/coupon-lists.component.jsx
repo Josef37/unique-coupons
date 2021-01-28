@@ -59,7 +59,7 @@ const UsedCouponRow = ({ couponId }) => {
 	return <div>
 		<b>{value}</b><br />
 		<i>{format(parse(expiresAt, 'yyyy-MM-dd', new Date()), 'dd MMMM yyyy')}</i><br />
-		<span>{userId}</span>
+		<span>Used by: {userId}</span>
 	</div>
 }
 

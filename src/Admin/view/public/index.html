@@ -5,32 +5,37 @@
 -->
 
 <html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>🔨🚧 WP Coupons Dev</title>
+		<!-- Even when using Shadow DOM, the font has to be included in the Light DOM. See https://stackoverflow.com/a/55360574/5312432 -->
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+		/>
+		<script>
+			window.WP_COUPONS = {
+				PUBLIC_URL: "",
+				api: {
+					coupon: "http://crv.test/wp-json/wp/v2/wp_coupon",
+					group: "http://crv.test/wp-json/wp/v2/wp_coupon_group",
+					addCoupons:
+						"http://crv.test/wp-json/wp-coupons/v1/add-coupons",
+					nonce: "82a8dab81d",
+				},
+			};
+		</script>
+	</head>
 
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>🔨🚧 WP Coupons Dev</title>
-	<!-- Even when using Shadow DOM, the font has to be included in the Light DOM. See https://stackoverflow.com/a/55360574/5312432 -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-	<script>
-		window.WP_COUPONS = {
-			PUBLIC_URL: "",
-			api: {
-				coupon: "http://crv.test/wp-json/wp/v2/wp_coupon",
-				group: "http://crv.test/wp-json/wp/v2/wp_coupon_group",
-				addCoupons: "http://crv.test/wp-json/wp-coupons/v1/add-coupons",
-				nonce: "849af77cce"
-			}
-		};
-	</script>
-</head>
-
-<body>
-	<noscript>You need to enable JavaScript to run this app.</noscript>
-	<div id="wp-coupons-root"></div>
-	<script>
-		document.getElementById('wp-coupons-root').attachShadow({ mode: "open" })
-	</script>
-</body>
-
+	<body>
+		<noscript>You need to enable JavaScript to run this app.</noscript>
+		<div id="wp-coupons-root"></div>
+		<script>
+			// Attach the shadow DOM before scripts injected by style-loader.
+			document
+				.getElementById("wp-coupons-root")
+				.attachShadow({ mode: "open" });
+		</script>
+	</body>
 </html>
