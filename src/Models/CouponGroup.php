@@ -1,5 +1,5 @@
 <?php
-namespace WPCoupons\Model;
+namespace WPCoupons\Models;
 
 class CouponGroup {
 	/**

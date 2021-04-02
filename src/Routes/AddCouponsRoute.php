@@ -2,8 +2,8 @@
 namespace WPCoupons\Routes;
 
 use Exception;
-use WPCoupons\Model\Coupon;
-use WPCoupons\Model\CouponGroup;
+use WPCoupons\Models\Coupon;
+use WPCoupons\Models\CouponGroup;
 
 class AddCouponsRoute extends \WP_REST_Controller {
 	public function __construct( $namespace ) {

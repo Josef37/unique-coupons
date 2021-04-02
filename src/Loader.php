@@ -31,9 +31,9 @@ class Loader {
 	}
 
 	public function register_models() {
-		Model\Coupon::register();
-		Model\CouponGroup::register();
-		Model\User::register();
+		Models\Coupon::register();
+		Models\CouponGroup::register();
+		Models\User::register();
 	}
 
 	public function register_rest_routes() {

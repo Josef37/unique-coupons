@@ -1,9 +1,29 @@
 <?php
-namespace WPCoupons\Model;
+namespace WPCoupons\Models;
 
 class User {
+	public function __construct( $user_id ) {
+		$this->user_id = $user_id;
+	}
+
+	/** @todo */
+	public function recall_latest_coupon_id() {
+		throw new \BadMethodCallException( 'Not implemented' );
+	}
+
 	/**
 	 * Registers the custom post type for Coupon.
+	 *
+	 * Example meta entry:
+	 *  [
+	 *      'group_id' => 123,
+	 *      'number_of_popups' => 2,
+	 *      'last_popup_date' => 2021-03-12,
+	 *      'coupons' => [
+	 *          'coupon_id' => 432,
+	 *          'retrieved_at' => 2021-02-27,
+	 *      ]
+	 *  ]
 	 */
 	public static function register() {
 		register_meta(

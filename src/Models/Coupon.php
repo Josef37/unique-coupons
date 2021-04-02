@@ -1,5 +1,5 @@
 <?php
-namespace WPCoupons\Model;
+namespace WPCoupons\Models;
 
 class Coupon {
 	/**
@@ -51,7 +51,12 @@ class Coupon {
 	/**
 	 * Inserts a new Coupon into the database.
 	 *
-	 * @param array $args ['value' => string, 'group_id' => int, 'expires_at => date in mysql format as string, 'status' => string].
+	 * @param array $args [
+	 *   'value' => string,
+	 *   'group_id' => int,
+	 *   'expires_at => date in mysql format as string,
+	 *   'status' => string
+	 * ].
 	 * @throws \Exception From `wp_insert_post`.
 	 * @return int The post ID.
 	 */
