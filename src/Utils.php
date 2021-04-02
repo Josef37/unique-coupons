@@ -1,6 +1,11 @@
 <?php
 namespace WPCoupons;
 
+/**
+ * General utility functions
+ *
+ * @todo split into more granular files, i.e. ArrayUtils, StringUtils, ...
+ */
 class Utils {
 	/**
 	 * Joins any number of paths with exactly one `/` between each.
