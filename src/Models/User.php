@@ -2,8 +2,31 @@
 namespace WPCoupons\Models;
 
 class User {
-	public function __construct( $user_id ) {
-		$this->user_id = $user_id;
+	public $user_id;
+
+	public function __construct( $user_id = null ) {
+		$this->user_id = $user_id ?? get_current_user_id();
+	}
+
+	public function can_receive_coupons() {
+		return $this->is_eligible_for_coupons()
+			&& ! $this->has_opted_out_from_coupons()
+			&& ! $this->time_since_last_popup_too_close();
+	}
+
+	public function is_eligible_for_coupons() {
+		return function_exists( 'rcp_user_has_active_membership' )
+			&& \rcp_user_has_active_membership( $this->user_id );
+	}
+
+	/** @todo */
+	public function has_opted_out_from_coupons() {
+		return false;
+	}
+
+	/** @todo */
+	public function time_since_last_popup_too_close() {
+		return false;
 	}
 
 	/** @todo */

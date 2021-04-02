@@ -57,11 +57,9 @@ class Loader {
 		add_action( 'admin_menu', array( $menu, 'add_menu_page' ) );
 	}
 
-	/**
-	 * @todo Enqueue popup controller
-	 */
 	private function load_frontend() {
-
+		$assets_url       = $this->plugin_root_url . 'src/assets/';
+		$popup_controller = new Controllers\PopupController( $assets_url, $this->plugin_version );
+		add_action( 'init', array( $popup_controller, 'init_popup' ) );
 	}
 }
-

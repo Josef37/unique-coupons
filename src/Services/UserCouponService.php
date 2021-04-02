@@ -5,21 +5,17 @@ namespace WPCoupons\Services;
  * Handles interactions with coupons for public users.
  */
 class UserCouponService {
-	public function __construct( $user_id ) {
-		$this->user_id = $user_id;
-	}
+	private $user;
 
-	/** @todo */
-	public function can_retrieve_coupons() {
-		// User is active member
-		// User had last retrieval a while ago (to prevent spam)
-		throw new \BadMethodCallException( 'Not implemented' );
+	public function __construct( $user ) {
+		$this->user = $user;
 	}
 
 	/** @todo */
 	public function get_possible_group_id() {
 		// Finds a coupon group (best suited for this user).
-		throw new \BadMethodCallException( 'Not implemented' );
+		// Find a group to display (regarding previously retrieved/displayed coupons).
+		return 0;
 	}
 
 	/** @todo */

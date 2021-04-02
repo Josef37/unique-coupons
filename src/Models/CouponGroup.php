@@ -2,6 +2,24 @@
 namespace WPCoupons\Models;
 
 class CouponGroup {
+	public $group_id;
+
+	public function __construct( $group_id ) {
+		$this->group_id = $group_id;
+	}
+
+	/** @todo */
+	public function get_template() {
+		return '<div>Popup</div>';
+	}
+
+	/** @todo */
+	public function echo_popup() {
+		echo '<div class="wp-coupon-popup" style="display: none;">'
+			. wp_kses_post( $this->get_template() )
+			. '</div>';
+	}
+
 	/**
 	 * Registers the custom taxonomy for CouponGroups.
 	 */
