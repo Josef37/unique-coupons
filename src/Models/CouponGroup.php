@@ -30,12 +30,29 @@ class CouponGroup {
 		return get_term_meta( $this->group_id, 'is_active', true );
 	}
 
-	/**
-	 * Checks if a group exists with the given ID.
-	 */
 	public static function exists( $group_id ) {
 		$group_term = get_term( $group_id, self::$taxonomy_key );
 		return isset( $group_term ) && ! is_wp_error( $group_term );
+	}
+
+	public static function create( $values ) {
+		list(
+			'name' => $name,
+			'description' => $description,
+			'template' => $template,
+			'is_active' => $is_active
+		) = $values;
+
+		$term     = wp_insert_term(
+			$name,
+			self::$taxonomy_key,
+			array( 'description' => $description )
+		);
+		$group_id = $term['term_id'];
+		add_term_meta( $group_id, 'template', $template, true );
+		add_term_meta( $group_id, 'is_active', $is_active, true );
+
+		return new self( $group_id );
 	}
 
 	/**
