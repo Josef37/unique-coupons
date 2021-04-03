@@ -58,8 +58,33 @@ class Loader {
 	}
 
 	private function load_frontend() {
-		$assets_url       = $this->plugin_root_url . 'src/assets/';
-		$popup_controller = new Controllers\PopupController( $assets_url, $this->plugin_version );
+		$this->init_controllers();
+		$this->register_scripts();
+	}
+
+	private function init_controllers() {
+		$popup_controller = new Controllers\PopupController();
 		add_action( 'init', array( $popup_controller, 'init_popup' ) );
+	}
+
+	/** @todo Use dedicated loader? */
+	private function register_scripts() {
+		$assets_path = 'src/assets/';
+		$assets_url  = $this->plugin_root_url . $assets_path;
+		$assets_dir  = $this->plugin_root_dir . $assets_path;
+
+		add_action(
+			'init',
+			function() use ( $assets_url, $assets_dir ) {
+				$script_name = 'popup';
+				wp_register_script(
+					'wp-coupons-' . $script_name,
+					$assets_url . $script_name . '.js',
+					array(),
+					filemtime( $assets_dir . $script_name . '.js' ),
+					true
+				);
+			}
+		);
 	}
 }
