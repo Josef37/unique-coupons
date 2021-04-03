@@ -2,22 +2,40 @@
 namespace WPCoupons\Models;
 
 class CouponGroup {
+	public static $taxonomy_key = 'wp_coupon_group';
+
 	public $group_id;
 
 	public function __construct( $group_id ) {
 		$this->group_id = $group_id;
 	}
 
-	/** @todo */
-	public function get_template() {
-		return '<div>Popup</div>';
-	}
-
-	/** @todo */
+	/** @todo maybe move to Popup service provider */
 	public function echo_popup() {
-		echo '<div class="wp-coupon-popup" style="display: none;">'
+		echo '<div class="wp-coupon-popup" style="display: none; position: fixed; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: lightgreen; border: 3px solid black; padding: 3rem; font-size: 5rem; max-height: 80%; overflow: scroll;">'
 			. wp_kses_post( $this->get_template() )
 			. '</div>';
+	}
+
+	public function get_name() {
+		return get_term( $this->group_id, self::$taxonomy_key )->name;
+	}
+	public function get_description() {
+		return get_term( $this->group_id, self::$taxonomy_key )->description;
+	}
+	public function get_template() {
+		return get_term_meta( $this->group_id, 'template', true );
+	}
+	public function get_is_active() {
+		return get_term_meta( $this->group_id, 'is_active', true );
+	}
+
+	/**
+	 * Checks if a group exists with the given ID.
+	 */
+	public static function exists( $group_id ) {
+		$group_term = get_term( $group_id, self::$taxonomy_key );
+		return isset( $group_term ) && ! is_wp_error( $group_term );
 	}
 
 	/**
@@ -25,7 +43,7 @@ class CouponGroup {
 	 */
 	public static function register() {
 		register_taxonomy(
-			'wp_coupon_group',
+			self::$taxonomy_key,
 			array( 'wp_coupon' ),
 			array(
 				'hierarchical'          => false,
@@ -42,13 +60,13 @@ class CouponGroup {
 					'name' => __( 'Coupon Groups', 'wp-coupons' ),
 				),
 				'show_in_rest'          => true,
-				'rest_base'             => 'wp_coupon_group',
+				'rest_base'             => self::$taxonomy_key,
 				'rest_controller_class' => 'WP_REST_Terms_Controller',
 			)
 		);
 
 		register_term_meta(
-			'wp_coupon_group',
+			self::$taxonomy_key,
 			'template',
 			array(
 				'type'         => 'string',
@@ -59,7 +77,7 @@ class CouponGroup {
 		);
 
 		register_term_meta(
-			'wp_coupon_group',
+			self::$taxonomy_key,
 			'is_active',
 			array(
 				'type'         => 'boolean',
@@ -68,32 +86,5 @@ class CouponGroup {
 				'show_in_rest' => true,
 			)
 		);
-	}
-
-	/**
-	 * @param int $group_id Term ID of the group to get.
-	 * @throws \Exception
-	 * @return \WP_Term
-	 */
-	public static function get( $group_id ) {
-		$group_term = get_term( $group_id, 'wp_coupon_group' );
-		if ( is_wp_error( $group_term ) ) {
-			throw new \Exception( $group_term->get_error_message() );
-		} elseif ( empty( $group_term ) ) {
-			throw new \Exception( "Failed to get coupon group with ID {$group_id}" );
-		}
-		return $group_term;
-	}
-
-	/**
-	 * Checks if a group exists with the given ID.
-	 */
-	public static function exists( $group_id ) {
-		try {
-			self::get( $group_id );
-		} catch ( \Exception $ex ) {
-			return false;
-		}
-		return true;
 	}
 }
