@@ -36,6 +36,18 @@ class CouponGroup {
 		return get_term_meta( $this->group_id, 'is_active', true );
 	}
 
+	public static function get_active_group_ids() {
+		return get_terms(
+			array_merge(
+				self::TERM_QUERY_ARGS,
+				array(
+					'meta_key'   => 'is_active',
+					'meta_value' => true,
+				)
+			)
+		);
+	}
+
 	public static function exists( $group_id ) {
 		$group_term = get_term( $group_id, self::TAXONOMY_KEY );
 		return isset( $group_term ) && ! is_wp_error( $group_term );
