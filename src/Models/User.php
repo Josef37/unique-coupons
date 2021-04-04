@@ -15,23 +15,17 @@ class User {
 	}
 
 	public function is_eligible_for_coupons() {
-		return function_exists( 'rcp_user_has_active_membership' )
-			&& \rcp_user_has_active_membership( $this->user_id );
+		return apply_filters( 'wp_coupons_user_is_eligible', true, $this->user_id );
 	}
 
-	/** @todo */
+	/** @todo add field to user meta */
 	public function has_opted_out_from_coupons() {
 		return false;
 	}
 
-	/** @todo */
+	/** @todo get time delta from options */
 	public function time_since_last_popup_too_close() {
 		return false;
-	}
-
-	/** @todo */
-	public function recall_latest_coupon_id() {
-		throw new \BadMethodCallException( 'Not implemented' );
 	}
 
 	/**
