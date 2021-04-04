@@ -2,7 +2,13 @@
 namespace WPCoupons\Models;
 
 class CouponGroup {
-	public static $taxonomy_key = 'wp_coupon_group';
+	const TAXONOMY_KEY    = 'wp_coupon_group';
+	const TERM_QUERY_ARGS = array(
+		'taxonomy'   => self::TAXONOMY_KEY,
+		'orderby'    => 'term_id',
+		'fields'     => 'ids',
+		'hide_empty' => false,
+	);
 
 	public $group_id;
 
@@ -18,10 +24,10 @@ class CouponGroup {
 	}
 
 	public function get_name() {
-		return get_term( $this->group_id, self::$taxonomy_key )->name;
+		return get_term( $this->group_id, self::TAXONOMY_KEY )->name;
 	}
 	public function get_description() {
-		return get_term( $this->group_id, self::$taxonomy_key )->description;
+		return get_term( $this->group_id, self::TAXONOMY_KEY )->description;
 	}
 	public function get_template() {
 		return get_term_meta( $this->group_id, 'template', true );
@@ -31,11 +37,11 @@ class CouponGroup {
 	}
 
 	public static function exists( $group_id ) {
-		$group_term = get_term( $group_id, self::$taxonomy_key );
+		$group_term = get_term( $group_id, self::TAXONOMY_KEY );
 		return isset( $group_term ) && ! is_wp_error( $group_term );
 	}
 
-	public static function create( $values ) {
+	public static function insert( $values ) {
 		list(
 			'name' => $name,
 			'description' => $description,
@@ -45,14 +51,14 @@ class CouponGroup {
 
 		$term     = wp_insert_term(
 			$name,
-			self::$taxonomy_key,
+			self::TAXONOMY_KEY,
 			array( 'description' => $description )
 		);
 		$group_id = $term['term_id'];
 		add_term_meta( $group_id, 'template', $template, true );
 		add_term_meta( $group_id, 'is_active', $is_active, true );
 
-		return new self( $group_id );
+		return $group_id;
 	}
 
 	/**
@@ -60,7 +66,7 @@ class CouponGroup {
 	 */
 	public static function register() {
 		register_taxonomy(
-			self::$taxonomy_key,
+			self::TAXONOMY_KEY,
 			array( 'wp_coupon' ),
 			array(
 				'hierarchical'          => false,
@@ -77,13 +83,13 @@ class CouponGroup {
 					'name' => __( 'Coupon Groups', 'wp-coupons' ),
 				),
 				'show_in_rest'          => true,
-				'rest_base'             => self::$taxonomy_key,
+				'rest_base'             => self::TAXONOMY_KEY,
 				'rest_controller_class' => 'WP_REST_Terms_Controller',
 			)
 		);
 
 		register_term_meta(
-			self::$taxonomy_key,
+			self::TAXONOMY_KEY,
 			'template',
 			array(
 				'type'         => 'string',
@@ -94,7 +100,7 @@ class CouponGroup {
 		);
 
 		register_term_meta(
-			self::$taxonomy_key,
+			self::TAXONOMY_KEY,
 			'is_active',
 			array(
 				'type'         => 'boolean',
