@@ -36,6 +36,24 @@ class CouponGroup {
 		return get_term_meta( $this->group_id, 'is_active', true );
 	}
 
+	public function get_coupon_ids() {
+		$coupon_ids = get_posts(
+			array(
+				'nopaging'  => true,
+				'fields'    => 'ids',
+				'post_type' => Coupon::POST_TYPE_KEY,
+				'tax_query' => array(
+					array(
+						'taxonomy' => self::TAXONOMY_KEY,
+						'terms'    => $this->group_id,
+					),
+				),
+			)
+		);
+
+		return $coupon_ids;
+	}
+
 	public static function get_active_group_ids() {
 		return get_terms(
 			array_merge(

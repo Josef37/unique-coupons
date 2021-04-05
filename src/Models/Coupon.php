@@ -2,6 +2,8 @@
 namespace WPCoupons\Models;
 
 class Coupon {
+	const POST_TYPE_KEY = 'wp_coupon';
+
 	/**
 	 * The post id for the coupon custom post type.
 	 *
@@ -81,7 +83,7 @@ class Coupon {
 		$postarr         = array(
 			'post_title'  => $value,
 			'post_status' => $status,
-			'post_type'   => 'wp_coupon',
+			'post_type'   => self::POST_TYPE_KEY,
 			'meta_input'  => array( 'expires_at' => $expires_at ),
 		);
 		$do_return_error = true;
@@ -123,7 +125,7 @@ class Coupon {
 	 */
 	public static function register() {
 		register_post_type(
-			'wp_coupon',
+			self::POST_TYPE_KEY,
 			array(
 				'label'                 => 'Coupons',
 				'public'                => false,
@@ -131,13 +133,13 @@ class Coupon {
 				'supports'              => array( 'title', 'editor', 'custom-fields', 'page-attributes' ),
 				'rewrite'               => false,
 				'show_in_rest'          => true,
-				'rest_base'             => 'wp_coupon',
+				'rest_base'             => self::POST_TYPE_KEY,
 				'rest_controller_class' => 'WP_REST_Posts_Controller',
 			)
 		);
 
 		register_post_meta(
-			'wp_coupon',
+			self::POST_TYPE_KEY,
 			'expires_at',
 			array(
 				'type'         => 'string',
@@ -153,7 +155,7 @@ class Coupon {
 		);
 
 		register_post_meta(
-			'wp_coupon',
+			self::POST_TYPE_KEY,
 			'user_id',
 			array(
 				'type'         => 'number',
