@@ -130,4 +130,16 @@ class CouponTest extends WP_UnitTestCase {
 			}
 		}
 	}
+
+	public function test_record_retrieval() {
+		$user_id = 123;
+		foreach ( $this->coupons as $coupon ) {
+			$coupon->record_retrieval( $user_id );
+
+			$this->assertEquals(
+				$user_id,
+				$coupon->get_user_id()
+			);
+		}
+	}
 }

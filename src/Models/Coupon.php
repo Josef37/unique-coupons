@@ -66,6 +66,13 @@ class Coupon {
 		return get_post_status( $this->coupon_id );
 	}
 
+	public function record_retrieval( $user_id ) {
+		$success = (bool) update_post_meta( $this->coupon_id, 'user_id', $user_id );
+		if ( ! $success ) {
+			throw new \Exception( "Failed to record that user $user_id retrieved coupon $this->coupon_id." );
+		}
+	}
+
 	/**
 	 * Inserts a new Coupon into the database.
 	 *
