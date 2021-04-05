@@ -1,6 +1,8 @@
 <?php
 namespace WPCoupons\Models;
 
+use WPCoupons\Options;
+
 class Coupon {
 	const POST_TYPE_KEY = 'wp_coupon';
 
@@ -15,24 +17,32 @@ class Coupon {
 		$this->coupon_id = $coupon_id;
 	}
 
-	/** @todo use minimum valid time option (e.g. at least two days before expiry) */
-	public function is_retrievable() {
+	public function is_distributable() {
 		return $this->is_active()
 			&& $this->is_unused()
-			&& $this->is_valid();
+			&& $this->is_valid_for_distribution();
 	}
 
 	public function is_active() {
 		return 'publish' === $this->get_status();
 	}
+
 	public function is_unused() {
 		return empty( $this->get_user_id() );
 	}
-	public function is_valid() {
-		$today  = date( 'Y-m-d' );
-		$expire = $this->get_expires_at();
 
-		return $today <= $expire;
+	public function is_valid_for_distribution() {
+		$distribution_slack_time = time() + Options::get_seconds_valid_after_distribution();
+		return $this->is_valid_at( $distribution_slack_time );
+	}
+	public function is_valid() {
+		$now = time();
+		return $this->is_valid_at( $now );
+	}
+	private function is_valid_at( $time ) {
+		$then   = date( 'Y-m-d', $time );
+		$expire = $this->get_expires_at();
+		return $then <= $expire;
 	}
 
 	public function get_value() {
