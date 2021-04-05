@@ -14,4 +14,126 @@ class UserTest extends WP_UnitTestCase {
 			$this->assertEquals( $user->is_eligible_for_coupons(), $is_eligible_for_coupons( true, $user_id ) );
 		}
 	}
+
+	public function test_get_last_retrieval_datetime() {
+		$wp_user_id = $this->factory->user->create();
+		$user       = new User( $wp_user_id );
+
+		$retrievals = array(
+			array(
+				'coupon_id' => 321,
+				'group_id'  => 123,
+				'datetime'  => '2021-04-05 07:19:20',
+			),
+			array(
+				'coupon_id' => 432,
+				'group_id'  => 234,
+				'datetime'  => '2021-04-05 07:30:59',
+			),
+		);
+
+		foreach ( $retrievals as $retrieval ) {
+			$user->record_retrieval( $retrieval );
+		}
+
+		$this->assertEquals(
+			$retrievals[1]['datetime'],
+			$user->get_last_retrieval_datetime()
+		);
+	}
+
+	public function test_record_retrieval() {
+		$wp_user_id = $this->factory->user->create();
+		$user       = new User( $wp_user_id );
+
+		$group_id   = 123;
+		$retrievals = array(
+			array(
+				'coupon_id' => 1,
+				'group_id'  => $group_id,
+				'datetime'  => '2021-04-05 07:19:20',
+			),
+			array(
+				'coupon_id' => 2,
+				'group_id'  => $group_id,
+				'datetime'  => '2021-04-05 07:30:59',
+			),
+		);
+
+		$user->record_retrieval( $retrievals[0] );
+
+		$this->assertEquals(
+			$user->get_retrievals(),
+			array(
+				array(
+					'coupon_id'    => $retrievals[0]['coupon_id'],
+					'retrieved_at' => $retrievals[0]['datetime'],
+				),
+			)
+		);
+		$this->assertEquals(
+			$user->get_groups(),
+			array(
+				array(
+					'group_id'                => $group_id,
+					'last_retrieval_datetime' => $retrievals[0]['datetime'],
+				),
+			)
+		);
+
+		$user->record_retrieval( $retrievals[1] );
+
+		$this->assertEquals(
+			$user->get_retrievals(),
+			array(
+				array(
+					'coupon_id'    => $retrievals[0]['coupon_id'],
+					'retrieved_at' => $retrievals[0]['datetime'],
+				),
+				array(
+					'coupon_id'    => $retrievals[1]['coupon_id'],
+					'retrieved_at' => $retrievals[1]['datetime'],
+				),
+			)
+		);
+		$this->assertEquals(
+			$user->get_groups(),
+			array(
+				array(
+					'group_id'                => $group_id,
+					'last_retrieval_datetime' => $retrievals[1]['datetime'],
+				),
+			)
+		);
+	}
+
+	public function test_recording() {
+		$wp_user_id = $this->factory->user->create();
+		$user       = new User( $wp_user_id );
+
+		$group_id  = 123;
+		$retrieval = array(
+			'coupon_id' => 321,
+			'group_id'  => $group_id,
+			'datetime'  => '2021-04-05 07:19:20',
+		);
+		$popup     = array(
+			'group_id' => $group_id,
+			'datetime' => '2021-04-05 07:30:59',
+		);
+
+		$user->record_retrieval( $retrieval );
+		$user->record_popup( $popup );
+
+		$this->assertEquals(
+			array(
+				array(
+					'group_id'                => $group_id,
+					'last_retrieval_datetime' => $retrieval['datetime'],
+					'last_popup_datetime'     => $popup['datetime'],
+				),
+			),
+			$user->get_groups()
+		);
+	}
 }
