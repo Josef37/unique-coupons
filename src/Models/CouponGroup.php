@@ -36,7 +36,7 @@ class CouponGroup {
 		return get_term_meta( $this->group_id, 'is_active', true );
 	}
 
-	public function get_coupon_ids() {
+	public function get_coupons() {
 		$coupon_ids = get_posts(
 			array(
 				'nopaging'  => true,
@@ -51,11 +51,29 @@ class CouponGroup {
 			)
 		);
 
-		return $coupon_ids;
+		return array_map(
+			function( $coupon_id ) {
+				return new Coupon( $coupon_id );
+			},
+			$coupon_ids
+		);
 	}
 
-	public static function get_active_group_ids() {
-		return get_terms(
+	public function get_distributable_coupons() {
+		return array_filter(
+			$this->get_coupons(),
+			function( $coupon ) {
+				return $coupon->is_distributable();
+			}
+		);
+	}
+
+	public function has_distributable_coupons() {
+		return ! empty( $this->get_distributable_coupons() );
+	}
+
+	public static function get_active_groups() {
+		$group_terms = get_terms(
 			array_merge(
 				self::TERM_QUERY_ARGS,
 				array(
@@ -64,6 +82,12 @@ class CouponGroup {
 				)
 			)
 		);
+		return array_map(
+			function( $group_id ) {
+				return new CouponGroup( $group_id );
+			},
+			$group_terms
+		);
 	}
 
 	public static function exists( $group_id ) {
@@ -71,6 +95,7 @@ class CouponGroup {
 		return isset( $group_term ) && ! is_wp_error( $group_term );
 	}
 
+	/** @todo create DTO */
 	public static function insert( $values ) {
 		list(
 			'name' => $name,
@@ -97,7 +122,7 @@ class CouponGroup {
 	public static function register() {
 		register_taxonomy(
 			self::TAXONOMY_KEY,
-			array( 'wp_coupon' ),
+			array( Coupon::POST_TYPE_KEY ),
 			array(
 				'hierarchical'          => false,
 				'public'                => false,

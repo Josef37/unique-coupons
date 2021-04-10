@@ -66,7 +66,7 @@ class Coupon {
 		return get_post_status( $this->coupon_id );
 	}
 
-	public function record_retrieval( $user_id ) {
+	public function set_user_id( $user_id ) {
 		$success = (bool) update_post_meta( $this->coupon_id, 'user_id', $user_id );
 		if ( ! $success ) {
 			throw new \Exception( "Failed to record that user $user_id retrieved coupon $this->coupon_id." );
@@ -122,6 +122,7 @@ class Coupon {
 		);
 
 		if ( is_wp_error( $term_ids_or_error ) ) {
+			self::delete( $post_id );
 			$error = $term_ids_or_error;
 			throw new \Exception( $error->get_error_message() );
 		}

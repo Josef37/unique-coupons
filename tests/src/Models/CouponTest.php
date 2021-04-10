@@ -99,7 +99,7 @@ class CouponTest extends WP_UnitTestCase {
 				$coupon_id = Coupon::insert( $coupon_data );
 				$coupon    = new Coupon( $coupon_id );
 				if ( isset( $coupon_data['user_id'] ) ) {
-					$coupon->record_retrieval( $coupon_data['user_id'] );
+					$coupon->set_user_id( $coupon_data['user_id'] );
 				}
 				return $coupon;
 			},
@@ -131,10 +131,10 @@ class CouponTest extends WP_UnitTestCase {
 		}
 	}
 
-	public function test_record_retrieval() {
+	public function test_set_user_id() {
 		$user_id = 123;
 		foreach ( $this->coupons as $coupon ) {
-			$coupon->record_retrieval( $user_id );
+			$coupon->set_user_id( $user_id );
 
 			$this->assertEquals(
 				$user_id,

@@ -82,6 +82,19 @@ class Utils {
 	}
 
 	/**
+	 * Returns the first element which returns a truthy value for `$fn`.
+	 * Returns `$default`, when the element is not found.
+	 */
+	public static function array_find( array $array, callable $fn, $default = null ) {
+		foreach ( $array as $element ) {
+			if ( $fn( $element ) ) {
+				return $element;
+			}
+		}
+		return $default;
+	}
+
+	/**
 	 * Checks if the given string is of format yyyy-mm-dd.
 	 */
 	public static function get_date_regex() {

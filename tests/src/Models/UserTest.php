@@ -1,5 +1,6 @@
 <?php
 
+use WPCoupons\Models\Coupon;
 use WPCoupons\Models\User;
 
 class UserTest extends WP_UnitTestCase {
@@ -72,13 +73,17 @@ class UserTest extends WP_UnitTestCase {
 			)
 		);
 		$this->assertEquals(
-			$user->get_groups(),
+			$user->get_groups_data(),
 			array(
 				array(
 					'group_id'                => $group_id,
 					'last_retrieval_datetime' => $retrievals[0]['datetime'],
 				),
 			)
+		);
+		$this->assertEquals(
+			( new Coupon( $retrievals[0]['coupon_id'] ) )->get_user_id(),
+			$wp_user_id
 		);
 
 		$user->record_retrieval( $retrievals[1] );
@@ -97,13 +102,17 @@ class UserTest extends WP_UnitTestCase {
 			)
 		);
 		$this->assertEquals(
-			$user->get_groups(),
+			$user->get_groups_data(),
 			array(
 				array(
 					'group_id'                => $group_id,
 					'last_retrieval_datetime' => $retrievals[1]['datetime'],
 				),
 			)
+		);
+		$this->assertEquals(
+			( new Coupon( $retrievals[1]['coupon_id'] ) )->get_user_id(),
+			$wp_user_id
 		);
 	}
 
@@ -133,7 +142,7 @@ class UserTest extends WP_UnitTestCase {
 					'last_popup_datetime'     => $popup['datetime'],
 				),
 			),
-			$user->get_groups()
+			$user->get_groups_data()
 		);
 	}
 }

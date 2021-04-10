@@ -2,8 +2,7 @@
 namespace WPCoupons\Controllers;
 
 use WPCoupons\Models\CouponGroup;
-use WPCoupons\Models\User;
-use WPCoupons\Services\UserCouponService;
+use WPCoupons\Services\PopupService;
 
 /**
  * Gets called when an automatic popup could be loaded on a page.
@@ -12,21 +11,16 @@ use WPCoupons\Services\UserCouponService;
  */
 class PopupController {
 	public function init_popup() {
-		$user = new User();
-
-		if ( ! $user->can_receive_coupons() ) {
-			return;
+		try {
+			$group = ( new PopupService() )->get_possible_group();
+			$this->enqueue_template( $group );
+			$this->enqueue_script();
+		} catch ( \Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// We could not find a group to display, so just do nothing.
 		}
-
-		$user_coupon_service = new UserCouponService( $user );
-		$group_id            = $user_coupon_service->get_possible_group_id();
-
-		$this->enqueue_template( $group_id );
-		$this->enqueue_script();
 	}
 
-	private function enqueue_template( $group_id ) {
-		$group = new CouponGroup( $group_id );
+	private function enqueue_template( $group ) {
 		add_action( 'wp_footer', array( $group, 'echo_popup' ) );
 	}
 
