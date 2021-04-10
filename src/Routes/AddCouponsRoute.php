@@ -1,7 +1,6 @@
 <?php
 namespace WPCoupons\Routes;
 
-use Exception;
 use WPCoupons\Models\Coupon;
 use WPCoupons\Models\CouponGroup;
 
@@ -41,7 +40,7 @@ class AddCouponsRoute extends \WP_REST_Controller {
 
 		try {
 			$coupon_ids = $this->add_coupons( $group_id, $coupon_values, $expires_at );
-		} catch ( Exception $ex ) {
+		} catch ( \Exception $ex ) {
 			$this->revert_add_coupons( $coupon_ids );
 			return new \WP_Error( 'failed_insert', $ex->getMessage() );
 		}
