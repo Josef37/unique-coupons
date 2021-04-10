@@ -14,7 +14,7 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-function run_wp_coupons_plugin() {
+function wp_coupons_load_plugin() {
 	$version         = '0.1.0';
 	$plugin_root_dir = plugin_dir_path( __FILE__ );
 	$plugin_root_url = plugin_dir_url( __FILE__ );
@@ -22,4 +22,4 @@ function run_wp_coupons_plugin() {
 	$loader->run();
 }
 
-run_wp_coupons_plugin();
+wp_coupons_load_plugin();

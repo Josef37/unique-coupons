@@ -52,6 +52,7 @@ abstract class AssetLoader {
 		$this->enqueue_assets_in_order(
 			$this->scripts,
 			function( $handle, $url, $dependencies ) {
+				// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 				wp_enqueue_script( $handle, $url, $dependencies, null, true );
 			}
 		);
@@ -64,6 +65,7 @@ abstract class AssetLoader {
 		$this->enqueue_assets_in_order(
 			$this->styles,
 			function( $handle, $url, $dependencies ) {
+				// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 				wp_enqueue_style( $handle, $url, $dependencies, null );
 			}
 		);
@@ -105,10 +107,10 @@ abstract class AssetLoader {
 				'error' => __( 'Error', 'wp-coupons' ),
 			),
 			'api'        => array(
-				'nonce'  => wp_create_nonce( 'wp_rest' ),
-				'coupon' => esc_url( rest_url( 'wp/v2/wp_coupon' ) ),
-				'group'  => esc_url( rest_url( 'wp/v2/wp_coupon_group' ) ),
-				'addCoupons'  => esc_url( rest_url( 'wp-coupons/v1/add-coupons' ) ),
+				'nonce'      => wp_create_nonce( 'wp_rest' ),
+				'coupon'     => esc_url( rest_url( 'wp/v2/wp_coupon' ) ),
+				'group'      => esc_url( rest_url( 'wp/v2/wp_coupon_group' ) ),
+				'addCoupons' => esc_url( rest_url( 'wp-coupons/v1/add-coupons' ) ),
 			),
 		);
 
@@ -122,6 +124,7 @@ abstract class AssetLoader {
 	 * See https://stackoverflow.com/a/55360574/5312432
 	 */
 	protected function enqueue_material_ui_dependencies() {
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_style( 'roboto-font', 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap', array(), null );
 	}
 }

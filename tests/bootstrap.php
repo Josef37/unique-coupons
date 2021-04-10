@@ -1,8 +1,8 @@
 <?php
+namespace WPCouponsTest;
+
 /**
  * PHPUnit bootstrap file
- *
- * @package Wp_Coupons
  */
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );

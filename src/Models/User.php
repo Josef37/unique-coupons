@@ -1,7 +1,6 @@
 <?php
 namespace WPCoupons\Models;
 
-use WP_User;
 use WPCoupons\Options;
 use WPCoupons\Utils;
 
