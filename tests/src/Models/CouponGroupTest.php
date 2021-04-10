@@ -52,14 +52,14 @@ class CouponGroupTest extends \WP_UnitTestCase {
 		$this->assertFalse( CouponGroup::exists( -1 ) );
 	}
 
-	public function test_get_active_group_ids() {
+	public function test_get_active_groups() {
 		$this->assertEquals(
-			array( $this->groups[0]->group_id ),
-			CouponGroup::get_active_group_ids()
+			array( $this->groups[0] ),
+			CouponGroup::get_active_groups()
 		);
 	}
 
-	public function test_get_coupon_ids() {
+	public function test_get_coupons() {
 		$coupon_data = array(
 			'value'      => 'Coupon1',
 			'expires_at' => date( 'Y-m-d' ),
@@ -73,7 +73,7 @@ class CouponGroupTest extends \WP_UnitTestCase {
 
 		$this->assertArrayEquals(
 			$coupon_ids,
-			$this->groups[0]->get_coupon_ids()
+			array_column( $this->groups[0]->get_coupons(), 'coupon_id' )
 		);
 	}
 
