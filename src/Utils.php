@@ -82,12 +82,16 @@ class Utils {
 	}
 
 	/**
-	 * Checks if the given string is a date between 1900-01-01 and 2099-12-31.
-	 * Does not account for month lenghs (e.g. 2020-11-31 is valid).
-	 *
-	 * @see https://www.regular-expressions.info/dates.html
+	 * Checks if the given string is of format yyyy-mm-dd.
 	 */
 	public static function get_date_regex() {
-		return '^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$';
+		return '^\d{4}-\d{2}-\d{2}$';
+	}
+
+	/**
+	 * Checks if the given string is of format
+	 */
+	public static function get_datetime_regex() {
+		return '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d{1,6})?$';
 	}
 }
