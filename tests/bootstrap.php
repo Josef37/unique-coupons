@@ -1,6 +1,4 @@
 <?php
-namespace WPCouponsTest;
-
 /**
  * PHPUnit bootstrap file
  */
