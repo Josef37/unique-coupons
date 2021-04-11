@@ -10,6 +10,7 @@ class CouponGroup {
 		'hide_empty' => false,
 	);
 
+	/** @var int */
 	public $group_id;
 
 	public function __construct( $group_id ) {

@@ -8,6 +8,7 @@ class User {
 	const RETRIEVALS_META_KEY  = 'wp_coupons_retrievals';
 	const GROUPS_DATA_META_KEY = 'wp_coupons_groups_data';
 
+	/** @var int */
 	public $user_id;
 
 	public function __construct( $user_id = null ) {
@@ -22,7 +23,7 @@ class User {
 
 	public function is_authorized_for_coupons() {
 		$is_user_logged_in = $this->user_id > 0;
-		return apply_filters(
+		return (bool) apply_filters(
 			'wp_coupons_user_is_authorized_for_coupons',
 			$is_user_logged_in,
 			$this->user_id

@@ -5,8 +5,11 @@ use WPCoupons\Models\CouponGroup;
 use WPCoupons\Options;
 
 class CouponTest extends WP_UnitTestCase {
+	/** @var Coupon[] */
 	private $coupons;
+	/** @var array[] */
 	private $coupons_data;
+	/** @var array[] */
 	private $expectations;
 
 	public function setUp() {

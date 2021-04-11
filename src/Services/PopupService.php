@@ -20,8 +20,9 @@ class PopupService {
 	 * for users who can and want to receive coupons (in general).
 	 *
 	 * @todo allow users to ignore specific groups
+	 * @throws \Exception No CouponGroup found.
 	 */
-	public function get_possible_group() {
+	public function get_possible_group(): CouponGroup {
 		if ( ! $this->user->can_receive_coupons() ) {
 			throw new \Exception( 'User cannot receive coupons' );
 		}
@@ -43,17 +44,19 @@ class PopupService {
 		return $possible_groups[0];
 	}
 
-	/** @todo */
-	public function retrive_coupon( $group_id ) {
-		// Check, if authorized
-		// Return the closest to expire coupon
-		// Record the action
-		throw new \BadMethodCallException( 'Not implemented' );
-	}
+	/*
+	 * @todo implement
+	 *
+	 * public function retrive_coupon( $group_id ) {}
+	 * Check, if authorized.
+	 * Return the closest to expire coupon.
+	 * Record the action.
+	 */
 
-	/** @todo */
-	public function recall_retrieved_coupons() {
-		// Get them from the db with timestamp
-		throw new \BadMethodCallException( 'Not implemented' );
-	}
+	/*
+	 * @todo implement
+	 *
+	 * public function recall_retrieved_coupons() {}
+	 * Get them from the db with timestamp
+	 */
 }

@@ -5,6 +5,7 @@ namespace WPCouponsTest\Factory;
 use WPCoupons\Models\CouponGroup;
 
 class CouponGroupFactory {
+	/** @var int */
 	private static $count = 1;
 
 	public static function create( $values = array() ): int {

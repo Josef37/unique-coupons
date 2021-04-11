@@ -38,6 +38,8 @@ class Utils {
 
 	/**
 	 * Gets JSON from remote URL with `wp_remote_get`.
+	 *
+	 * @throws \Exception
 	 */
 	public static function get_json( $url, $args = array() ) {
 		$response = wp_remote_get( $url, $args );

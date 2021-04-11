@@ -5,9 +5,13 @@ namespace WPCoupons;
  * Bootstraps the plugin.
  */
 class Loader {
+	/** @var string */
 	private $plugin_version;
+	/** @var string */
 	private $plugin_root_dir;
+	/** @var string */
 	private $plugin_root_url;
+	/** @var string */
 	private $plugin_name;
 
 	/**

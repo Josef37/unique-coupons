@@ -4,8 +4,10 @@ use WPCoupons\Models\Coupon;
 use WPCoupons\Models\CouponGroup;
 
 class CouponGroupTest extends \WP_UnitTestCase {
+	/** @var CouponGroup[] */
 	private $groups;
-	private $datas = array(
+	/** @var array */
+	private $groups_data = array(
 		array(
 			'name'        => 'Coupon Group',
 			'description' => 'Group Description',
@@ -28,12 +30,12 @@ class CouponGroupTest extends \WP_UnitTestCase {
 				$group_id = CouponGroup::insert( $data );
 				return new CouponGroup( $group_id );
 			},
-			$this->datas
+			$this->groups_data
 		);
 	}
 
 	public function test_get_and_insert() {
-		foreach ( array_map( null, $this->groups, $this->datas ) as list($group, $data) ) {
+		foreach ( array_map( null, $this->groups, $this->groups_data ) as list($group, $data) ) {
 			foreach ( $data as $key => $value ) {
 				$this->assertEquals(
 					$value,

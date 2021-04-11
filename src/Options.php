@@ -4,6 +4,7 @@ namespace WPCoupons;
 
 class Options {
 	const OPTION_NAME = 'wp_coupons_options';
+	/** @var int[] */
 	public static $default_options;
 
 	public static function init_static() {

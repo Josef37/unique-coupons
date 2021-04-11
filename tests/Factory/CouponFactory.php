@@ -6,6 +6,7 @@ use WPCoupons\Models\Coupon;
 use WPCoupons\Options;
 
 class CouponFactory {
+	/** @var int */
 	private static $count = 1;
 
 	public static function create( $values ): int {
