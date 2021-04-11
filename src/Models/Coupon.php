@@ -13,7 +13,7 @@ class Coupon {
 	 */
 	public $coupon_id;
 
-	public function __construct( $coupon_id ) {
+	public function __construct( int $coupon_id ) {
 		$this->coupon_id = $coupon_id;
 	}
 
@@ -48,8 +48,8 @@ class Coupon {
 	public function get_value() {
 		return get_the_title( $this->coupon_id );
 	}
-	public function get_group_id() {
-		$terms = wp_get_object_terms(
+	public function get_group_id(): int {
+		$terms = wp_get_post_terms(
 			$this->coupon_id,
 			CouponGroup::TAXONOMY_KEY,
 			CouponGroup::TERM_QUERY_ARGS
@@ -57,7 +57,7 @@ class Coupon {
 		return $terms[0];
 	}
 	public function get_user_id() {
-		return get_post_meta( $this->coupon_id, 'user_id', true );
+		return (int) get_post_meta( $this->coupon_id, 'user_id', true );
 	}
 	public function get_expires_at() {
 		return get_post_meta( $this->coupon_id, 'expires_at', true );
@@ -132,17 +132,24 @@ class Coupon {
 
 	/**
 	 * Deletes the coupon and skips trash.
+	 *
+	 * @throws \Exception
 	 */
 	public static function delete( $id ) {
 		$skip_trash = true;
-		wp_delete_post( $id, $skip_trash );
+		$post_data  = wp_delete_post( $id, $skip_trash );
+		if ( empty( $post_data ) ) {
+			throw new \Exception( "Failed to delete coupon $id" );
+		}
 	}
 
 	/**
 	 * Registers the custom post type for Coupon.
+	 *
+	 * @throws \Exception
 	 */
 	public static function register() {
-		register_post_type(
+		$post_type = register_post_type(
 			self::POST_TYPE_KEY,
 			array(
 				'label'                 => 'Coupons',
@@ -155,8 +162,11 @@ class Coupon {
 				'rest_controller_class' => 'WP_REST_Posts_Controller',
 			)
 		);
+		if ( is_wp_error( $post_type ) ) {
+			throw new \Exception( 'Failed to register post type ' . self::POST_TYPE_KEY );
+		}
 
-		register_post_meta(
+		$is_successful = register_post_meta(
 			self::POST_TYPE_KEY,
 			'expires_at',
 			array(
@@ -171,8 +181,11 @@ class Coupon {
 				),
 			)
 		);
+		if ( ! $is_successful ) {
+			throw new \Exception( 'Failed to register "expires_at" meta for post type ' . self::POST_TYPE_KEY );
+		}
 
-		register_post_meta(
+		$is_successful = register_post_meta(
 			self::POST_TYPE_KEY,
 			'user_id',
 			array(
@@ -182,5 +195,8 @@ class Coupon {
 				'show_in_rest' => true,
 			)
 		);
+		if ( ! $is_successful ) {
+			throw new \Exception( 'Failed to register "user_id" meta for post type ' . self::POST_TYPE_KEY );
+		}
 	}
 }

@@ -13,16 +13,16 @@ abstract class AssetLoader {
 	protected $assets_url;
 
 	/**
-	 * Array of scripts to enqueue.
+	 * List of scripts to enqueue.
 	 *
-	 * @var ['handle' => string, 'url' => string]
+	 * @var array[] ['handle' => string, 'url' => string][]
 	 */
 	protected $scripts;
 
 	/**
-	 * Array of styles to enqueue.
+	 * List of styles to enqueue.
 	 *
-	 * @var ['handle' => string, 'url' => string]
+	 * @var array[] ['handle' => string, 'url' => string][]
 	 */
 	protected $styles;
 

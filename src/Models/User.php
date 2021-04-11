@@ -8,10 +8,14 @@ class User {
 	const RETRIEVALS_META_KEY  = 'wp_coupons_retrievals';
 	const GROUPS_DATA_META_KEY = 'wp_coupons_groups_data';
 
-	/** @var int */
+	/**
+	 * ID of the WordPress user.
+	 *
+	 * @var int
+	 */
 	public $user_id;
 
-	public function __construct( $user_id = null ) {
+	public function __construct( int $user_id = null ) {
 		$this->user_id = $user_id ?? get_current_user_id();
 	}
 
@@ -44,7 +48,6 @@ class User {
 		return get_user_meta( $this->user_id, self::RETRIEVALS_META_KEY );
 	}
 
-	/** @todo rename to group recordings or something */
 	public function get_groups_data() {
 		return get_user_meta( $this->user_id, self::GROUPS_DATA_META_KEY );
 	}

@@ -10,10 +10,14 @@ class CouponGroup {
 		'hide_empty' => false,
 	);
 
-	/** @var int */
+	/**
+	 * Term id for the registered custom taxonomy.
+	 *
+	 * @var int
+	 */
 	public $group_id;
 
-	public function __construct( $group_id ) {
+	public function __construct( int $group_id ) {
 		$this->group_id = $group_id;
 	}
 
@@ -30,13 +34,14 @@ class CouponGroup {
 	public function get_description() {
 		return get_term( $this->group_id, self::TAXONOMY_KEY )->description;
 	}
-	public function get_template() {
+	public function get_template(): string {
 		return get_term_meta( $this->group_id, 'template', true );
 	}
 	public function get_is_active() {
-		return get_term_meta( $this->group_id, 'is_active', true );
+		return (bool) get_term_meta( $this->group_id, 'is_active', true );
 	}
 
+	/** @return Coupon[] */
 	public function get_coupons() {
 		$coupon_ids = get_posts(
 			array(
@@ -60,6 +65,7 @@ class CouponGroup {
 		);
 	}
 
+	/** @return Coupon[] */
 	public function get_distributable_coupons() {
 		return array_filter(
 			$this->get_coupons(),
@@ -73,6 +79,7 @@ class CouponGroup {
 		return ! empty( $this->get_distributable_coupons() );
 	}
 
+	/** @return CouponGroup[] */
 	public static function get_active_groups() {
 		$group_terms = get_terms(
 			array_merge(
@@ -96,7 +103,10 @@ class CouponGroup {
 		return isset( $group_term ) && ! is_wp_error( $group_term );
 	}
 
-	/** @todo create DTO */
+	/**
+	 * @todo create DTO
+	 * @return int
+	 */
 	public static function insert( $values ) {
 		list(
 			'name' => $name,
@@ -119,9 +129,11 @@ class CouponGroup {
 
 	/**
 	 * Registers the custom taxonomy for CouponGroups.
+	 *
+	 * @throws \Exception
 	 */
 	public static function register() {
-		register_taxonomy(
+		$taxonomy = register_taxonomy(
 			self::TAXONOMY_KEY,
 			array( Coupon::POST_TYPE_KEY ),
 			array(
@@ -143,8 +155,11 @@ class CouponGroup {
 				'rest_controller_class' => 'WP_REST_Terms_Controller',
 			)
 		);
+		if ( is_wp_error( $taxonomy ) ) {
+			throw new \Exception( 'Failed to register taxonomy ' . self::TAXONOMY_KEY );
+		}
 
-		register_term_meta(
+		$is_successful = register_term_meta(
 			self::TAXONOMY_KEY,
 			'template',
 			array(
@@ -154,8 +169,11 @@ class CouponGroup {
 				'show_in_rest' => true,
 			)
 		);
+		if ( ! $is_successful ) {
+			throw new \Exception( 'Faild to register term meta "template" for taxonomy ' . self::TAXONOMY_KEY );
+		}
 
-		register_term_meta(
+		$is_successful = register_term_meta(
 			self::TAXONOMY_KEY,
 			'is_active',
 			array(
@@ -165,5 +183,8 @@ class CouponGroup {
 				'show_in_rest' => true,
 			)
 		);
+		if ( ! $is_successful ) {
+			throw new \Exception( 'Faild to register term meta "is_active" for taxonomy ' . self::TAXONOMY_KEY );
+		}
 	}
 }
