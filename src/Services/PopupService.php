@@ -3,6 +3,7 @@ namespace WPCoupons\Services;
 
 use WPCoupons\Models\User;
 use WPCoupons\Models\CouponGroup;
+use WPCoupons\Utils;
 
 /**
  * Handles interactions with coupons for public users.
@@ -29,7 +30,7 @@ class PopupService {
 
 		$active_groups = CouponGroup::get_active_groups();
 
-		$possible_groups = array_filter(
+		$possible_group = Utils::array_find(
 			$active_groups,
 			function( $group ) {
 				return ! $this->user->has_recent_popup_for_group( $group )
@@ -38,10 +39,10 @@ class PopupService {
 			}
 		);
 
-		if ( empty( $possible_groups ) ) {
-			throw new \Exception( 'No possible groups found' );
+		if ( ! $possible_group ) {
+			throw new \Exception( 'No possible group found' );
 		}
-		return $possible_groups[0];
+		return $possible_group;
 	}
 
 	/*

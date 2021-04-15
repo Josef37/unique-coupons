@@ -84,6 +84,7 @@ class PopupServiceTest extends \WP_UnitTestCase {
 	}
 
 	public function test_get_possible_group_success() {
+		$other_group_id  = CouponGroupFactory::create_active_group();
 		$group_id        = CouponGroupFactory::create_active_group();
 		$used_coupon_id  = CouponFactory::create_distributable_coupon( $group_id );
 		$fresh_coupon_id = CouponFactory::create_distributable_coupon( $group_id );
