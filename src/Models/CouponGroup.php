@@ -23,7 +23,7 @@ class CouponGroup {
 
 	/** @todo maybe move to Popup service provider */
 	public function echo_popup() {
-		echo '<div class="wp-coupon-popup" style="display: none; position: fixed; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: lightgreen; border: 3px solid black; padding: 3rem; font-size: 5rem; max-height: 80%; overflow: scroll;">'
+		echo '<div class="wp-coupons-popup" style="display: none; position: fixed; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: lightgreen; border: 3px solid black; padding: 3rem; font-size: 5rem; max-height: 80%; overflow: scroll;">'
 			. wp_kses_post( $this->get_template() )
 			. '</div>';
 	}

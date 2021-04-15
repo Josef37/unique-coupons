@@ -9,7 +9,7 @@ Responsible for
 window.addEventListener("DOMContentLoaded", (event) => {
 	setTimeout(() => {
 		document
-			.querySelectorAll(".wp-coupon-popup")
+			.querySelectorAll(".wp-coupons-popup")
 			.forEach((popupContainer) => {
 				popupContainer.style.display = "block";
 			});
