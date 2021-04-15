@@ -11,8 +11,8 @@ class PopupService {
 	/** @var User */
 	public $user;
 
-	public function __construct( $user = null ) {
-		$this->user = $user ?? new User( get_current_user() );
+	public function __construct( User $user = null ) {
+		$this->user = $user ?? new User( get_current_user_id() );
 	}
 
 	/**
