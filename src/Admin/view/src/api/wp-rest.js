@@ -71,7 +71,8 @@ class WpRest {
 		const appendParams = (url, paramsObj) => {
 			const params = new URLSearchParams(paramsObj);
 			const paramsStr = params.toString();
-			return paramsStr ? `${url}?${paramsStr}` : url;
+			const delimiter = url.includes("?") ? "&" : "?";
+			return paramsStr ? `${url}${delimiter}${paramsStr}` : url;
 		};
 		return this.fetch(appendParams(url, paramsObj), { method: "GET" });
 	};
