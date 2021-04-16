@@ -73,7 +73,7 @@ class AddCouponsRoute extends \WP_REST_Controller {
 	 * @return WP_Error|bool
 	 */
 	public function is_user_permitted( $request ) {
-		return current_user_can( 'create_posts' );
+		return current_user_can( 'edit_pages' );
 	}
 
 	public function get_request_schema() {
