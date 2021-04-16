@@ -1,7 +1,6 @@
 <?php
 namespace WPCoupons\Controllers;
 
-use WPCoupons\Models\CouponGroup;
 use WPCoupons\Services\PopupService;
 
 /**
@@ -25,6 +24,7 @@ class PopupController {
 	}
 
 	private function enqueue_script() {
+		/** @todo add option for timeout (global in settings), add it with localization */
 		add_action(
 			'wp_enqueue_scripts',
 			function() {

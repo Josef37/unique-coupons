@@ -13,7 +13,7 @@ class PopupService {
 	public $user;
 
 	public function __construct( User $user = null ) {
-		$this->user = $user ?? new User( get_current_user_id() );
+		$this->user = $user ?? new User();
 	}
 
 	/**
@@ -21,6 +21,7 @@ class PopupService {
 	 * for users who can and want to receive coupons (in general).
 	 *
 	 * @todo allow users to ignore specific groups
+	 * @todo improve algorithm for determining the best group
 	 * @throws \Exception No CouponGroup found.
 	 */
 	public function get_possible_group(): CouponGroup {
@@ -45,19 +46,21 @@ class PopupService {
 		return $possible_group;
 	}
 
-	/*
-	 * @todo implement
-	 *
-	 * public function retrive_coupon( $group_id ) {}
-	 * Check, if authorized.
-	 * Return the closest to expire coupon.
-	 * Record the action.
-	 */
+	public function retrieve_coupon_for( CouponGroup $group ) {
+		if ( ! $this->user->is_authorized_for_coupons() ) {
+			throw new \Exception( 'User cannot receive coupons' );
+		}
 
-	/*
-	 * @todo implement
-	 *
-	 * public function recall_retrieved_coupons() {}
-	 * Get them from the db with timestamp
-	 */
+		$coupon = $group->get_distributable_coupon();
+
+		$this->user->record_retrieval(
+			array(
+				'coupon_id' => $coupon->coupon_id,
+				'group_id'  => $group->group_id,
+				'datetime'  => date( 'Y-m-d H:i:s' ),
+			)
+		);
+
+		return $coupon;
+	}
 }

@@ -49,6 +49,7 @@ class Loader {
 		$namespace = $this->plugin_name . '/v' . $version;
 
 		( new Routes\AddCouponsRoute( $namespace ) )->register_routes();
+		( new Routes\RetrieveCouponRoute( $namespace ) )->register_routes();
 	}
 
 	private function load_admin() {

@@ -109,4 +109,18 @@ class PopupServiceTest extends \WP_UnitTestCase {
 			$this->service->get_possible_group()->group_id
 		);
 	}
+
+	public function test_retrieve_coupon_for() {
+		$group_id  = CouponGroupFactory::create_active_group();
+		$group     = new CouponGroup( $group_id );
+		$coupon_id = CouponFactory::create_distributable_coupon( $group_id );
+
+		$this->assertEquals(
+			$coupon_id,
+			$this->service->retrieve_coupon_for( $group )->coupon_id
+		);
+
+		$this->expectException( \Exception::class );
+		$this->service->retrieve_coupon_for( $group );
+	}
 }

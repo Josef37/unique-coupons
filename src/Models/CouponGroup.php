@@ -1,6 +1,8 @@
 <?php
 namespace WPCoupons\Models;
 
+use WPCoupons\Utils;
+
 class CouponGroup {
 	const TAXONOMY_KEY    = 'wp_coupon_group';
 	const TERM_QUERY_ARGS = array(
@@ -65,18 +67,29 @@ class CouponGroup {
 		);
 	}
 
-	/** @return Coupon[] */
-	public function get_distributable_coupons() {
-		return array_filter(
+	public function has_distributable_coupons() {
+		try {
+			$this->get_distributable_coupon();
+			return true;
+		} catch ( \Exception $ex ) {
+			return false;
+		}
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	public function get_distributable_coupon(): Coupon {
+		$coupon = Utils::array_find(
 			$this->get_coupons(),
 			function( $coupon ) {
 				return $coupon->is_distributable();
 			}
 		);
-	}
-
-	public function has_distributable_coupons() {
-		return ! empty( $this->get_distributable_coupons() );
+		if ( ! $coupon ) {
+			throw new \Exception( 'No distributable coupon found in group ' . $this->group_id );
+		}
+		return $coupon;
 	}
 
 	/** @return CouponGroup[] */
