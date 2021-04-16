@@ -28,7 +28,7 @@
       "request": "launch",
       "port": 9003,
       "pathMappings": {
-        "/srv/www/createrawvision/public_html/wp-content/plugins/wp-coupons": "${workspaceFolder}"
+        "/srv/www/wp-coupons/public_html/wp-content/plugins/wp-coupons": "${workspaceFolder}"
       }
     },
     {
