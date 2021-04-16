@@ -33,6 +33,7 @@ class Options {
 	public static function get_seconds_between_same_popup() {
 		return self::get_option( 'seconds_between_same_popup' );
 	}
+	/** @todo is not used until now! */
 	public static function get_seconds_between_any_retrieval() {
 		return self::get_option( 'seconds_between_any_retrieval' );
 	}
@@ -44,13 +45,13 @@ class Options {
 	}
 
 	public static function set_options( $options ) {
-		update_option( self::OPTION_NAME, $options );
+		return update_option( self::OPTION_NAME, $options );
 	}
 
 	public static function set_option( $key, $option ) {
 		$current_options = self::get_options();
 		$new_options     = array_merge( $current_options, array( $key => $option ) );
-		self::set_options( $new_options );
+		return self::set_options( $new_options );
 	}
 }
 

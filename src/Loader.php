@@ -82,12 +82,24 @@ class Loader {
 			'init',
 			function() use ( $assets_url, $assets_dir ) {
 				$script_name = 'popup';
+				$handle      = 'wp-coupons-' . $script_name;
 				wp_register_script(
-					'wp-coupons-' . $script_name,
+					$handle,
 					$assets_url . $script_name . '.js',
 					array(),
 					filemtime( $assets_dir . $script_name . '.js' ),
 					true
+				);
+				wp_localize_script(
+					$handle,
+					'wpCouponsPopup',
+					array(
+						'timeoutInMs' => 0,
+						'api'         => array(
+							'nonce'          => wp_create_nonce( 'wp_rest' ),
+							'retrieveCoupon' => esc_url( rest_url( 'wp-coupons/v1/retrieve-coupon' ) ),
+						),
+					)
 				);
 			}
 		);
