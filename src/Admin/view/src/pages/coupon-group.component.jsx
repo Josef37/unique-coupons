@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import ActionButton from "../components/action-button.component";
 import CouponGroupEditor from "../components/coupon-group-editor.component";
 import CouponGroupSwitch from "../components/coupon-group-switch.component";
-import CouponLists from "../components/coupon-lists.component";
+import CouponTabs from "../components/coupon-tabs.component";
 import TemplateEditor from "../components/template-editor.component";
 import {
 	editGroup,
@@ -86,7 +86,10 @@ const CouponGroupPage = ({ groupId }) => {
 				}
 			/>
 			<TemplateEditor template={template} disabled />
-			<CouponLists groupId={groupId} isFetching={isFetching} />
+
+			<Typography variant="h4" gutterBottom>Coupons</Typography>
+			<CouponTabs groupId={groupId} isFetching={isFetching} />
+
 			<ActionButton
 				component={Link}
 				to={`/add-coupons/${groupId}`}

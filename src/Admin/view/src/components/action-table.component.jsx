@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper'
-import Box from '@material-ui/core/Box'
 import Checkbox from '@material-ui/core/Checkbox'
 
 const ActionTable = ({ ids, Row, isFetching }) => {
@@ -22,31 +21,35 @@ const ActionTable = ({ ids, Row, isFetching }) => {
 	const deselectAllIds = () => setSelectedIds(new Set())
 	const toggleAllIds = () => allIdsSelected() ? deselectAllIds() : selectAllIds()
 
-	return <Box marginBottom={2}>
-		<Paper>
-			<HeaderRow>
+	return <Container>
+		<HeaderRow>
+			<Checkbox
+				checked={allIdsSelected() && !noIdsSelected()}
+				indeterminate={indeterminateSelection()}
+				onChange={toggleAllIds}
+				aria-label={(allIdsSelected() ? "deselect" : "select") + " all rows"}
+			/>
+		</HeaderRow>
+		{isFetching && <RowContainer>Loading entries</RowContainer>}
+		{ids.length === 0
+			? <RowContainer>No entries</RowContainer>
+			: ids.map(id => <RowContainer key={id}>
 				<Checkbox
-					checked={allIdsSelected() && !noIdsSelected()}
-					indeterminate={indeterminateSelection()}
-					onChange={toggleAllIds}
-					aria-label={(allIdsSelected() ? "deselect" : "select") + " all rows"}
+					checked={isSelected(id)}
+					onChange={() => toggleRow(id)}
+					aria-label={(isSelected(id) ? "deselect" : "select") + " this row"}
 				/>
-			</HeaderRow>
-			{isFetching && <RowContainer>Loading entries</RowContainer>}
-			{ids.length === 0
-				? <RowContainer>No entries</RowContainer>
-				: ids.map(id => <RowContainer key={id}>
-					<Checkbox
-						checked={isSelected(id)}
-						onChange={() => toggleRow(id)}
-						aria-label={(isSelected(id) ? "deselect" : "select") + " this row"}
-					/>
-					<Row id={id} />
-				</RowContainer>)
-			}
-		</Paper>
-	</Box>
+				<Row id={id} />
+			</RowContainer>)
+		}
+	</Container>
 }
+
+const Container = styled(Paper)(({ theme }) => ({
+	marginBottom: theme.spacing(2),
+	borderTopLeftRadius: 0,
+	borderTopRightRadius: 0,
+}))
 
 const rowStyles = {
 	display: "flex",
