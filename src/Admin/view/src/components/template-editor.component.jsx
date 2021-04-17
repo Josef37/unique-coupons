@@ -12,7 +12,7 @@ import 'tinymce/skins/ui/oxide/content.min.css';
 import 'tinymce/skins/content/default/content.min.css';
 import { Editor } from '@tinymce/tinymce-react';
 
-const TemplateEditor = ({ template, handleChange, editorProps }) => {
+const TemplateEditor = ({ template, handleChange, ...editorProps }) => {
 	return <Box marginY={2}>
 		<Editor
 			init={{
