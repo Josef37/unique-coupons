@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
 	window.addEventListener("DOMContentLoaded", (event) => {
 		const popupElement = document.querySelector(".wp-coupons-popup");
 		new Popup(popupElement);
@@ -87,7 +87,7 @@
 
 		queuePopup = () => {
 			setTimeout(() => {
-				$(this.elements.container).modal();
+				$(this.elements.container).modal({ fadeDuration: 300, fadeDelay: 0 });
 			}, wpCouponsPopup.timeoutInMs);
 		};
 
