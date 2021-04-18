@@ -1,13 +1,3 @@
-/**
-@todo
-Responsible for
-- Displaying the popup
-- Retrieving the coupon from the backend
-- Displaying the coupon after retrieval
-
-Maybe add all selectors and stuff into localization
-*/
-
 {
 	window.addEventListener("DOMContentLoaded", (event) => {
 		const popupElement = document.querySelector(".wp-coupons-popup");
@@ -17,7 +7,7 @@ Maybe add all selectors and stuff into localization
 	class Popup {
 		elements = {};
 		groupId;
-		canFetch = true;
+		canFetch;
 
 		constructor(element) {
 			this.elements.container = element;
@@ -29,29 +19,31 @@ Maybe add all selectors and stuff into localization
 			if (!this.groupId) return;
 
 			this.selectDomElements();
-			this.addButtonListeners();
+			this.hideSuccessArea();
+			this.setCanFetch(true);
+			this.addButtonListener();
 			this.queuePopup();
 		};
 
 		selectDomElements = () => {
-			this.elements.buttons = this.elements.container.querySelectorAll(
-				".wp-coupons-popup__button"
-			);
-			this.elements.coupon = this.elements.container.querySelector(
-				".wp-coupons-popup__coupon"
-			);
-			this.elements.value = this.elements.container.querySelector(
-				".wp-coupons-popup__value"
-			);
-			this.elements.expiresAt = this.elements.container.querySelector(
-				".wp-coupons-popup__expires_at"
-			);
+			[
+				{ name: "button", selector: ".wp-coupons-popup__button" },
+				{ name: "coupon", selector: ".wp-coupons-popup__coupon" },
+				{ name: "value", selector: ".wp-coupons-popup__value" },
+				{ name: "expiresAt", selector: ".wp-coupons-popup__expires-at" },
+			].forEach(({ name, selector }) => {
+				this.elements[name] = this.elements.container.querySelector(selector);
+			});
 		};
 
-		addButtonListeners = () => {
-			this.elements.buttons.forEach((button) => {
-				button.addEventListener("click", () => this.handleRetrieval());
-			});
+		hideSuccessArea = () => {
+			this.elements.coupon.style.display = "none";
+		};
+
+		addButtonListener = () => {
+			this.elements.button.addEventListener("click", () =>
+				this.handleRetrieval()
+			);
 		};
 
 		handleRetrieval = () => {
@@ -101,9 +93,8 @@ Maybe add all selectors and stuff into localization
 
 		setCanFetch(canFetch) {
 			this.canFetch = canFetch;
-			this.elements.buttons.forEach((button) => {
-				button.disabled = !canFetch;
-			});
+			this.elements.button.disabled = !canFetch;
+			this.elements.button.style.cursor = canFetch ? "pointer" : "default";
 		}
 	}
 }

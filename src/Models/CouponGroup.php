@@ -25,15 +25,8 @@ class CouponGroup {
 
 	/** @todo maybe move to Popup service provider */
 	public function echo_popup() {
-		echo '<div class="wp-coupons-popup" data-group-id=' . esc_attr( $this->group_id ) . ' style="display: none; position: fixed; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: lightgreen; border: 3px solid black; padding: 3rem; font-size: 3rem; height: 80%; width: 80%; overflow: scroll;">'
+		echo '<div class="wp-coupons-popup" data-group-id=' . esc_attr( $this->group_id ) . ' style="display: none; position: fixed; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: lightgreen; border: 3px solid black; padding: 3rem; font-size: 2rem; height: 80%; width: 80%; overflow: scroll;">'
 			. wp_kses_post( $this->get_template() )
-			. '<button class="wp-coupons-popup__button">Get my coupon</button>'
-			. '<div class="wp-coupons-popup__coupon" style="display: none;">'
-			. 'Your coupon is '
-			. '<span class="wp-coupons-popup__value"></span>'
-			. ' and it expires at '
-			. '<span class="wp-coupons-popup__expires_at"></span>.'
-			. '</div>'
 			. '</div>';
 	}
 
