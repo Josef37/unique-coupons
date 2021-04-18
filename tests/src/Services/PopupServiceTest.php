@@ -83,6 +83,40 @@ class PopupServiceTest extends \WP_UnitTestCase {
 		$this->service->get_possible_group();
 	}
 
+	public function test_get_possible_group_for_popup_across_groups() {
+		$group_id = CouponGroupFactory::create_active_group();
+		$this->user->record_popup(
+			array(
+				'group_id' => $group_id,
+				'datetime' => date( 'Y-m-d H:i:s' ),
+			)
+		);
+
+		$group_id = CouponGroupFactory::create_active_group();
+		CouponFactory::create_distributable_coupon( $group_id );
+
+		$this->expectException( \Exception::class );
+		$this->service->get_possible_group();
+	}
+
+	public function test_get_possible_group_for_retrieval_across_groups() {
+		$group_id  = CouponGroupFactory::create_active_group();
+		$coupon_id = CouponFactory::create_distributable_coupon( $group_id );
+		$this->user->record_retrieval(
+			array(
+				'coupon_id' => $coupon_id,
+				'group_id'  => $group_id,
+				'datetime'  => date( 'Y-m-d H:i:s' ),
+			)
+		);
+
+		$group_id = CouponGroupFactory::create_active_group();
+		CouponFactory::create_distributable_coupon( $group_id );
+
+		$this->expectException( \Exception::class );
+		$this->service->get_possible_group();
+	}
+
 	public function test_get_possible_group_success() {
 		$other_group_id  = CouponGroupFactory::create_active_group();
 		$group_id        = CouponGroupFactory::create_active_group();

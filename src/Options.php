@@ -33,7 +33,6 @@ class Options {
 	public static function get_seconds_between_same_popup() {
 		return self::get_option( 'seconds_between_same_popup' );
 	}
-	/** @todo is not used until now! */
 	public static function get_seconds_between_any_retrieval() {
 		return self::get_option( 'seconds_between_any_retrieval' );
 	}

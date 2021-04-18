@@ -16,31 +16,20 @@ class UserTest extends WP_UnitTestCase {
 		}
 	}
 
-	public function test_get_last_retrieval_datetime() {
+	public function test_has_recent_retrieval() {
 		$wp_user_id = $this->factory->user->create();
 		$user       = new User( $wp_user_id );
 
-		$retrievals = array(
-			array(
-				'coupon_id' => 321,
-				'group_id'  => 123,
-				'datetime'  => '2021-04-05 07:19:20',
-			),
-			array(
-				'coupon_id' => 432,
-				'group_id'  => 234,
-				'datetime'  => '2021-04-05 07:30:59',
-			),
-		);
+		$this->assertFalse( $user->has_recent_retrieval() );
 
-		foreach ( $retrievals as $retrieval ) {
-			$user->record_retrieval( $retrieval );
-		}
-
-		$this->assertEquals(
-			$retrievals[1]['datetime'],
-			$user->get_last_retrieval_datetime()
+		$retrieval = array(
+			'coupon_id' => 321,
+			'group_id'  => 123,
+			'datetime'  => date( 'Y-m-d H:i:s' ),
 		);
+		$user->record_retrieval( $retrieval );
+
+		$this->assertTrue( $user->has_recent_retrieval() );
 	}
 
 	public function test_record_retrieval() {

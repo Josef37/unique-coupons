@@ -22,7 +22,8 @@ class User {
 	public function can_receive_coupons() {
 		return $this->is_authorized_for_coupons()
 			&& ! $this->has_opted_out_from_coupons()
-			&& ! $this->time_since_last_popup_too_close();
+			&& ! $this->has_recent_retrieval()
+			&& ! $this->has_recent_popup();
 	}
 
 	public function is_authorized_for_coupons() {
@@ -36,11 +37,6 @@ class User {
 
 	/** @todo add field to user meta */
 	public function has_opted_out_from_coupons() {
-		return false;
-	}
-
-	/** @todo get time delta from options */
-	public function time_since_last_popup_too_close() {
 		return false;
 	}
 
@@ -62,17 +58,26 @@ class User {
 		);
 	}
 
-	public function get_last_retrieval_datetime() {
-		return $this->get_last_datetime_across_groups( 'last_retrieval_datetime' );
+	public function has_recent_retrieval() {
+		return $this->has_recent_datetime(
+			'last_retrieval_datetime',
+			Options::get_seconds_between_any_retrieval()
+		);
 	}
 
-	public function get_last_popup_datetime() {
-		return $this->get_last_datetime_across_groups( 'last_popup_datetime' );
+	public function has_recent_popup() {
+		return $this->has_recent_datetime(
+			'last_popup_datetime',
+			Options::get_seconds_between_any_popup()
+		);
 	}
 
-	private function get_last_datetime_across_groups( $key ) {
+	private function has_recent_datetime( $key, $time_delta ) {
 		$datetimes = array_column( $this->get_groups_data(), $key );
-		return max( $datetimes );
+		if ( empty( $datetimes ) ) {
+			return false;
+		}
+		return $this->is_recent_date( max( $datetimes ), $time_delta );
 	}
 
 	public function has_recent_popup_for_group( $group ) {
@@ -97,9 +102,14 @@ class User {
 		if ( ! isset( $group_data[ $key ] ) ) {
 			return false;
 		}
-		$next_time = strtotime( $group_data[ $key ] ) + $time_delta;
-		$now       = time();
-		return $now < $next_time;
+		return $this->is_recent_date( $group_data[ $key ], $time_delta );
+	}
+
+	/** @todo util */
+	private function is_recent_date( $recent_date, $time_delta ) {
+		$after_recently = strtotime( $recent_date ) + $time_delta;
+		$now            = time();
+		return $now < $after_recently;
 	}
 
 	public function record_retrieval( $data ) {
