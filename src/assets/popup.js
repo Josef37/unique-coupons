@@ -1,4 +1,4 @@
-{
+(function($) {
 	window.addEventListener("DOMContentLoaded", (event) => {
 		const popupElement = document.querySelector(".wp-coupons-popup");
 		new Popup(popupElement);
@@ -87,7 +87,7 @@
 
 		queuePopup = () => {
 			setTimeout(() => {
-				this.elements.container.style.display = "block";
+				$(this.elements.container).modal();
 			}, wpCouponsPopup.timeoutInMs);
 		};
 
@@ -97,4 +97,4 @@
 			this.elements.button.style.cursor = canFetch ? "pointer" : "default";
 		}
 	}
-}
+})(jQuery);

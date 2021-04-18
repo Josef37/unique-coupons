@@ -81,17 +81,19 @@ class Loader {
 		add_action(
 			'init',
 			function() use ( $assets_url, $assets_dir ) {
-				$script_name = 'popup';
-				$handle      = 'wp-coupons-' . $script_name;
+				wp_register_style( 'jquery-modal', $assets_url . 'jquery.modal.min.css', array(), '0.9.2' );
+				wp_register_script( 'jquery-modal', $assets_url . 'jquery.modal.min.js', array( 'jquery' ), '0.9.2', true );
+
+				wp_register_style( 'wp-coupons-popup', false, array( 'jquery-modal' ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 				wp_register_script(
-					$handle,
-					$assets_url . $script_name . '.js',
-					array(),
-					filemtime( $assets_dir . $script_name . '.js' ),
+					'wp-coupons-popup',
+					$assets_url . 'popup.js',
+					array( 'jquery-modal' ),
+					filemtime( $assets_dir . 'popup.js' ),
 					true
 				);
 				wp_localize_script(
-					$handle,
+					'wp-coupons-popup',
 					'wpCouponsPopup',
 					array(
 						'timeoutInMs' => 0,

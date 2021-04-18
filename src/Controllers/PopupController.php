@@ -28,6 +28,7 @@ class PopupController {
 		add_action(
 			'wp_enqueue_scripts',
 			function() {
+				wp_enqueue_style( 'wp-coupons-popup' );
 				wp_enqueue_script( 'wp-coupons-popup' );
 			}
 		);
