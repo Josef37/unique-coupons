@@ -50,6 +50,7 @@ class Loader {
 
 		( new Routes\AddCouponsRoute( $namespace ) )->register_routes();
 		( new Routes\RetrieveCouponRoute( $namespace ) )->register_routes();
+		( new Routes\OptionsRoute( $namespace ) )->register_routes();
 	}
 
 	private function load_admin() {

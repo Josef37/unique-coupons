@@ -20,7 +20,11 @@ class Options {
 
 	public static function get_options() {
 		$options = get_option( self::OPTION_NAME, array() );
-		return array_merge( self::$default_options, $options );
+		$result  = array();
+		foreach ( self::$default_options as $key => $default_value ) {
+			$result[ $key ] = $options[ $key ] ?? $default_value;
+		}
+		return $result;
 	}
 
 	public static function get_option( $key ) {

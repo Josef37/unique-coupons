@@ -111,6 +111,7 @@ abstract class AssetLoader {
 				'coupon'     => esc_url( rest_url( 'wp/v2/wp_coupon' ) ),
 				'group'      => esc_url( rest_url( 'wp/v2/wp_coupon_group' ) ),
 				'addCoupons' => esc_url( rest_url( 'wp-coupons/v1/add-coupons' ) ),
+				'options'    => esc_url( rest_url( 'wp-coupons/v1/options' ) ),
 			),
 		);
 

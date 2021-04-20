@@ -24,7 +24,6 @@ class PopupController {
 	}
 
 	private function enqueue_script() {
-		/** @todo add option for timeout (global in settings), add it with localization */
 		add_action(
 			'wp_enqueue_scripts',
 			function() {
