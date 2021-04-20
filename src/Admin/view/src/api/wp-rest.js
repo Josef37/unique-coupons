@@ -14,11 +14,7 @@ class WpRest {
 	addCoupons = async ({ couponValues, groupId, expiresAt }) => {
 		const couponIds = await this.post(
 			WP_API.addCoupons,
-			this.transformAddCouponsRequestBody(
-				groupId,
-				couponValues,
-				expiresAt
-			)
+			this.transformAddCouponsRequestBody(groupId, couponValues, expiresAt)
 		);
 		return couponIds;
 	};
@@ -48,13 +44,15 @@ class WpRest {
 		return this.transformGroupResponse(jsonResponse);
 	};
 
+	getOptions = () => this.get(WP_API.options);
+
+	setOptions = (options) => this.post(WP_API.options, options);
+
 	fetch = async (url, init) => {
 		const response = await fetch(url, {
 			...init,
 			credentials:
-				process.env.NODE_ENV === "development"
-					? "include"
-					: "same-origin",
+				process.env.NODE_ENV === "development" ? "include" : "same-origin",
 			headers: {
 				...init.headers,
 				"Content-Type": "application/json",
