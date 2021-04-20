@@ -21,6 +21,7 @@ class LiveAssetLoader extends AssetLoader {
 	/**
 	 * Gets assets from `build` folder and adds URL to them.
 	 *
+	 * @todo Asset DTO/Class
 	 * @returns array('handle' => string, 'url' => string)
 	 */
 	protected function get_assets() {

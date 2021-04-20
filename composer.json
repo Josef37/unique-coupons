@@ -1,5 +1,6 @@
 {
   "name": "josef37/wp-coupons",
+  "description": "Distribute unique coupons to your users.",
   "type": "wordpress-plugin",
   "license": "GPLv2+",
   "authors": [
@@ -8,10 +9,17 @@
       "email": "josef.wittmann@tutanota.com"
     }
   ],
-  "require": {},
+  "scripts": {
+    "test": "phpunit",
+    "test:setup": "bash bin/install-wp-tests.sh wp_coupons_test root root localhost latest"
+  },
   "autoload": {
     "psr-4": {
-      "WPCoupons\\": "src/"
+      "WPCoupons\\": "src/",
+      "WPCouponsTest\\": "tests/"
     }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "7.*"
   }
 }

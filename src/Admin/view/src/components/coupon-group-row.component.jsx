@@ -13,7 +13,9 @@ const CouponGroupRow = ({ groupId }) => {
 	return <Row>
 		<Switch
 			checked={isActive}
-			onChange={() => dispatch(editGroup({ groupId, isActive: !isActive }))}
+			onChange={(event) => dispatch(
+				editGroup({ groupId, isActive: event.target.checked })
+			)}
 			inputProps={{ "aria-label": "toggle group activation" }}
 		/>
 		<div>
