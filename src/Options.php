@@ -14,6 +14,7 @@ class Options {
 			'seconds_between_any_retrieval'    => strtotime( '7 days', 0 ),
 			'seconds_between_same_retrieval'   => strtotime( '30 days', 0 ),
 			'seconds_valid_after_distribution' => strtotime( '3 days', 0 ),
+			'seconds_from_page_load_to_popup'  => strtotime( '10 seconds', 0 ),
 		);
 	}
 
@@ -41,6 +42,9 @@ class Options {
 	}
 	public static function get_seconds_valid_after_distribution() {
 		return self::get_option( 'seconds_valid_after_distribution' );
+	}
+	public static function get_seconds_from_page_load_to_popup() {
+		return self::get_option( 'seconds_from_page_load_to_popup' );
 	}
 
 	public static function set_options( $options ) {

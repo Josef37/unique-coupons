@@ -96,7 +96,7 @@ class Loader {
 					'wp-coupons-popup',
 					'wpCouponsPopup',
 					array(
-						'timeoutInMs' => 0,
+						'timeoutInMs' => Options::get_seconds_from_page_load_to_popup(),
 						'api'         => array(
 							'nonce'          => wp_create_nonce( 'wp_rest' ),
 							'retrieveCoupon' => esc_url( rest_url( 'wp-coupons/v1/retrieve-coupon' ) ),
