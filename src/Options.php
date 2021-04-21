@@ -29,6 +29,9 @@ class Options {
 
 	public static function get_option( $key ) {
 		$options = self::get_options();
+		if ( ! array_key_exists( $key, $options ) ) {
+			throw new \Exception( "Unknown option $key" );
+		}
 		return $options[ $key ];
 	}
 
