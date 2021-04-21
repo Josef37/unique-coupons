@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { styled } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
+import BasicRowContainer from "./row-container.component";
 
 const ActionTable = ({ ids, Row, isFetching }) => {
 	const [selectedIds, setSelectedIds] = useState(new Set());
@@ -66,16 +67,7 @@ const rowStyles = {
 	gap: "1em",
 };
 
-export const RowContainer = styled("div")({
-	...rowStyles,
-	padding: "1em",
-	"&:not(:last-child)": {
-		borderBottom: "1px solid #ccc",
-	},
-	"&:hover": {
-		background: "#eee",
-	},
-});
+const RowContainer = styled(BasicRowContainer)(rowStyles);
 
 const HeaderRow = styled("div")({
 	...rowStyles,
