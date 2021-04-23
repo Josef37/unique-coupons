@@ -4,23 +4,29 @@ import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import BasicRowContainer from "./row-container.component";
 
-const ActionTable = ({ ids, Row, isFetching }) => {
-	const [selectedIds, setSelectedIds] = useState(new Set());
+const ActionTable = ({
+	ids,
+	Row,
+	BulkActions = (ids) => null,
+	isFetching = false,
+}) => {
+	const [selectedIds, setSelectedIds] = useState([]);
 
-	const isSelected = (id) => selectedIds.has(id);
+	const isSelected = (id) => selectedIds.includes(id);
 
 	const toggleRow = (id) =>
-		setSelectedIds((selectedRows) => {
-			isSelected(id) ? selectedRows.delete(id) : selectedRows.add(id);
-			return new Set(selectedRows);
-		});
+		setSelectedIds((selectedRows) =>
+			isSelected(id)
+				? selectedRows.filter((selectedId) => selectedId !== id)
+				: selectedRows.concat(id)
+		);
 
-	const allIdsSelected = () => ids.length === selectedIds.size;
-	const noIdsSelected = () => 0 === selectedIds.size;
+	const allIdsSelected = () => ids.length === selectedIds.length;
+	const noIdsSelected = () => 0 === selectedIds.length;
 	const indeterminateSelection = () => !allIdsSelected() && !noIdsSelected();
 
-	const selectAllIds = () => setSelectedIds(new Set(ids));
-	const deselectAllIds = () => setSelectedIds(new Set());
+	const selectAllIds = () => setSelectedIds(ids);
+	const deselectAllIds = () => setSelectedIds([]);
 	const toggleAllIds = () =>
 		allIdsSelected() ? deselectAllIds() : selectAllIds();
 
@@ -33,6 +39,7 @@ const ActionTable = ({ ids, Row, isFetching }) => {
 					onChange={toggleAllIds}
 					aria-label={(allIdsSelected() ? "deselect" : "select") + " all rows"}
 				/>
+				<BulkActions ids={selectedIds} />
 			</HeaderRow>
 			{isFetching && <RowContainer>Loading entries</RowContainer>}
 			{ids.length === 0 ? (
