@@ -44,6 +44,13 @@ class WpRest {
 		return this.transformGroupResponse(jsonResponse);
 	};
 
+	deleteGroup = async (groupId) => {
+		const response = await this.delete(`${WP_API.group}/${groupId}`, {
+			force: true,
+		});
+		return response?.previous?.id;
+	};
+
 	getOptions = () => this.get(WP_API.options);
 
 	setOptions = (options) => this.post(WP_API.options, options);
@@ -65,7 +72,7 @@ class WpRest {
 		}
 		return jsonResponse;
 	};
-	get = async (url, paramsObj) => {
+	get = async (url, paramsObj = {}) => {
 		const appendParams = (url, paramsObj) => {
 			const params = new URLSearchParams(paramsObj);
 			const paramsStr = params.toString();
@@ -74,9 +81,15 @@ class WpRest {
 		};
 		return this.fetch(appendParams(url, paramsObj), { method: "GET" });
 	};
-	post = async (url, bodyObj) => {
+	post = async (url, bodyObj = {}) => {
 		return this.fetch(url, {
 			method: "POST",
+			body: JSON.stringify(bodyObj),
+		});
+	};
+	delete = async (url, bodyObj = {}) => {
+		return this.fetch(url, {
+			method: "DELETE",
 			body: JSON.stringify(bodyObj),
 		});
 	};
