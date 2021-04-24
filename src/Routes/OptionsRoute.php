@@ -38,7 +38,7 @@ class OptionsRoute extends \WP_REST_Controller {
 
 	/**
 	 * @param \WP_REST_Request $request
-	 * @return WP_Error|WP_REST_Response
+	 * @return WP_Error|\WP_REST_Response
 	 */
 	public function get_options( $request ) {
 		return \rest_ensure_response( Options::get_options() );
@@ -46,7 +46,7 @@ class OptionsRoute extends \WP_REST_Controller {
 
 	/**
 	 * @param \WP_REST_Request $request
-	 * @return WP_Error|WP_REST_Response
+	 * @return WP_Error|\WP_REST_Response
 	 */
 	public function set_options( $request ) {
 		$options = $request->get_params();

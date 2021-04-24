@@ -27,7 +27,7 @@ class RetrieveCouponRoute extends \WP_REST_Controller {
 
 	/**
 	 * @param \WP_REST_Request $request
-	 * @return WP_Error|WP_REST_Response
+	 * @return WP_Error|\WP_REST_Response
 	 */
 	public function handle_request( $request ) {
 		$group_id = $request->get_param( 'group_id' );

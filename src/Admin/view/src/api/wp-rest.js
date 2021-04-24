@@ -13,7 +13,7 @@ class WpRest {
 
 	addCoupons = async ({ couponValues, groupId, expiresAt }) => {
 		const couponIds = await this.post(
-			WP_API.addCoupons,
+			WP_API.coupons + "/create",
 			this.transformAddCouponsRequestBody(groupId, couponValues, expiresAt)
 		);
 		return couponIds;
@@ -29,10 +29,7 @@ class WpRest {
 	};
 
 	getCoupons = async (groupId) => {
-		const jsonResponse = await this.get(WP_API.coupon, {
-			per_page: 100,
-			wp_coupon_group: groupId,
-		});
+		const jsonResponse = await this.get(WP_API.coupons, { group_id: groupId });
 		return this.transformGetCouponsResponse(jsonResponse);
 	};
 
@@ -43,6 +40,22 @@ class WpRest {
 		);
 		return this.transformGroupResponse(jsonResponse);
 	};
+
+	deleteGroup = async (groupId) => {
+		const response = await this.delete(`${WP_API.group}/${groupId}`, {
+			force: true,
+		});
+		return response?.previous?.id;
+	};
+
+	activateCoupons = async (ids) =>
+		this.post(WP_API.coupons + "/activate", { coupon_ids: ids });
+
+	deactivateCoupons = async (ids) =>
+		this.post(WP_API.coupons + "/deactivate", { coupon_ids: ids });
+
+	deleteCoupons = async (ids) =>
+		this.post(WP_API.coupons + "/delete", { coupon_ids: ids });
 
 	getOptions = () => this.get(WP_API.options);
 
@@ -65,7 +78,7 @@ class WpRest {
 		}
 		return jsonResponse;
 	};
-	get = async (url, paramsObj) => {
+	get = async (url, paramsObj = {}) => {
 		const appendParams = (url, paramsObj) => {
 			const params = new URLSearchParams(paramsObj);
 			const paramsStr = params.toString();
@@ -74,9 +87,15 @@ class WpRest {
 		};
 		return this.fetch(appendParams(url, paramsObj), { method: "GET" });
 	};
-	post = async (url, bodyObj) => {
+	post = async (url, bodyObj = {}) => {
 		return this.fetch(url, {
 			method: "POST",
+			body: JSON.stringify(bodyObj),
+		});
+	};
+	delete = async (url, bodyObj = {}) => {
+		return this.fetch(url, {
+			method: "DELETE",
 			body: JSON.stringify(bodyObj),
 		});
 	};
@@ -115,10 +134,10 @@ class WpRest {
 	transformGetCouponsResponse = (responseJson) => {
 		return responseJson.map((coupon) => ({
 			id: coupon.id,
-			value: coupon.title.rendered,
-			expiresAt: coupon.meta.expires_at,
+			value: coupon.value,
+			expiresAt: coupon.expires_at,
 			status: coupon.status,
-			userId: coupon.meta.user_id,
+			userId: coupon.user_id,
 		}));
 	};
 }

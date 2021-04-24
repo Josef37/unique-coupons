@@ -47,10 +47,11 @@ class CouponGroup {
 	public function get_coupons() {
 		$coupon_ids = get_posts(
 			array(
-				'nopaging'  => true,
-				'fields'    => 'ids',
-				'post_type' => Coupon::POST_TYPE_KEY,
-				'tax_query' => array(
+				'nopaging'    => true,
+				'fields'      => 'ids',
+				'post_type'   => Coupon::POST_TYPE_KEY,
+				'post_status' => array( 'publish', 'trash' ),
+				'tax_query'   => array(
 					array(
 						'taxonomy' => self::TAXONOMY_KEY,
 						'terms'    => $this->group_id,

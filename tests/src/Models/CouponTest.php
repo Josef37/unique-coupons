@@ -35,7 +35,7 @@ class CouponTest extends WP_UnitTestCase {
 			array(
 				'value'      => 'Coupon2',
 				'expires_at' => date( 'Y-m-d', strtotime( '-1 day', $last_usage_timestamp ) ),
-				'status'     => 'draft',
+				'status'     => 'trash',
 				'group_id'   => $group_id,
 			),
 			array(
@@ -61,39 +61,44 @@ class CouponTest extends WP_UnitTestCase {
 
 		$this->expectations = array(
 			array(
-				'distributable'          => true,
-				'active'                 => true,
-				'unused'                 => true,
-				'valid_for_distribution' => true,
-				'valid'                  => true,
+				'is_distributable'          => true,
+				'is_active'                 => true,
+				'is_unused'                 => true,
+				'is_valid_for_distribution' => true,
+				'is_valid'                  => true,
+				'get_status'                => 'active',
 			),
 			array(
-				'distributable'          => false,
-				'active'                 => false,
-				'unused'                 => true,
-				'valid_for_distribution' => false,
-				'valid'                  => true,
+				'is_distributable'          => false,
+				'is_active'                 => false,
+				'is_unused'                 => true,
+				'is_valid_for_distribution' => false,
+				'is_valid'                  => true,
+				'get_status'                => 'expired',
 			),
 			array(
-				'distributable'          => false,
-				'active'                 => true,
-				'unused'                 => true,
-				'valid_for_distribution' => false,
-				'valid'                  => true,
+				'is_distributable'          => false,
+				'is_active'                 => true,
+				'is_unused'                 => true,
+				'is_valid_for_distribution' => false,
+				'is_valid'                  => true,
+				'get_status'                => 'expired',
 			),
 			array(
-				'distributable'          => false,
-				'active'                 => true,
-				'unused'                 => true,
-				'valid_for_distribution' => false,
-				'valid'                  => false,
+				'is_distributable'          => false,
+				'is_active'                 => true,
+				'is_unused'                 => true,
+				'is_valid_for_distribution' => false,
+				'is_valid'                  => false,
+				'get_status'                => 'expired',
 			),
 			array(
-				'distributable'          => false,
-				'active'                 => true,
-				'unused'                 => false,
-				'valid_for_distribution' => true,
-				'valid'                  => true,
+				'is_distributable'          => false,
+				'is_active'                 => true,
+				'is_unused'                 => false,
+				'is_valid_for_distribution' => true,
+				'is_valid'                  => true,
+				'get_status'                => 'used',
 			),
 		);
 
@@ -110,25 +115,13 @@ class CouponTest extends WP_UnitTestCase {
 		);
 	}
 
-	public function test_get_and_insert() {
-		foreach ( array_map( null, $this->coupons, $this->coupons_data ) as list( $coupon, $coupon_data ) ) {
-			foreach ( $coupon_data as $key => $value ) {
+	public function test_properties() {
+		foreach ( array_map( null, $this->coupons, $this->expectations ) as list( $coupon, $expectation ) ) {
+			foreach ( $expectation as $property => $value ) {
 				$this->assertEquals(
 					$value,
-					call_user_func( array( $coupon, "get_$key" ) )
-				);
-			}
-		}
-	}
-
-	public function test_properties() {
-		$properties = array_keys( $this->expectations[0] );
-		foreach ( array_map( null, $this->coupons, $this->expectations ) as list( $coupon, $expect ) ) {
-			foreach ( $properties as $property ) {
-				$this->assertEquals(
-					$expect[ $property ],
-					call_user_func( array( $coupon, "is_$property" ) ),
-					sprintf( 'Expected %s to be %s for coupon %s.', $property, $expect[ $property ] ? 'true' : 'false', $coupon->get_value() )
+					call_user_func( array( $coupon, $property ) ),
+					sprintf( 'Expected "%s" to be "%s" for coupon "%s".', $property, $expectation[ $property ], $coupon->get_value() )
 				);
 			}
 		}
