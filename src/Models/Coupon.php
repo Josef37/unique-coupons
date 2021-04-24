@@ -24,7 +24,7 @@ class Coupon {
 	}
 
 	public function is_active() {
-		return 'publish' === $this->get_status();
+		return 'publish' === $this->get_post_status();
 	}
 
 	public function is_unused() {
@@ -45,6 +45,20 @@ class Coupon {
 		return $then <= $expire;
 	}
 
+	/** @todo unit test */
+	public function get_status() {
+		if ( ! $this->is_unused() ) {
+			return 'used';
+		}
+		if ( ! $this->is_valid_for_distribution() ) {
+			return 'expired';
+		}
+		if ( ! $this->is_active() ) {
+			return 'inactive';
+		}
+		return 'active';
+	}
+
 	public function get_value() {
 		return get_the_title( $this->coupon_id );
 	}
@@ -62,7 +76,7 @@ class Coupon {
 	public function get_expires_at() {
 		return get_post_meta( $this->coupon_id, 'expires_at', true );
 	}
-	public function get_status() {
+	public function get_post_status() {
 		return get_post_status( $this->coupon_id );
 	}
 
@@ -132,15 +146,24 @@ class Coupon {
 
 	/**
 	 * Deletes the coupon and skips trash.
-	 *
-	 * @throws \Exception
 	 */
 	public static function delete( $id ) {
 		$skip_trash = true;
-		$post_data  = wp_delete_post( $id, $skip_trash );
-		if ( empty( $post_data ) ) {
-			throw new \Exception( "Failed to delete coupon $id" );
-		}
+		wp_delete_post( $id, $skip_trash );
+	}
+
+	/**
+	 * Deletes the coupon and skips trash.
+	 */
+	public static function deactivate( $id ) {
+		wp_trash_post( $id );
+	}
+
+	/**
+	 * Deletes the coupon and skips trash.
+	 */
+	public static function activate( $id ) {
+		wp_publish_post( $id );
 	}
 
 	/**
@@ -152,14 +175,12 @@ class Coupon {
 		$post_type = register_post_type(
 			self::POST_TYPE_KEY,
 			array(
-				'label'                 => 'Coupons',
-				'public'                => false,
-				'hierarchical'          => false,
-				'supports'              => array( 'title', 'editor', 'custom-fields', 'page-attributes' ),
-				'rewrite'               => false,
-				'show_in_rest'          => true,
-				'rest_base'             => self::POST_TYPE_KEY,
-				'rest_controller_class' => 'WP_REST_Posts_Controller',
+				'label'        => 'Coupons',
+				'public'       => false,
+				'hierarchical' => false,
+				'supports'     => array( 'title', 'editor', 'custom-fields', 'page-attributes' ),
+				'rewrite'      => false,
+				'show_in_rest' => false,
 			)
 		);
 		if ( is_wp_error( $post_type ) ) {
@@ -170,15 +191,9 @@ class Coupon {
 			self::POST_TYPE_KEY,
 			'expires_at',
 			array(
-				'type'         => 'string',
-				'description'  => 'Last day of coupon validity (in site\'s time-zone), stored in MySQL date format Y-m-d (e.g. 2020-12-24).',
-				'single'       => true,
-				'show_in_rest' => array(
-					'schema' => array(
-						'type'    => 'string',
-						'pattern' => \WPCoupons\Utils::get_date_regex(),
-					),
-				),
+				'type'        => 'string',
+				'description' => 'Last day of coupon validity (in site\'s time-zone), stored in MySQL date format Y-m-d (e.g. 2020-12-24).',
+				'single'      => true,
 			)
 		);
 		if ( ! $is_successful ) {
@@ -189,10 +204,9 @@ class Coupon {
 			self::POST_TYPE_KEY,
 			'user_id',
 			array(
-				'type'         => 'number',
-				'description'  => 'ID of user, who received the coupon.',
-				'single'       => true,
-				'show_in_rest' => true,
+				'type'        => 'number',
+				'description' => 'ID of user, who received the coupon.',
+				'single'      => true,
 			)
 		);
 		if ( ! $is_successful ) {
