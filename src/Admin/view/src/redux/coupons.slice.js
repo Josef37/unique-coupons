@@ -61,15 +61,9 @@ export const deleteGroup = createAsyncThunk(
 );
 
 export const couponBulkActionCreators = {
-	activate: createAsyncThunk("coupons/bulkActivate", (ids) =>
-		console.log("activate", ids)
-	),
-	deactivate: createAsyncThunk("coupons/bulkDeactivate", (ids) =>
-		console.log("deactivate", ids)
-	),
-	delete: createAsyncThunk("coupons/bulkDelete", (ids) =>
-		console.log("delete", ids)
-	),
+	activate: createAsyncThunk("coupons/activate", WpRest.activateCoupons),
+	deactivate: createAsyncThunk("coupons/deactivate", WpRest.deactivateCoupons),
+	delete: createAsyncThunk("coupons/delete", WpRest.deleteCoupons),
 };
 
 /* {
@@ -130,6 +124,18 @@ const couponsSlice = createSlice({
 		},
 		[deleteGroup.fulfilled]: (state, { payload: groupId }) => {
 			couponGroupsAdapter.removeOne(state.couponGroups, groupId);
+		},
+		// prettier-ignore
+		[couponBulkActionCreators.activate.fulfilled]: (state, { meta: { arg: couponIds } }) => {
+			couponsAdapter.updateMany(state.coupons, couponIds.map(id => ({ id, changes: { status: "active" } })))
+		},
+		// prettier-ignore
+		[couponBulkActionCreators.deactivate.fulfilled]: (state, { meta: { arg: couponIds } }) => {
+			couponsAdapter.updateMany(state.coupons, couponIds.map(id => ({ id, changes: { status: "inactive" } })))
+		},
+		// prettier-ignore
+		[couponBulkActionCreators.delete.fulfilled]: (state, { meta: { arg: couponIds } }) => {
+			couponsAdapter.removeMany(state.coupons, couponIds)
 		},
 	},
 });

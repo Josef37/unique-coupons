@@ -14,8 +14,10 @@ import Button from "@material-ui/core/Button";
 import ActionTable from "./action-table.component";
 
 const CouponTabs = ({ groupId, isFetching }) => {
-	const coupons = useSelector((state) => selectCouponsByStatus(state, groupId));
 	const [state, setState] = useState("active");
+
+	const coupons = useSelector((state) => selectCouponsByStatus(state, groupId));
+	const couponsIds = _.map(coupons[state], "id");
 
 	return (
 		<>
@@ -28,8 +30,8 @@ const CouponTabs = ({ groupId, isFetching }) => {
 				</Tabs>
 			</AppBar>
 			<ActionTable
-				key={state}
-				ids={_.map(coupons[state], "id")}
+				key={state + couponsIds}
+				ids={couponsIds}
 				Row={({ id }) => <CouponRow couponId={id} />}
 				BulkActions={getBulkActionsComponent(state)}
 				isFetching={isFetching}

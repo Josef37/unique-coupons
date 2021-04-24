@@ -18,17 +18,19 @@ class CouponsAdminRestController {
 		$group   = new CouponGroup( $group_id );
 		$coupons = $group->get_coupons();
 
-		return array_map(
-			function( Coupon $coupon ) {
-				return array(
-					'id'         => $coupon->coupon_id,
-					'value'      => $coupon->get_value(),
-					'expires_at' => $coupon->get_expires_at(),
-					'status'     => $coupon->get_status(),
-					'user_id'    => $coupon->get_user_id(),
-				);
-			},
-			$coupons
+		return \rest_ensure_response(
+			array_map(
+				function( Coupon $coupon ) {
+					return array(
+						'id'         => $coupon->coupon_id,
+						'value'      => $coupon->get_value(),
+						'expires_at' => $coupon->get_expires_at(),
+						'status'     => $coupon->get_status(),
+						'user_id'    => $coupon->get_user_id(),
+					);
+				},
+				$coupons
+			)
 		);
 	}
 
@@ -73,33 +75,25 @@ class CouponsAdminRestController {
 		}
 	}
 
-	/**
-	 * @param \WP_REST_Request $request
-	 */
 	public function activate_coupons( $request ) {
-		$coupon_ids = $request->get_param( 'coupon_ids' );
-		foreach ( $coupon_ids as $coupon_id ) {
-			Coupon::activate( $coupon_id );
-		}
+		return $this->update_coupons( $request, 'activate' );
 	}
 
-	/**
-	 * @param \WP_REST_Request $request
-	 */
 	public function deactivate_coupons( $request ) {
-		$coupon_ids = $request->get_param( 'coupon_ids' );
-		foreach ( $coupon_ids as $coupon_id ) {
-			Coupon::deactivate( $coupon_id );
-		}
+		return $this->update_coupons( $request, 'deactivate' );
 	}
 
-	/**
-	 * @param \WP_REST_Request $request
-	 */
 	public function delete_coupons( $request ) {
+		return $this->update_coupons( $request, 'delete' );
+	}
+
+	/** @param \WP_REST_Request $request */
+	private function update_coupons( $request, $method ) {
 		$coupon_ids = $request->get_param( 'coupon_ids' );
 		foreach ( $coupon_ids as $coupon_id ) {
-			Coupon::delete( $coupon_id );
+			call_user_func( array( Coupon::class, $method ), $coupon_id );
 		}
+		/** @todo handle errors somehow */
+		return \rest_ensure_response( array( 'success' => true ) );
 	}
 }

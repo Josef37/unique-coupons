@@ -48,6 +48,15 @@ class WpRest {
 		return response?.previous?.id;
 	};
 
+	activateCoupons = async (ids) =>
+		this.post(WP_API.coupons + "/activate", { coupon_ids: ids });
+
+	deactivateCoupons = async (ids) =>
+		this.post(WP_API.coupons + "/deactivate", { coupon_ids: ids });
+
+	deleteCoupons = async (ids) =>
+		this.post(WP_API.coupons + "/delete", { coupon_ids: ids });
+
 	getOptions = () => this.get(WP_API.options);
 
 	setOptions = (options) => this.post(WP_API.options, options);

@@ -131,5 +131,9 @@ class CouponsAdminRoute {
 		);
 	}
 
-	public function update_coupons_status_response_schema() {}
+	public function update_coupons_status_response_schema() {
+		return array(
+			'success' => array( 'type' => 'boolean' ),
+		);
+	}
 }
