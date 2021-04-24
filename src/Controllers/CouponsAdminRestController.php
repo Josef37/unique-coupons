@@ -89,7 +89,7 @@ class CouponsAdminRestController {
 	public function deactivate_coupons( $request ) {
 		$coupon_ids = $request->get_param( 'coupon_ids' );
 		foreach ( $coupon_ids as $coupon_id ) {
-			Coupon::activate( $coupon_id );
+			Coupon::deactivate( $coupon_id );
 		}
 	}
 
@@ -99,7 +99,7 @@ class CouponsAdminRestController {
 	public function delete_coupons( $request ) {
 		$coupon_ids = $request->get_param( 'coupon_ids' );
 		foreach ( $coupon_ids as $coupon_id ) {
-			Coupon::activate( $coupon_id );
+			Coupon::delete( $coupon_id );
 		}
 	}
 }
