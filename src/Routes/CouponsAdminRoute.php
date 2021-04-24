@@ -84,6 +84,7 @@ class CouponsAdminRoute {
 			'items' => array(
 				'type'       => 'object',
 				'properties' => array(
+					'id'         => array( 'type' => 'integer' ),
 					'value'      => array( 'type' => 'string' ),
 					'expires_at' => array( 'type' => 'string' ),
 					'status'     => array( 'type' => 'string' ),

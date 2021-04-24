@@ -1,6 +1,7 @@
 import {
 	createAsyncThunk,
 	createEntityAdapter,
+	createSelector,
 	createSlice,
 } from "@reduxjs/toolkit";
 import _ from "lodash";
@@ -139,6 +140,15 @@ export const {
 } = couponGroupsAdapter.getSelectors((state) => state.coupons.couponGroups);
 export const { selectById: selectCouponById } = couponsAdapter.getSelectors(
 	(state) => state.coupons.coupons
+);
+export const selectCouponsByStatus = createSelector(
+	(state) => state.coupons.coupons,
+	(state, groupId) => selectCouponGroupById(state, groupId),
+	(coupons, group) =>
+		_.groupBy(
+			group.couponIds.map((id) => coupons.entities[id]),
+			"status"
+		)
 );
 
 export default couponsSlice.reducer;

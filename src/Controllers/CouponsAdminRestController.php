@@ -19,8 +19,9 @@ class CouponsAdminRestController {
 		$coupons = $group->get_coupons();
 
 		return array_map(
-			function( $coupon ) {
+			function( Coupon $coupon ) {
 				return array(
+					'id'         => $coupon->coupon_id,
 					'value'      => $coupon->get_value(),
 					'expires_at' => $coupon->get_expires_at(),
 					'status'     => $coupon->get_status(),

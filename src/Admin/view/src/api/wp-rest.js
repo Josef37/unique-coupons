@@ -13,7 +13,7 @@ class WpRest {
 
 	addCoupons = async ({ couponValues, groupId, expiresAt }) => {
 		const couponIds = await this.post(
-			WP_API.addCoupons,
+			WP_API.coupons + "/create",
 			this.transformAddCouponsRequestBody(groupId, couponValues, expiresAt)
 		);
 		return couponIds;
@@ -29,10 +29,7 @@ class WpRest {
 	};
 
 	getCoupons = async (groupId) => {
-		const jsonResponse = await this.get(WP_API.coupon, {
-			per_page: 100,
-			wp_coupon_group: groupId,
-		});
+		const jsonResponse = await this.get(WP_API.coupons, { group_id: groupId });
 		return this.transformGetCouponsResponse(jsonResponse);
 	};
 
@@ -128,10 +125,10 @@ class WpRest {
 	transformGetCouponsResponse = (responseJson) => {
 		return responseJson.map((coupon) => ({
 			id: coupon.id,
-			value: coupon.title.rendered,
-			expiresAt: coupon.meta.expires_at,
+			value: coupon.value,
+			expiresAt: coupon.expires_at,
 			status: coupon.status,
-			userId: coupon.meta.user_id,
+			userId: coupon.user_id,
 		}));
 	};
 }
