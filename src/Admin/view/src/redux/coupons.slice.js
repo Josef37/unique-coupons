@@ -59,6 +59,18 @@ export const deleteGroup = createAsyncThunk(
 	WpRest.deleteGroup
 );
 
+export const couponBulkActionCreators = {
+	activate: createAsyncThunk("coupons/bulkActivate", (ids) =>
+		console.log("activate", ids)
+	),
+	deactivate: createAsyncThunk("coupons/bulkDeactivate", (ids) =>
+		console.log("deactivate", ids)
+	),
+	delete: createAsyncThunk("coupons/bulkDelete", (ids) =>
+		console.log("delete", ids)
+	),
+};
+
 /* {
 	id: 123,
 	name: "Special Christmas Offer",
