@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { set } from "lodash-es";
 
 const WP_API = window.WP_COUPONS.api;
 
@@ -102,13 +102,13 @@ class WpRest {
 
 	transformGroupRequestBody = (couponGroup) => {
 		const requestObj = {};
-		if ("name" in couponGroup) _.set(requestObj, "name", couponGroup.name);
+		if ("name" in couponGroup) set(requestObj, "name", couponGroup.name);
 		if ("description" in couponGroup)
-			_.set(requestObj, "description", couponGroup.description);
+			set(requestObj, "description", couponGroup.description);
 		if ("template" in couponGroup)
-			_.set(requestObj, "meta.template", couponGroup.template);
+			set(requestObj, "meta.template", couponGroup.template);
 		if ("isActive" in couponGroup)
-			_.set(requestObj, "meta.is_active", couponGroup.isActive);
+			set(requestObj, "meta.is_active", couponGroup.isActive);
 		return requestObj;
 	};
 

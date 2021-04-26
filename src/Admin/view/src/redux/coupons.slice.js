@@ -4,7 +4,8 @@ import {
 	createSelector,
 	createSlice,
 } from "@reduxjs/toolkit";
-import _ from "lodash";
+import { zipWith, isMatch, groupBy, map, union } from "lodash-es";
+
 import WpRest from "../api/wp-rest";
 
 export const addGroup = createAsyncThunk(
@@ -22,7 +23,7 @@ export const addCoupons = createAsyncThunk(
 		});
 		return {
 			groupId,
-			coupons: _.zipWith(couponIds, couponValues, (id, value) => ({
+			coupons: zipWith(couponIds, couponValues, (id, value) => ({
 				id,
 				value,
 				expiresAt,
@@ -48,7 +49,7 @@ export const editGroup = createAsyncThunk(
 	"coupons/editGroup",
 	async ({ groupId, ...changes }, { rejectWithValue }) => {
 		const group = await WpRest.editGroup(groupId, changes);
-		if (!_.isMatch(group, { id: groupId, ...changes })) {
+		if (!isMatch(group, { id: groupId, ...changes })) {
 			return rejectWithValue(group);
 		}
 		return group;
@@ -151,7 +152,7 @@ export const selectCouponsByStatus = createSelector(
 	(state) => state.coupons.coupons,
 	(state, groupId) => selectCouponGroupById(state, groupId),
 	(coupons, group) =>
-		_.groupBy(
+		groupBy(
 			group.couponIds.map((id) => coupons.entities[id]),
 			"status"
 		)
@@ -165,9 +166,9 @@ function addCouponsToState(state, groupId, coupons) {
 }
 
 function addCouponsToGroup(state, groupId, coupons) {
-	const newCouponsIds = _.map(coupons, "id");
+	const newCouponsIds = map(coupons, "id");
 	const currentCouponIds = state.couponGroups.entities[groupId].couponIds;
-	const couponIds = _.union(currentCouponIds, newCouponsIds);
+	const couponIds = union(currentCouponIds, newCouponsIds);
 
 	couponGroupsAdapter.updateOne(state.couponGroups, {
 		id: groupId,

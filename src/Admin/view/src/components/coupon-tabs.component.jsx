@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import _ from "lodash";
+import { map } from "lodash-es";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	couponBulkActionCreators,
@@ -17,7 +17,7 @@ const CouponTabs = ({ groupId, isFetching }) => {
 	const [state, setState] = useState("active");
 
 	const coupons = useSelector((state) => selectCouponsByStatus(state, groupId));
-	const couponsIds = _.map(coupons[state], "id");
+	const couponsIds = map(coupons[state], "id");
 
 	return (
 		<>
