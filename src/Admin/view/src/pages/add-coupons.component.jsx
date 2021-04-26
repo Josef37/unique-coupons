@@ -31,7 +31,11 @@ const AddCouponsPage = ({ groupId }) => {
 			.map((value) => value.trim())
 			.filter((value) => value !== "");
 
-		const expiresAt = Math.round(expiresAtInput / 1000);
+		const expiresAtDate = new Date(expiresAtInput);
+		expiresAtDate.setHours(23);
+		expiresAtDate.setMinutes(59);
+		expiresAtDate.setSeconds(59);
+		const expiresAt = Math.floor(expiresAtDate.getTime() / 1000);
 
 		setFetching(true);
 		dispatch(addCoupons({ couponValues, expiresAt, groupId }))
