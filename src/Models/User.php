@@ -48,11 +48,11 @@ class User {
 		return get_user_meta( $this->user_id, self::GROUPS_DATA_META_KEY );
 	}
 
-	public function get_group_data( $group ) {
+	public function get_group_data( CouponGroup $group ) {
 		return Utils::array_find(
 			$this->get_groups_data(),
 			function( $group_data ) use ( $group ) {
-				return $group_data['group_id'] == $group->group_id;
+				return $group_data['group_id'] === $group->group_id;
 			},
 			array()
 		);
@@ -148,7 +148,7 @@ class User {
 	private function update_group_meta( $data ) {
 		$previous_groups_meta = get_user_meta( $this->user_id, self::GROUPS_DATA_META_KEY );
 
-		$group_index = array_search( $data['group_id'], array_column( $previous_groups_meta, 'group_id' ) );
+		$group_index = array_search( $data['group_id'], array_column( $previous_groups_meta, 'group_id' ), true );
 		if ( false === $group_index ) {
 			add_user_meta( $this->user_id, self::GROUPS_DATA_META_KEY, $data );
 		} else {

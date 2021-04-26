@@ -127,13 +127,13 @@ class PopupServiceTest extends \WP_UnitTestCase {
 			array(
 				'coupon_id' => $used_coupon_id,
 				'group_id'  => $group_id,
-				'timestamp'  => time() - 60 - Options::get_seconds_between_same_retrieval(),
+				'timestamp' => time() - 60 - Options::get_seconds_between_same_retrieval(),
 			)
 		);
 
 		$this->user->record_popup(
 			array(
-				'group_id' => $group_id,
+				'group_id'  => $group_id,
 				'timestamp' => time() - 60 - Options::get_seconds_between_same_popup(),
 			)
 		);

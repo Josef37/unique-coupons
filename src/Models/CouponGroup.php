@@ -51,6 +51,7 @@ class CouponGroup {
 				'fields'      => 'ids',
 				'post_type'   => Coupon::POST_TYPE_KEY,
 				'post_status' => array( 'publish', 'trash' ),
+				// phpcs:ignore WordPress.DB.SlowDBQuery
 				'tax_query'   => array(
 					array(
 						'taxonomy' => self::TAXONOMY_KEY,
@@ -99,7 +100,9 @@ class CouponGroup {
 			array_merge(
 				self::TERM_QUERY_ARGS,
 				array(
+					// phpcs:ignore WordPress.DB.SlowDBQuery
 					'meta_key'   => 'is_active',
+					// phpcs:ignore WordPress.DB.SlowDBQuery
 					'meta_value' => true,
 				)
 			)
