@@ -4,6 +4,7 @@ namespace WPCouponsTest\Factory;
 
 use WPCoupons\Models\Coupon;
 use WPCoupons\Options;
+use WPCoupons\Utils;
 
 class CouponFactory {
 	/** @var int */
@@ -12,7 +13,7 @@ class CouponFactory {
 	public static function create( $values ): int {
 		$default_values = array(
 			'value'      => 'Coupon ' . self::$count++,
-			'expires_at' => date( 'Y-m-d' ),
+			'expires_at' => time(),
 			'status'     => 'publish',
 		);
 
@@ -26,7 +27,7 @@ class CouponFactory {
 		return self::create(
 			array(
 				'group_id'   => $group_id,
-				'expires_at' => date( 'Y-m-d', $expires_at ),
+				'expires_at' => $expires_at,
 			)
 		);
 	}
@@ -35,7 +36,7 @@ class CouponFactory {
 		return self::create(
 			array(
 				'group_id'   => $group_id,
-				'expires_at' => date( 'Y-m-d', strtotime( '-1 day' ) ),
+				'expires_at' => strtotime( '-1 day' ),
 			)
 		);
 	}

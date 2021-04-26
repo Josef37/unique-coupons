@@ -78,8 +78,18 @@
 		showCoupon = ({ value, expires_at }) => {
 			this.elements.coupon.style.display = "block";
 			this.elements.value.textContent = value;
-			this.elements.expiresAt.textContent = expires_at;
+			this.elements.expiresAt.textContent = this.getDateText(expires_at);
 		};
+
+		getDateText(timestamp) {
+			const date = new Date();
+			date.setTime(timestamp * 1000);
+			return date.toLocaleDateString(undefined, {
+				day: "numeric",
+				month: "long",
+				year: "numeric",
+			});
+		}
 
 		handleResponseError = () => {
 			this.setCanFetch(true);

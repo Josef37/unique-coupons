@@ -64,7 +64,7 @@ class CouponGroupTest extends \WP_UnitTestCase {
 	public function test_get_coupons() {
 		$coupon_data = array(
 			'value'      => 'Coupon1',
-			'expires_at' => date( 'Y-m-d' ),
+			'expires_at' => time(),
 			'status'     => 'publish',
 			'group_id'   => $this->groups[0]->group_id,
 		);

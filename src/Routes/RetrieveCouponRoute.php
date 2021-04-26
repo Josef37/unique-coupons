@@ -64,7 +64,7 @@ class RetrieveCouponRoute extends \WP_REST_Controller {
 			'type'        => 'object',
 			'properties'  => array(
 				'value'      => array( 'type' => 'string' ),
-				'expires_at' => array( 'type' => 'string' ),
+				'expires_at' => array( 'type' => 'integer' ),
 			),
 		);
 	}

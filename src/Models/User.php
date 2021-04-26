@@ -59,64 +59,56 @@ class User {
 	}
 
 	public function has_recent_retrieval() {
-		return $this->has_recent_datetime(
-			'last_retrieval_datetime',
+		return $this->has_recent_timestamp(
+			'last_retrieval_timestamp',
 			Options::get_seconds_between_any_retrieval()
 		);
 	}
 
 	public function has_recent_popup() {
-		return $this->has_recent_datetime(
-			'last_popup_datetime',
+		return $this->has_recent_timestamp(
+			'last_popup_timestamp',
 			Options::get_seconds_between_any_popup()
 		);
 	}
 
-	private function has_recent_datetime( $key, $time_delta ) {
-		$datetimes = array_column( $this->get_groups_data(), $key );
-		if ( empty( $datetimes ) ) {
+	private function has_recent_timestamp( $key, $time_delta ) {
+		$timestamps = array_column( $this->get_groups_data(), $key );
+		if ( empty( $timestamps ) ) {
 			return false;
 		}
-		return $this->is_recent_date( max( $datetimes ), $time_delta );
+		return time() < max( $timestamps ) + $time_delta;
 	}
 
 	public function has_recent_popup_for_group( $group ) {
-		return $this->has_recent_datetime_for_group(
+		return $this->has_recent_timestamp_for_group(
 			$group,
-			'last_popup_datetime',
+			'last_popup_timestamp',
 			Options::get_seconds_between_same_popup()
 		);
 	}
 
 	public function has_recent_retrieval_for_group( $group ) {
-		return $this->has_recent_datetime_for_group(
+		return $this->has_recent_timestamp_for_group(
 			$group,
-			'last_retrieval_datetime',
+			'last_retrieval_timestamp',
 			Options::get_seconds_between_same_retrieval()
 		);
 	}
 
-	/** @todo this is something for UserGroup */
-	private function has_recent_datetime_for_group( $group, $key, $time_delta ) {
+	private function has_recent_timestamp_for_group( $group, $key, $time_delta ) {
 		$group_data = $this->get_group_data( $group );
 		if ( ! isset( $group_data[ $key ] ) ) {
 			return false;
 		}
-		return $this->is_recent_date( $group_data[ $key ], $time_delta );
-	}
-
-	/** @todo util */
-	private function is_recent_date( $recent_date, $time_delta ) {
-		$after_recently = strtotime( $recent_date ) + $time_delta;
-		$now            = time();
-		return $now < $after_recently;
+		return time() < $group_data[ $key ] + $time_delta;
 	}
 
 	public function record_retrieval( $data ) {
 		list(
 			'coupon_id' => $coupon_id,
 			'group_id' => $group_id,
-			'datetime' => $datetime
+			'timestamp' => $timestamp
 		) = $data;
 
 		add_user_meta(
@@ -124,13 +116,13 @@ class User {
 			self::RETRIEVALS_META_KEY,
 			array(
 				'coupon_id'    => $coupon_id,
-				'retrieved_at' => $datetime,
+				'retrieved_at' => $timestamp,
 			)
 		);
 		$this->update_group_meta(
 			array(
-				'group_id'                => $group_id,
-				'last_retrieval_datetime' => $datetime,
+				'group_id'                 => $group_id,
+				'last_retrieval_timestamp' => $timestamp,
 			)
 		);
 
@@ -141,13 +133,13 @@ class User {
 	public function record_popup( $data ) {
 		list(
 			'group_id' => $group_id,
-			'datetime' => $datetime
+			'timestamp' => $timestamp
 		) = $data;
 
 		$this->update_group_meta(
 			array(
-				'group_id'            => $group_id,
-				'last_popup_datetime' => $datetime,
+				'group_id'             => $group_id,
+				'last_popup_timestamp' => $timestamp,
 			)
 		);
 	}
@@ -181,11 +173,8 @@ class User {
 					'schema' => array(
 						'type'       => 'object',
 						'properties' => array(
-							'coupon_id'    => array( 'type' => 'number' ),
-							'retrieved_at' => array(
-								'type'    => 'string',
-								'pattern' => Utils::get_datetime_regex(),
-							),
+							'coupon_id'    => array( 'type' => 'integer' ),
+							'retrieved_at' => array( 'type' => 'integer' ),
 						),
 					),
 				),
@@ -203,15 +192,9 @@ class User {
 					'schema' => array(
 						'type'       => 'object',
 						'properties' => array(
-							'group_id'                => array( 'type' => 'number' ),
-							'last_popup_datetime'     => array(
-								'type'    => 'string',
-								'pattern' => Utils::get_datetime_regex(),
-							),
-							'last_retrieval_datetime' => array(
-								'type'    => 'string',
-								'pattern' => Utils::get_datetime_regex(),
-							),
+							'group_id'                 => array( 'type' => 'integer' ),
+							'last_popup_timestamp'     => array( 'type' => 'integer' ),
+							'last_retrieval_timestamp' => array( 'type' => 'integer' ),
 						),
 					),
 				),

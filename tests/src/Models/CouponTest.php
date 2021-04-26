@@ -24,35 +24,36 @@ class CouponTest extends WP_UnitTestCase {
 		$group_id   = CouponGroup::insert( $group_data );
 		$user_id    = $this->factory->user->create();
 
+		$slack_in_seconds     = 60;
 		$last_usage_timestamp = time() + Options::get_seconds_valid_after_distribution();
 		$this->coupons_data   = array(
 			array(
 				'value'      => 'Coupon1',
-				'expires_at' => date( 'Y-m-d', $last_usage_timestamp ),
+				'expires_at' => $last_usage_timestamp + $slack_in_seconds,
 				'status'     => 'publish',
 				'group_id'   => $group_id,
 			),
 			array(
 				'value'      => 'Coupon2',
-				'expires_at' => date( 'Y-m-d', strtotime( '-1 day', $last_usage_timestamp ) ),
+				'expires_at' => strtotime( '-1 day', $last_usage_timestamp + $slack_in_seconds ),
 				'status'     => 'trash',
 				'group_id'   => $group_id,
 			),
 			array(
 				'value'      => 'Coupon3',
-				'expires_at' => date( 'Y-m-d' ),
+				'expires_at' => time() + $slack_in_seconds,
 				'status'     => 'publish',
 				'group_id'   => $group_id,
 			),
 			array(
 				'value'      => 'Coupon4',
-				'expires_at' => date( 'Y-m-d', strtotime( '-1 day' ) ),
+				'expires_at' => strtotime( '-1 day' ),
 				'status'     => 'publish',
 				'group_id'   => $group_id,
 			),
 			array(
 				'value'      => 'Coupon5',
-				'expires_at' => date( 'Y-m-d', $last_usage_timestamp ),
+				'expires_at' => $last_usage_timestamp + $slack_in_seconds,
 				'status'     => 'publish',
 				'group_id'   => $group_id,
 				'user_id'    => $user_id,

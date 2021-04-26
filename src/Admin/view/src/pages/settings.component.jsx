@@ -38,27 +38,27 @@ const SettingsPage = () => {
 			<SettingsOption
 				value={options.seconds_between_any_popup}
 				handleChange={handleChange("seconds_between_any_popup")}
-				label="Minimum seconds between any popups"
+				label="Minimum time between any popups"
 			/>
 			<SettingsOption
 				value={options.seconds_between_same_popup}
 				handleChange={handleChange("seconds_between_same_popup")}
-				label="Minimum seconds between popups of the same group"
+				label="Minimum time between popups of the same group"
 			/>
 			<SettingsOption
 				value={options.seconds_between_any_retrieval}
 				handleChange={handleChange("seconds_between_any_retrieval")}
-				label="Minimum seconds between any coupon retrievals"
+				label="Minimum time between any coupon retrievals"
 			/>
 			<SettingsOption
 				value={options.seconds_between_same_retrieval}
 				handleChange={handleChange("seconds_between_same_retrieval")}
-				label="Minimum seconds between retrievals of the same group"
+				label="Minimum time between retrievals of the same group"
 			/>
 			<SettingsOption
 				value={options.seconds_valid_after_distribution}
 				handleChange={handleChange("seconds_valid_after_distribution")}
-				label="Minimum seconds of coupon validity"
+				label="Minimum time of coupon validity"
 			/>
 			<ActionButton Icon={DoneIcon} isLoading={isSaving} onClick={handleSubmit}>
 				Save options

@@ -86,7 +86,7 @@ class CouponsAdminRoute {
 				'properties' => array(
 					'id'         => array( 'type' => 'integer' ),
 					'value'      => array( 'type' => 'string' ),
-					'expires_at' => array( 'type' => 'string' ),
+					'expires_at' => array( 'type' => 'integer' ),
 					'status'     => array( 'type' => 'string' ),
 					'user_id'    => array( 'type' => 'integer' ),
 				),
@@ -107,8 +107,7 @@ class CouponsAdminRoute {
 			),
 			'expires_at'    => array(
 				'required' => true,
-				'type'     => 'string',
-				'pattern'  => \WPCoupons\Utils::get_date_regex(),
+				'type'     => 'integer',
 			),
 		);
 	}

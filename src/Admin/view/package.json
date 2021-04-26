@@ -11,7 +11,6 @@
     "@testing-library/user-event": "^12.2.2",
     "@tinymce/tinymce-react": "^3.8.4",
     "cross-env": "^7.0.3",
-    "date-fns": "^2.16.1",
     "lodash": "^4.17.20",
     "react": "^17.0.1",
     "react-app-rewired": "^2.1.8",

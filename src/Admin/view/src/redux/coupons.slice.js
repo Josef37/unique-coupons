@@ -79,7 +79,7 @@ const couponGroupsAdapter = createEntityAdapter();
 /* {
 	id: 123,
 	value: "coupon1234",
-	expiresAt: "2020-12-25",
+	expiresAt: 1619465322,
 	status: "publish",
 	userId: 54
 } */

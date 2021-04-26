@@ -6,12 +6,12 @@ import {
 	selectCouponById,
 	selectCouponsByStatus,
 } from "../redux/coupons.slice";
-import { format, parse } from "date-fns";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
 import ActionTable from "./action-table.component";
+import { getDateText } from "../utils";
 
 const CouponTabs = ({ groupId, isFetching }) => {
 	const [state, setState] = useState("active");
@@ -49,15 +49,13 @@ const CouponRow = ({ couponId }) => {
 		<div>
 			<b>{value}</b>
 			<br />
-			<i>
-				{format(parse(expiresAt, "yyyy-MM-dd", new Date()), "dd MMMM yyyy")}
-			</i>
-			{userId && (
+			<i>{getDateText(expiresAt)}</i>
+			{userId ? (
 				<>
 					<br />
 					<span>Used by: {userId}</span>
 				</>
-			)}
+			) : null}
 		</div>
 	);
 };

@@ -49,8 +49,8 @@ class PopupServiceTest extends \WP_UnitTestCase {
 
 		$this->user->record_popup(
 			array(
-				'group_id' => $group_id,
-				'datetime' => date( 'Y-m-d H:i:s' ),
+				'group_id'  => $group_id,
+				'timestamp' => time(),
 			)
 		);
 
@@ -67,7 +67,7 @@ class PopupServiceTest extends \WP_UnitTestCase {
 			array(
 				'coupon_id' => $coupon_id,
 				'group_id'  => $group_id,
-				'datetime'  => date( 'Y-m-d H:i:s' ),
+				'timestamp' => time(),
 			)
 		);
 
@@ -87,8 +87,8 @@ class PopupServiceTest extends \WP_UnitTestCase {
 		$group_id = CouponGroupFactory::create_active_group();
 		$this->user->record_popup(
 			array(
-				'group_id' => $group_id,
-				'datetime' => date( 'Y-m-d H:i:s' ),
+				'group_id'  => $group_id,
+				'timestamp' => time(),
 			)
 		);
 
@@ -106,7 +106,7 @@ class PopupServiceTest extends \WP_UnitTestCase {
 			array(
 				'coupon_id' => $coupon_id,
 				'group_id'  => $group_id,
-				'datetime'  => date( 'Y-m-d H:i:s' ),
+				'timestamp' => time(),
 			)
 		);
 
@@ -127,14 +127,14 @@ class PopupServiceTest extends \WP_UnitTestCase {
 			array(
 				'coupon_id' => $used_coupon_id,
 				'group_id'  => $group_id,
-				'datetime'  => date( 'Y-m-d H:i:s', time() - 60 - Options::get_seconds_between_same_retrieval() ),
+				'timestamp'  => time() - 60 - Options::get_seconds_between_same_retrieval(),
 			)
 		);
 
 		$this->user->record_popup(
 			array(
 				'group_id' => $group_id,
-				'datetime' => date( 'Y-m-d H:i:s', time() - 60 - Options::get_seconds_between_same_popup() ),
+				'timestamp' => time() - 60 - Options::get_seconds_between_same_popup(),
 			)
 		);
 

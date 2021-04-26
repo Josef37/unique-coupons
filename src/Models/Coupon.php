@@ -39,10 +39,8 @@ class Coupon {
 		$now = time();
 		return $this->is_valid_at( $now );
 	}
-	private function is_valid_at( $time ) {
-		$then   = date( 'Y-m-d', $time );
-		$expire = $this->get_expires_at();
-		return $then <= $expire;
+	private function is_valid_at( int $time ) {
+		return $time <= $this->get_expires_at();
 	}
 
 	/** @todo unit test */
@@ -93,7 +91,7 @@ class Coupon {
 	 * @param array $args [
 	 *   'value' => string,
 	 *   'group_id' => int,
-	 *   'expires_at => date in mysql format as string,
+	 *   'expires_at => Unix timestamp (seconds),
 	 *   'status' => string
 	 * ].
 	 * @throws \Exception From `wp_insert_post`.
@@ -191,8 +189,8 @@ class Coupon {
 			self::POST_TYPE_KEY,
 			'expires_at',
 			array(
-				'type'        => 'string',
-				'description' => 'Last day of coupon validity (in site\'s time-zone), stored in MySQL date format Y-m-d (e.g. 2020-12-24).',
+				'type'        => 'integer',
+				'description' => 'Last moment of coupon validity (as Unix timestamp in seconds)',
 				'single'      => true,
 			)
 		);
@@ -204,7 +202,7 @@ class Coupon {
 			self::POST_TYPE_KEY,
 			'user_id',
 			array(
-				'type'        => 'number',
+				'type'        => 'integer',
 				'description' => 'ID of user, who received the coupon.',
 				'single'      => true,
 			)

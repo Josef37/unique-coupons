@@ -25,7 +25,7 @@ class UserTest extends WP_UnitTestCase {
 		$retrieval = array(
 			'coupon_id' => 321,
 			'group_id'  => 123,
-			'datetime'  => date( 'Y-m-d H:i:s' ),
+			'timestamp' => time(),
 		);
 		$user->record_retrieval( $retrieval );
 
@@ -41,12 +41,12 @@ class UserTest extends WP_UnitTestCase {
 			array(
 				'coupon_id' => 1,
 				'group_id'  => $group_id,
-				'datetime'  => '2021-04-05 07:19:20',
+				'timestamp' => 0,
 			),
 			array(
 				'coupon_id' => 2,
 				'group_id'  => $group_id,
-				'datetime'  => '2021-04-05 07:30:59',
+				'timestamp' => 1,
 			),
 		);
 
@@ -57,7 +57,7 @@ class UserTest extends WP_UnitTestCase {
 			array(
 				array(
 					'coupon_id'    => $retrievals[0]['coupon_id'],
-					'retrieved_at' => $retrievals[0]['datetime'],
+					'retrieved_at' => $retrievals[0]['timestamp'],
 				),
 			)
 		);
@@ -65,8 +65,8 @@ class UserTest extends WP_UnitTestCase {
 			$user->get_groups_data(),
 			array(
 				array(
-					'group_id'                => $group_id,
-					'last_retrieval_datetime' => $retrievals[0]['datetime'],
+					'group_id'                 => $group_id,
+					'last_retrieval_timestamp' => $retrievals[0]['timestamp'],
 				),
 			)
 		);
@@ -82,11 +82,11 @@ class UserTest extends WP_UnitTestCase {
 			array(
 				array(
 					'coupon_id'    => $retrievals[0]['coupon_id'],
-					'retrieved_at' => $retrievals[0]['datetime'],
+					'retrieved_at' => $retrievals[0]['timestamp'],
 				),
 				array(
 					'coupon_id'    => $retrievals[1]['coupon_id'],
-					'retrieved_at' => $retrievals[1]['datetime'],
+					'retrieved_at' => $retrievals[1]['timestamp'],
 				),
 			)
 		);
@@ -94,8 +94,8 @@ class UserTest extends WP_UnitTestCase {
 			$user->get_groups_data(),
 			array(
 				array(
-					'group_id'                => $group_id,
-					'last_retrieval_datetime' => $retrievals[1]['datetime'],
+					'group_id'                 => $group_id,
+					'last_retrieval_timestamp' => $retrievals[1]['timestamp'],
 				),
 			)
 		);
@@ -113,11 +113,11 @@ class UserTest extends WP_UnitTestCase {
 		$retrieval = array(
 			'coupon_id' => 321,
 			'group_id'  => $group_id,
-			'datetime'  => '2021-04-05 07:19:20',
+			'timestamp' => 0,
 		);
 		$popup     = array(
-			'group_id' => $group_id,
-			'datetime' => '2021-04-05 07:30:59',
+			'group_id'  => $group_id,
+			'timestamp' => 1,
 		);
 
 		$user->record_retrieval( $retrieval );
@@ -126,9 +126,9 @@ class UserTest extends WP_UnitTestCase {
 		$this->assertEquals(
 			array(
 				array(
-					'group_id'                => $group_id,
-					'last_retrieval_datetime' => $retrieval['datetime'],
-					'last_popup_datetime'     => $popup['datetime'],
+					'group_id'                 => $group_id,
+					'last_retrieval_timestamp' => $retrieval['timestamp'],
+					'last_popup_timestamp'     => $popup['timestamp'],
 				),
 			),
 			$user->get_groups_data()

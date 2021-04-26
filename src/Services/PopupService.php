@@ -57,7 +57,7 @@ class PopupService {
 			array(
 				'coupon_id' => $coupon->coupon_id,
 				'group_id'  => $group->group_id,
-				'datetime'  => date( 'Y-m-d H:i:s' ),
+				'timestamp' => time(),
 			)
 		);
 
