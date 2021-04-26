@@ -24,6 +24,7 @@ const DurationInput = ({ value, onChange }) => {
 				type="number"
 				value={values[key]}
 				onChange={handleChange(key)}
+				inputProps={{ min: 0 }}
 			/>
 			{key}
 		</FormLabel>
