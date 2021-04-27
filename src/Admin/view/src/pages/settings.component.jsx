@@ -28,10 +28,16 @@ const SettingsPage = () => {
 			.finally(() => setFetching(false));
 	}, []);
 
-	if (isFetching) return <CircularProgress />;
+	if (isFetching)
+		return (
+			<Container>
+				<CircularProgress />
+				<Typography>Loading settings</Typography>
+			</Container>
+		);
 
 	return (
-		<div>
+		<>
 			<Typography variant="h3" gutterBottom>
 				Settings
 			</Typography>
@@ -63,9 +69,15 @@ const SettingsPage = () => {
 			<ActionButton Icon={DoneIcon} isLoading={isSaving} onClick={handleSubmit}>
 				Save options
 			</ActionButton>
-		</div>
+		</>
 	);
 };
+
+const Container = styled("div")(({ theme }) => ({
+	display: "flex",
+	alignItems: "center",
+	gap: theme.spacing(2),
+}));
 
 const SettingsOption = ({ label, value, handleChange }) => {
 	return (

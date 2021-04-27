@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { styled } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import BasicRowContainer from "./row-container.component";
 
 const ActionTable = ({
@@ -41,19 +42,18 @@ const ActionTable = ({
 				/>
 				<BulkActions ids={selectedIds} />
 			</HeaderRow>
-			{isFetching && <RowContainer>Loading entries</RowContainer>}
+			{isFetching && (
+				<RowContainer>
+					<CircularProgress size={30} style={{ margin: "0 5px" }} />
+					Updating entries
+				</RowContainer>
+			)}
 			{ids.length === 0 ? (
 				<RowContainer>No entries</RowContainer>
 			) : (
 				ids.map((id) => (
 					<RowContainer key={id}>
-						<Checkbox
-							checked={isSelected(id)}
-							onChange={() => toggleRow(id)}
-							aria-label={
-								(isSelected(id) ? "deselect" : "select") + " this row"
-							}
-						/>
+						<Checkbox checked={isSelected(id)} onChange={() => toggleRow(id)} />
 						<Row id={id} />
 					</RowContainer>
 				))
