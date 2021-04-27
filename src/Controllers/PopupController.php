@@ -1,6 +1,8 @@
 <?php
 namespace WPCoupons\Controllers;
 
+use WPCoupons\Models\CouponGroup;
+use WPCoupons\Models\User;
 use WPCoupons\Services\PopupService;
 
 /**
@@ -11,15 +13,27 @@ use WPCoupons\Services\PopupService;
 class PopupController {
 	public function init_popup() {
 		try {
-			$group = ( new PopupService() )->get_possible_group();
-			$this->enqueue_template( $group );
-			$this->enqueue_script();
+			$user          = new User();
+			$popup_service = new PopupService( $user );
+			$group         = $popup_service->get_possible_group();
+			$this->enqueue_popup( $group, $user );
 		} catch ( \Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// We could not find a group to display, so just do nothing.
 		}
 	}
 
-	private function enqueue_template( $group ) {
+	private function enqueue_popup( CouponGroup $group, User $user ) {
+		$user->record_popup(
+			array(
+				'group_id'  => $group->group_id,
+				'timestamp' => time(),
+			)
+		);
+		$this->enqueue_template( $group );
+		$this->enqueue_script();
+	}
+
+	private function enqueue_template( CouponGroup $group ) {
 		add_action( 'wp_footer', array( $group, 'echo_popup' ) );
 	}
 
