@@ -5,7 +5,7 @@ import { styled } from "@material-ui/core/styles";
 import CouponGroupsList from "../components/coupon-groups-list.component";
 import ActionButton from "../components/action-button.component";
 
-const DashboardPage = () => {
+const CouponGroupsPage = () => {
 	return (
 		<>
 			<CouponGroupsList />
@@ -27,4 +27,4 @@ const AddGroupButton = styled((props) => (
 	marginTop: theme.spacing(3),
 }));
 
-export default DashboardPage;
+export default CouponGroupsPage;

@@ -60,7 +60,7 @@ const AddCouponsPage = ({ groupId }) => {
 				Add Coupons to Group "{groupName}"
 			</Typography>
 			<Label>
-				<span>Expires at</span>
+				<Typography>Expires at</Typography>
 				<TextField
 					type="date"
 					valueAsNumber={expiresAtInput}
@@ -71,7 +71,7 @@ const AddCouponsPage = ({ groupId }) => {
 				/>
 			</Label>
 			<Label>
-				<span>Coupons</span>
+				<Typography>Coupons</Typography>
 				<TextField
 					value={couponsInput}
 					multiline
@@ -99,7 +99,7 @@ const AddCouponsPage = ({ groupId }) => {
 const Label = styled("label")(({ theme }) => ({
 	display: "flex",
 	marginBottom: theme.spacing(3),
-	"& > *": { flexBasis: 200 },
+	"& > *:first-child": { flexBasis: 120, marginTop: 15 },
 }));
 
 export default AddCouponsPage;

@@ -3,17 +3,17 @@ import { Switch, Route } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { styled } from "@material-ui/core/styles";
 import CouponGroupPage from "./pages/coupon-group.component";
 import AddCouponsPage from "./pages/add-coupons.component";
-import DashboardPage from "./pages/dashboard.component";
+import CouponGroupsPage from "./pages/coupon-groups.component";
 import SettingsPage from "./pages/settings.component";
 import AddCouponGroupPage from "./pages/add-coupon-group.component";
 import NavTabs from "./components/nav-tabs.component";
 import { useDispatch } from "react-redux";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { getGroups } from "./redux/coupons.slice";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import CenteredContainer from "./components/centered-container.component";
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
 		<Container>
 			<NavTabs
 				tabs={[
-					{ path: "/", label: "Dashboard" },
+					{ path: "/", label: "Groups" },
 					{ path: "/settings", label: "Settings" },
 				]}
 			/>
@@ -73,7 +73,7 @@ function App() {
 								<AddCouponGroupPage />
 							</Route>
 							<Route exact path="/">
-								<DashboardPage />
+								<CouponGroupsPage />
 							</Route>
 							<Route>
 								<div>Invalid route</div>
