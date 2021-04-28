@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
+import MuiCheckbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import BasicRowContainer from "./row-container.component";
@@ -38,30 +38,26 @@ const ActionTable = ({
 				checked={allIdsSelected() && !noIdsSelected()}
 				indeterminate={indeterminateSelection()}
 				onChange={toggleAllIds}
-				aria-label={(allIdsSelected() ? "deselect" : "select") + " all rows"}
 			/>
 			<BulkActions ids={selectedIds} />
 		</HeaderRow>
 	);
 
-	const Body = (
-		<>
-			{isFetching ? <LoadingIndicatorRow /> : null}
-			{ids.length === 0 ? (
-				<NoEntriesRow />
-			) : (
-				ids.map((id) => (
-					<RowContainer key={id}>
-						<Checkbox checked={isSelected(id)} onChange={() => toggleRow(id)} />
-						<Row id={id} />
-					</RowContainer>
-				))
-			)}
-		</>
-	);
+	const Body =
+		ids.length === 0 ? (
+			<NoEntriesRow />
+		) : (
+			ids.map((id) => (
+				<RowContainer key={id}>
+					<Checkbox checked={isSelected(id)} onChange={() => toggleRow(id)} />
+					<Row id={id} />
+				</RowContainer>
+			))
+		);
 
 	return (
 		<Paper square>
+			{isFetching ? <LoadingIndicatorRow /> : null}
 			{Header}
 			{Body}
 		</Paper>
@@ -70,7 +66,7 @@ const ActionTable = ({
 
 const LoadingIndicatorRow = () => (
 	<RowContainer>
-		<CircularProgress size={30} style={{ margin: "0 5px" }} />
+		<CircularProgress size={30} style={{ marginRight: 5 }} />
 		<Typography>Updating entries</Typography>
 	</RowContainer>
 );
@@ -91,8 +87,12 @@ const RowContainer = styled(BasicRowContainer)(rowStyles);
 
 const HeaderRow = styled("div")({
 	...rowStyles,
-	padding: "0.4em 1em",
+	padding: "0.6em 1em",
 	borderBottom: "1px solid #888",
+});
+
+const Checkbox = styled(MuiCheckbox)({
+	margin: -10,
 });
 
 export default ActionTable;

@@ -10,6 +10,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import { styled } from "@material-ui/core/styles";
 import ActionTable from "./action-table.component";
 import Paginated from "./paginated.component";
 import { getDateText } from "../utils";
@@ -54,19 +56,23 @@ const CouponRow = ({ couponId }) => {
 	);
 
 	return (
-		<div>
-			<b>{value}</b>
-			<br />
-			<i>{getDateText(expiresAt)}</i>
-			{userId ? (
-				<>
-					<br />
-					<span>Used by: {userId}</span>
-				</>
-			) : null}
-		</div>
+		<Row>
+			<Typography component="b">{value}</Typography>
+			<Typography>{getDateText(expiresAt)}</Typography>
+			{userId ? <Typography>User ID: {userId}</Typography> : null}
+		</Row>
 	);
 };
+
+const Row = styled("div")(({ theme }) => ({
+	display: "flex",
+	width: "100%",
+	textAlign: "center",
+	gap: theme.spacing(2),
+	"& > *": {
+		minWidth: 150,
+	},
+}));
 
 const actionsForState = {
 	active: ["deactivate", "delete"],
