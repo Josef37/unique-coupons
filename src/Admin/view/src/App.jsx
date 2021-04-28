@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
+import { styled } from "@material-ui/core/styles";
 import CouponGroupPage from "./pages/coupon-group.component";
 import AddCouponsPage from "./pages/add-coupons.component";
 import DashboardPage from "./pages/dashboard.component";
@@ -26,64 +27,67 @@ function App() {
 			.finally(() => setFetching(false));
 	}, [dispatch]);
 
-	if (isFetching || error) {
-		return (
-			<CenteredContainer>
-				{isFetching ? (
-					<CircularProgress size={80} />
-				) : (
-					<>
-						<Typography variant="h3" gutterBottom>
-							Error loading data
-						</Typography>
-						<Typography variant="body1">{error}</Typography>
-					</>
-				)}
-			</CenteredContainer>
-		);
-	}
 	return (
-		<div>
+		<Container>
 			<NavTabs
 				tabs={[
 					{ path: "/", label: "Dashboard" },
 					{ path: "/settings", label: "Settings" },
 				]}
 			/>
-			<Paper>
-				<Box padding={3}>
-					<Switch>
-						<Route exact path="/settings">
-							<SettingsPage />
-						</Route>
-						<Route
-							exact
-							path="/group/:groupId"
-							render={({ match }) => (
-								<CouponGroupPage groupId={Number(match.params.groupId)} />
-							)}
-						/>
-						<Route
-							exact
-							path="/add-coupons/:groupId"
-							render={({ match }) => (
-								<AddCouponsPage groupId={Number(match.params.groupId)} />
-							)}
-						/>
-						<Route exact path="/add-coupon-group">
-							<AddCouponGroupPage />
-						</Route>
-						<Route exact path="/">
-							<DashboardPage />
-						</Route>
-						<Route>
-							<div>Invalid route</div>
-						</Route>
-					</Switch>
-				</Box>
-			</Paper>
-		</div>
+			{isFetching || error ? (
+				<CenteredContainer>
+					{isFetching ? (
+						<CircularProgress size={80} />
+					) : (
+						<>
+							<Typography variant="h3" gutterBottom>
+								Error loading data
+							</Typography>
+							<Typography variant="body1">{error}</Typography>
+						</>
+					)}
+				</CenteredContainer>
+			) : (
+				<Paper>
+					<Box padding={3}>
+						<Switch>
+							<Route exact path="/settings">
+								<SettingsPage />
+							</Route>
+							<Route
+								exact
+								path="/group/:groupId"
+								render={({ match }) => (
+									<CouponGroupPage groupId={Number(match.params.groupId)} />
+								)}
+							/>
+							<Route
+								exact
+								path="/add-coupons/:groupId"
+								render={({ match }) => (
+									<AddCouponsPage groupId={Number(match.params.groupId)} />
+								)}
+							/>
+							<Route exact path="/add-coupon-group">
+								<AddCouponGroupPage />
+							</Route>
+							<Route exact path="/">
+								<DashboardPage />
+							</Route>
+							<Route>
+								<div>Invalid route</div>
+							</Route>
+						</Switch>
+					</Box>
+				</Paper>
+			)}
+		</Container>
 	);
 }
+
+const Container = styled("div")({
+	marginBottom: "80vh",
+});
 
 export default App;
