@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { styled } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
+import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import BasicRowContainer from "./row-container.component";
 
@@ -31,25 +32,23 @@ const ActionTable = ({
 	const toggleAllIds = () =>
 		allIdsSelected() ? deselectAllIds() : selectAllIds();
 
-	return (
-		<Container>
-			<HeaderRow>
-				<Checkbox
-					checked={allIdsSelected() && !noIdsSelected()}
-					indeterminate={indeterminateSelection()}
-					onChange={toggleAllIds}
-					aria-label={(allIdsSelected() ? "deselect" : "select") + " all rows"}
-				/>
-				<BulkActions ids={selectedIds} />
-			</HeaderRow>
-			{isFetching && (
-				<RowContainer>
-					<CircularProgress size={30} style={{ margin: "0 5px" }} />
-					Updating entries
-				</RowContainer>
-			)}
+	const Header = (
+		<HeaderRow>
+			<Checkbox
+				checked={allIdsSelected() && !noIdsSelected()}
+				indeterminate={indeterminateSelection()}
+				onChange={toggleAllIds}
+				aria-label={(allIdsSelected() ? "deselect" : "select") + " all rows"}
+			/>
+			<BulkActions ids={selectedIds} />
+		</HeaderRow>
+	);
+
+	const Body = (
+		<>
+			{isFetching ? <LoadingIndicatorRow /> : null}
 			{ids.length === 0 ? (
-				<RowContainer>No entries</RowContainer>
+				<NoEntriesRow />
 			) : (
 				ids.map((id) => (
 					<RowContainer key={id}>
@@ -58,15 +57,29 @@ const ActionTable = ({
 					</RowContainer>
 				))
 			)}
-		</Container>
+		</>
+	);
+
+	return (
+		<Paper square>
+			{Header}
+			{Body}
+		</Paper>
 	);
 };
 
-const Container = styled(Paper)(({ theme }) => ({
-	marginBottom: theme.spacing(2),
-	borderTopLeftRadius: 0,
-	borderTopRightRadius: 0,
-}));
+const LoadingIndicatorRow = () => (
+	<RowContainer>
+		<CircularProgress size={30} style={{ margin: "0 5px" }} />
+		<Typography>Updating entries</Typography>
+	</RowContainer>
+);
+
+const NoEntriesRow = () => (
+	<RowContainer>
+		<Typography>No entries</Typography>
+	</RowContainer>
+);
 
 const rowStyles = {
 	display: "flex",

@@ -11,13 +11,14 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
 import ActionTable from "./action-table.component";
+import Paginated from "./paginated.component";
 import { getDateText } from "../utils";
 
 const CouponTabs = ({ groupId, isFetching }) => {
 	const [state, setState] = useState("active");
 
 	const coupons = useSelector((state) => selectCouponsByStatus(state, groupId));
-	const couponsIds = map(coupons[state], "id");
+	const couponIds = map(coupons[state], "id");
 
 	return (
 		<>
@@ -29,12 +30,19 @@ const CouponTabs = ({ groupId, isFetching }) => {
 					<Tab value="expired" label="Expired" />
 				</Tabs>
 			</AppBar>
-			<ActionTable
-				key={state + couponsIds}
-				ids={couponsIds}
-				Row={({ id }) => <CouponRow couponId={id} />}
-				BulkActions={getBulkActionsComponent(state)}
-				isFetching={isFetching}
+			<Paginated
+				key={state}
+				items={couponIds}
+				perPage={12}
+				getComponent={(ids) => (
+					<ActionTable
+						key={ids}
+						ids={ids}
+						Row={({ id }) => <CouponRow couponId={id} />}
+						BulkActions={getBulkActionsComponent(state)}
+						isFetching={isFetching}
+					/>
+				)}
 			/>
 		</>
 	);
