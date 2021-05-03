@@ -1,52 +1,78 @@
-import React from 'react';
-import Box from '@material-ui/core/Box';
-import { Editor } from '@tinymce/tinymce-react';
+import React from "react";
+import Box from "@material-ui/core/Box";
+import { Editor } from "@tinymce/tinymce-react";
 
-import 'tinymce/tinymce';
-import 'tinymce/icons/default';
-import 'tinymce/themes/silver';
-import 'tinymce/skins/ui/oxide/skin.min.css';
-import 'tinymce/skins/ui/oxide/content.min.css';
-import 'tinymce/skins/content/default/content.min.css';
+import "tinymce/tinymce";
+import "tinymce/themes/silver";
+import "tinymce/icons/default";
+import "tinymce/skins/content/default/content.min.css";
+import "tinymce/skins/ui/oxide/content.min.css";
+import "tinymce/skins/ui/oxide/skin.min.css";
 
-import 'tinymce/plugins/paste';
-import 'tinymce/plugins/link';
-import 'tinymce/plugins/image';
-import 'tinymce/plugins/template';
-import 'tinymce/plugins/code';
-import 'tinymce/plugins/autoresize';
-import 'tinymce/plugins/template';
-import 'tinymce/plugins/help';
+import "tinymce/plugins/autoresize";
+import "tinymce/plugins/code";
+import "tinymce/plugins/help";
+import "tinymce/plugins/image";
+import "tinymce/plugins/link";
+import "tinymce/plugins/paste";
 
 const TemplateEditor = ({ template, handleChange, ...editorProps }) => (
 	<Box marginY={2}>
 		<Editor
 			init={{
 				height: 300,
-				plugins: 'paste link image template code autoresize help lists template',
-				formats: {
-					coupon: { inline: 'button', classes: 'wp-coupons-popup__coupon' },
-					value: { inline: 'span', classes: 'wp-coupons-popup__value' },
-					expiresAt: { inline: 'span', classes: 'wp-coupons-popup__expires-at' },
-					button: { block: 'div', classes: 'wp-coupons-popup__button' },
-				},
-				style_formats: [
-					{ title: 'Action area', format: 'button' },
-					{ title: 'Success area', format: 'coupon' },
-					{ title: 'Coupon value (will be overwritten)', format: 'value' },
-					{ title: 'Expiry date (will be overwritten)', format: 'expiresAt' },
+				plugins: "paste link image template code autoresize help lists",
+				toolbar: [
+					"undo redo | styleselect | bold italic | link image | alignleft aligncenter alignright alignjustify | outdent indent | code | help",
+					"actionButton successArea couponValue expiresAt",
 				],
 				content_style,
 				branding: false,
+				formats: {
+					successArea: {
+						block: "div",
+						classes: "wp-coupons-popup__coupon",
+					},
+					couponValue: {
+						inline: "span",
+						classes: "wp-coupons-popup__value",
+					},
+					expiresAt: {
+						inline: "span",
+						classes: "wp-coupons-popup__expires-at",
+					},
+					actionButton: {
+						inline: "button",
+						classes: "wp-coupons-popup__button",
+					},
+				},
+				setup: (editor) => {
+					editor.ui.registry.addButton("couponValue", {
+						text: "Coupon value",
+						onAction: () => editor.formatter.toggle("couponValue"),
+					});
+					editor.ui.registry.addButton("expiresAt", {
+						text: "Expiry date",
+						onAction: () => editor.formatter.toggle("expiresAt"),
+					});
+					editor.ui.registry.addButton("successArea", {
+						text: "Success Area",
+						onAction: () => editor.formatter.toggle("successArea"),
+					});
+					editor.ui.registry.addButton("actionButton", {
+						text: "Action Button",
+						onAction: () => editor.formatter.toggle("actionButton"),
+					});
+				},
 			}}
 			value={template}
 			onEditorChange={(content, editor) => handleChange(content)}
 			{...editorProps}
 		/>
 	</Box>
-)
+);
 
-const highlightColor = '#999999'
+const highlightColor = "#999999";
 const content_style = `
 	[class^="wp-coupons-popup__"] {
 		position: relative;
@@ -77,6 +103,6 @@ const content_style = `
 	.wp-coupons-popup__expires-at::after {
 		content: "Expiry date";
 	}
-`
+`;
 
-export default TemplateEditor
+export default TemplateEditor;
