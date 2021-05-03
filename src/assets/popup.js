@@ -79,6 +79,7 @@
 			this.elements.coupon.style.display = "block";
 			this.elements.value.textContent = value;
 			this.elements.expiresAt.textContent = this.getDateText(expires_at);
+			this.elements.expiresAt.style.whiteSpace = "nowrap";
 		};
 
 		getDateText(timestamp) {
