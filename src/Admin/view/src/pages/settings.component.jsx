@@ -66,6 +66,11 @@ const SettingsPage = () => {
 				handleChange={handleChange("seconds_valid_after_distribution")}
 				label="Minimum time of coupon validity"
 			/>
+			<SettingsOption
+				value={options.seconds_from_page_load_to_popup}
+				handleChange={handleChange("seconds_from_page_load_to_popup")}
+				label="Time between page load and popup display"
+			/>
 			<ActionButton Icon={DoneIcon} isLoading={isSaving} onClick={handleSubmit}>
 				Save options
 			</ActionButton>
