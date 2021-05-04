@@ -47,7 +47,7 @@ Now you're ready to go. But you may want to have a look at the default settings.
 
 == Customization ==
 
-Most of the user-facing customization can be done in the group editor. If you want to change the users which should be able to get coupons, you can hook into the `wp_coupons_user_is_authorized` filter. Currently, there is no way to distribute coupons to anonymous users (keeping track is done server-side). So even if you allow this through this filter, it will not work.
+Most of the user-facing customization can be done in the group editor. If you want to change the users which should be able to get coupons, you can hook into the `wp_coupons_user_is_authorized_for_coupons` filter. Currently, there is no way to distribute coupons to anonymous users (keeping track is done server-side). So even if you allow this through this filter, it will not work.
 
 == Shortcomings/Bugs ==
 
