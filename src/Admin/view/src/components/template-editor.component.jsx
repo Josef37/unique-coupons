@@ -56,11 +56,11 @@ const TemplateEditor = ({ template, handleChange, ...editorProps }) => (
 						onAction: () => editor.formatter.toggle("expiresAt"),
 					});
 					editor.ui.registry.addButton("successArea", {
-						text: "Success Area",
+						text: "Success area",
 						onAction: () => editor.formatter.toggle("successArea"),
 					});
 					editor.ui.registry.addButton("actionButton", {
-						text: "Action Button",
+						text: "Action button",
 						onAction: () => editor.formatter.toggle("actionButton"),
 					});
 				},
@@ -72,11 +72,11 @@ const TemplateEditor = ({ template, handleChange, ...editorProps }) => (
 	</Box>
 );
 
-const highlightColor = "#999999";
+const highlightColor = "#666";
 const content_style = `
 	[class^="wp-coupons-popup__"] {
 		position: relative;
-		border: 1px solid ${highlightColor};
+		border: 1px dashed ${highlightColor};
 	}
 	.wp-coupons-popup__coupon {
 		padding-top: 0.5em;
@@ -87,9 +87,17 @@ const content_style = `
 		top: 0;
 		left: 50%;
 		transform: translate(-50%, -75%);
-		font-size: 60%;
+		font-size: 90%;
 		color: ${highlightColor};
 		background-color: white;
+		opacity: 0;
+		transition: opacity 0.2s;
+		padding: 2px 4px;
+		border-radius: 4px;
+		box-shadow: 2px 2px 4px;
+	}
+	[class^="wp-coupons-popup__"]:hover::after {
+		opacity: 1;
 	}
 	.wp-coupons-popup__button::after {
 		content: "Action area";
