@@ -6,7 +6,9 @@
   "scripts": {
     "start": "grunt default",
     "readme": "grunt readme",
-    "i18n": "grunt i18n"
+    "i18n": "grunt i18n",
+    "prezip": "cd ./src/Admin/view && npm run build",
+    "zip": "wp dist-archive ."
   },
   "devDependencies": {
     "grunt": "~0.4.5",

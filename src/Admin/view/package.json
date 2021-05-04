@@ -27,7 +27,9 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "cross-env PUBLIC_URL=__PUBLIC_URL_PLACEHOLDER__ react-app-rewired build && node scripts/patch-public-url.js",
+    "prebuild": "rm -r ./build",
+    "build": "cross-env PUBLIC_URL=__PUBLIC_URL_PLACEHOLDER__ react-app-rewired build",
+    "postbuild": "node scripts/patch-public-url.js",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
