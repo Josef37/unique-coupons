@@ -28,11 +28,8 @@ class User {
 
 	public function is_authorized_for_coupons() {
 		$is_user_logged_in = $this->user_id > 0;
-		return (bool) apply_filters(
-			'wp_coupons_user_is_authorized_for_coupons',
-			$is_user_logged_in,
-			$this->user_id
-		);
+		return $is_user_logged_in
+			&& apply_filters( 'wp_coupons_user_is_authorized_for_coupons', true, $this->user_id );
 	}
 
 	/** @todo add field to user meta */
