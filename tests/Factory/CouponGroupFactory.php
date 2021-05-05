@@ -1,8 +1,8 @@
 <?php
 
-namespace WPCouponsTest\Factory;
+namespace UniqueCouponsTest\Factory;
 
-use WPCoupons\Models\CouponGroup;
+use UniqueCoupons\Models\CouponGroup;
 
 class CouponGroupFactory {
 	/** @var int */

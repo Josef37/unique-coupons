@@ -1,7 +1,7 @@
 <?php
 
-use WPCoupons\Models\Coupon;
-use WPCoupons\Models\CouponGroup;
+use UniqueCoupons\Models\Coupon;
+use UniqueCoupons\Models\CouponGroup;
 
 class CouponGroupTest extends \WP_UnitTestCase {
 	/** @var CouponGroup[] */

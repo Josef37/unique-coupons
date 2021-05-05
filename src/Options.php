@@ -1,9 +1,9 @@
 <?php
 
-namespace WPCoupons;
+namespace UniqueCoupons;
 
 class Options {
-	const OPTION_NAME = 'wp_coupons_options';
+	const OPTION_NAME = 'unique_coupons_options';
 	/** @var int[] */
 	public static $default_options;
 

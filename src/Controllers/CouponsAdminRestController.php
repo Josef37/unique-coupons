@@ -1,9 +1,9 @@
 <?php
-namespace WPCoupons\Controllers;
+namespace UniqueCoupons\Controllers;
 
 use WP_Error;
-use WPCoupons\Models\Coupon;
-use WPCoupons\Models\CouponGroup;
+use UniqueCoupons\Models\Coupon;
+use UniqueCoupons\Models\CouponGroup;
 
 class CouponsAdminRestController {
 	/**
@@ -13,7 +13,7 @@ class CouponsAdminRestController {
 	public function get_coupons( $request ) {
 		$group_id = $request->get_param( 'group_id' );
 		if ( ! CouponGroup::exists( $group_id ) ) {
-			return new \WP_Error( 'no_group', 'Could not find group with ID {$group_id} in taxonomy wp_coupon_group.', array( 'status' => 404 ) );
+			return new \WP_Error( 'no_group', 'Could not find group with ID {$group_id} in taxonomy unique_coupon_group.', array( 'status' => 404 ) );
 		}
 		$group   = new CouponGroup( $group_id );
 		$coupons = $group->get_coupons();
@@ -44,7 +44,7 @@ class CouponsAdminRestController {
 		$expires_at    = $request->get_param( 'expires_at' );
 
 		if ( ! CouponGroup::exists( $group_id ) ) {
-			return new \WP_Error( 'no_group', 'Could not find group with ID {$group_id} in taxonomy wp_coupon_group.', array( 'status' => 404 ) );
+			return new \WP_Error( 'no_group', 'Could not find group with ID {$group_id} in taxonomy unique_coupon_group.', array( 'status' => 404 ) );
 		}
 		try {
 			$coupon_ids = $this->add_coupons( $group_id, $coupon_values, $expires_at );

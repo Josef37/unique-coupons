@@ -1,11 +1,11 @@
 <?php
 
-use WPCoupons\Models\CouponGroup;
-use WPCoupons\Models\User;
-use WPCoupons\Options;
-use WPCoupons\Services\PopupService;
-use WPCouponsTest\Factory\CouponFactory;
-use WPCouponsTest\Factory\CouponGroupFactory;
+use UniqueCoupons\Models\CouponGroup;
+use UniqueCoupons\Models\User;
+use UniqueCoupons\Options;
+use UniqueCoupons\Services\PopupService;
+use UniqueCouponsTest\Factory\CouponFactory;
+use UniqueCouponsTest\Factory\CouponGroupFactory;
 
 class PopupServiceTest extends \WP_UnitTestCase {
 	/** @var User */
@@ -22,7 +22,7 @@ class PopupServiceTest extends \WP_UnitTestCase {
 	}
 
 	public function test_get_possible_group_unauthorized_user() {
-		add_filter( 'wp_coupons_user_is_authorized_for_coupons', '__return_false' );
+		add_filter( 'unique_coupons_user_is_authorized_for_coupons', '__return_false' );
 
 		$this->expectException( \Exception::class );
 		$this->service->get_possible_group();

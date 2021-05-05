@@ -1,10 +1,10 @@
 <?php
 
-namespace WPCouponsTest\Factory;
+namespace UniqueCouponsTest\Factory;
 
-use WPCoupons\Models\Coupon;
-use WPCoupons\Options;
-use WPCoupons\Utils;
+use UniqueCoupons\Models\Coupon;
+use UniqueCoupons\Options;
+use UniqueCoupons\Utils;
 
 class CouponFactory {
 	/** @var int */

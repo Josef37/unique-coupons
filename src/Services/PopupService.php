@@ -1,9 +1,9 @@
 <?php
-namespace WPCoupons\Services;
+namespace UniqueCoupons\Services;
 
-use WPCoupons\Models\User;
-use WPCoupons\Models\CouponGroup;
-use WPCoupons\Utils;
+use UniqueCoupons\Models\User;
+use UniqueCoupons\Models\CouponGroup;
+use UniqueCoupons\Utils;
 
 /**
  * Handles interactions with coupons for public users.

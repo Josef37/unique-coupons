@@ -15,7 +15,7 @@ There are no special requirements for developing. There are just some for nice a
 The tests are also run in CI. So you don't have to necessarily run them locally.
 
 To run tests locally, you have to install PHPUnit (up to version 7.x) and make the command available inside your plugin directory.
-Set up the test environment by running `npm run test:setup`, which will work out of the box if you used [VVV](https://varyingvagrantvagrants.org/) for your local site (have look at the [test documentation](https://make.wordpress.org/cli/handbook/misc/plugin-unit-tests/) for other setups). This will setup a test database `wp_coupons_test`.
+Set up the test environment by running `npm run test:setup`, which will work out of the box if you used [VVV](https://varyingvagrantvagrants.org/) for your local site (have look at the [test documentation](https://make.wordpress.org/cli/handbook/misc/plugin-unit-tests/) for other setups). This will setup a test database `unique_coupons_test`.
 Now just run `npm run test` to run all tests.
 
 ## Publishing

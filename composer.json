@@ -1,5 +1,5 @@
 {
-  "name": "josef37/wp-coupons",
+  "name": "josef37/unique-coupons",
   "description": "Distribute unique coupons to your users.",
   "type": "wordpress-plugin",
   "license": "GPLv2+",
@@ -11,8 +11,8 @@
   ],
   "autoload": {
     "psr-4": {
-      "WPCoupons\\": "src/",
-      "WPCouponsTest\\": "tests/"
+      "UniqueCoupons\\": "src/",
+      "UniqueCouponsTest\\": "tests/"
     }
   }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace WPCoupons\Admin\Menu;
+namespace UniqueCoupons\Admin\Menu;
 
 /**
  * Adds a new menu page rendered with React.
@@ -35,10 +35,10 @@ class Menu {
 	 */
 	public function add_menu_page() {
 		add_menu_page(
-			__( 'Coupons', 'wp-coupons' ),
-			__( 'Coupons', 'wp-coupons' ),
+			__( 'Coupons', 'unique-coupons' ),
+			__( 'Coupons', 'unique-coupons' ),
 			'manage_options',
-			'wp-coupons',
+			'unique-coupons',
 			array( $this, 'render_admin' )
 		);
 	}

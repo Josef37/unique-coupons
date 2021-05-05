@@ -1,12 +1,12 @@
 <?php
-namespace WPCoupons\Models;
+namespace UniqueCoupons\Models;
 
-use WPCoupons\Options;
-use WPCoupons\Utils;
+use UniqueCoupons\Options;
+use UniqueCoupons\Utils;
 
 class User {
-	const RETRIEVALS_META_KEY  = 'wp_coupons_retrievals';
-	const GROUPS_DATA_META_KEY = 'wp_coupons_groups_data';
+	const RETRIEVALS_META_KEY  = 'unique_coupons_retrievals';
+	const GROUPS_DATA_META_KEY = 'unique_coupons_groups_data';
 
 	/**
 	 * ID of the WordPress user.
@@ -29,7 +29,7 @@ class User {
 	public function is_authorized_for_coupons() {
 		$is_user_logged_in = $this->user_id > 0;
 		return $is_user_logged_in
-			&& apply_filters( 'wp_coupons_user_is_authorized_for_coupons', true, $this->user_id );
+			&& apply_filters( 'unique_coupons_user_is_authorized_for_coupons', true, $this->user_id );
 	}
 
 	/** @todo add field to user meta */

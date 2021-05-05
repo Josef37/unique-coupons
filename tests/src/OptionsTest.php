@@ -1,6 +1,6 @@
 <?php
 
-use WPCoupons\Options;
+use UniqueCoupons\Options;
 
 class OptionsTest extends WP_UnitTestCase {
 	public function test_get_options() {

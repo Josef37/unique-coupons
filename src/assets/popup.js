@@ -1,6 +1,6 @@
 (function ($) {
 	window.addEventListener("DOMContentLoaded", (event) => {
-		const popupElement = document.querySelector(".wp-coupons-popup");
+		const popupElement = document.querySelector(".unique-coupons-popup");
 		new Popup(popupElement);
 	});
 
@@ -27,10 +27,10 @@
 
 		selectDomElements = () => {
 			[
-				{ name: "button", selector: ".wp-coupons-popup__button" },
-				{ name: "coupon", selector: ".wp-coupons-popup__coupon" },
-				{ name: "value", selector: ".wp-coupons-popup__value" },
-				{ name: "expiresAt", selector: ".wp-coupons-popup__expires-at" },
+				{ name: "button", selector: ".unique-coupons-popup__button" },
+				{ name: "coupon", selector: ".unique-coupons-popup__coupon" },
+				{ name: "value", selector: ".unique-coupons-popup__value" },
+				{ name: "expiresAt", selector: ".unique-coupons-popup__expires-at" },
 			].forEach(({ name, selector }) => {
 				this.elements[name] = this.elements.container.querySelector(selector);
 			});
@@ -58,14 +58,14 @@
 		};
 
 		fetchCoupon = () => {
-			return fetch(wpCouponsPopup.api.retrieveCoupon, {
+			return fetch(uniqueCouponsPopup.api.retrieveCoupon, {
 				method: "POST",
 				body: JSON.stringify({
 					group_id: this.groupId,
 				}),
 				headers: {
 					"Content-Type": "application/json",
-					"X-WP-Nonce": wpCouponsPopup.api.nonce,
+					"X-WP-Nonce": uniqueCouponsPopup.api.nonce,
 				},
 			});
 		};
@@ -99,7 +99,7 @@
 		queuePopup = () => {
 			setTimeout(() => {
 				$(this.elements.container).modal({ fadeDuration: 300, fadeDelay: 0 });
-			}, wpCouponsPopup.timeoutInMs);
+			}, uniqueCouponsPopup.timeoutInMs);
 		};
 
 		setCanFetch(canFetch) {

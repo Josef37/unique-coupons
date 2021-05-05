@@ -19,7 +19,7 @@ robotoFontLink.setAttribute(
 );
 
 // The shadow DOM has to be configured beforehand to allow style-loader to inject styles into shadow DOM.
-const shadowHost = document.getElementById("wp-coupons-root");
+const shadowHost = document.getElementById("unique-coupons-root");
 const shadowRoot = shadowHost.shadowRoot;
 shadowRoot.appendChild(appContainer);
 appContainer.appendChild(robotoFontLink);

@@ -1,10 +1,10 @@
 <?php
-namespace WPCoupons\Models;
+namespace UniqueCoupons\Models;
 
-use WPCoupons\Utils;
+use UniqueCoupons\Utils;
 
 class CouponGroup {
-	const TAXONOMY_KEY    = 'wp_coupon_group';
+	const TAXONOMY_KEY    = 'unique_coupon_group';
 	const TERM_QUERY_ARGS = array(
 		'taxonomy'   => self::TAXONOMY_KEY,
 		'orderby'    => 'term_id',
@@ -25,7 +25,7 @@ class CouponGroup {
 
 	/** @todo maybe move to Popup service provider */
 	public function echo_popup() {
-		echo '<div class="wp-coupons-popup" data-group-id=' . esc_attr( $this->group_id ) . '>'
+		echo '<div class="unique-coupons-popup" data-group-id=' . esc_attr( $this->group_id ) . '>'
 			. wp_kses_post( $this->get_template() )
 			. '</div>';
 	}
@@ -165,7 +165,7 @@ class CouponGroup {
 					'assign_terms' => 'edit_posts',
 				),
 				'labels'                => array(
-					'name' => __( 'Coupon Groups', 'wp-coupons' ),
+					'name' => __( 'Coupon Groups', 'unique-coupons' ),
 				),
 				'show_in_rest'          => true,
 				'rest_base'             => self::TAXONOMY_KEY,

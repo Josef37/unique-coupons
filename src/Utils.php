@@ -1,5 +1,5 @@
 <?php
-namespace WPCoupons;
+namespace UniqueCoupons;
 
 /**
  * General utility functions

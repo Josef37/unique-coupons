@@ -31,19 +31,19 @@ const TemplateEditor = ({ template, handleChange, ...editorProps }) => (
 				formats: {
 					successArea: {
 						block: "div",
-						classes: "wp-coupons-popup__coupon",
+						classes: "unique-coupons-popup__coupon",
 					},
 					couponValue: {
 						inline: "span",
-						classes: "wp-coupons-popup__value",
+						classes: "unique-coupons-popup__value",
 					},
 					expiresAt: {
 						inline: "span",
-						classes: "wp-coupons-popup__expires-at",
+						classes: "unique-coupons-popup__expires-at",
 					},
 					actionButton: {
 						inline: "button",
-						classes: "wp-coupons-popup__button",
+						classes: "unique-coupons-popup__button",
 					},
 				},
 				setup: (editor) => {
@@ -74,14 +74,14 @@ const TemplateEditor = ({ template, handleChange, ...editorProps }) => (
 
 const highlightColor = "#666";
 const content_style = `
-	[class^="wp-coupons-popup__"] {
+	[class^="unique-coupons-popup__"] {
 		position: relative;
 		border: 1px dashed ${highlightColor};
 	}
-	.wp-coupons-popup__coupon {
+	.unique-coupons-popup__coupon {
 		padding-top: 0.5em;
 	}
-	[class^="wp-coupons-popup__"]::after {
+	[class^="unique-coupons-popup__"]::after {
 		position: absolute;
 		width: max-content;
 		top: 0;
@@ -96,19 +96,19 @@ const content_style = `
 		border-radius: 4px;
 		box-shadow: 2px 2px 4px;
 	}
-	[class^="wp-coupons-popup__"]:hover::after {
+	[class^="unique-coupons-popup__"]:hover::after {
 		opacity: 1;
 	}
-	.wp-coupons-popup__button::after {
+	.unique-coupons-popup__button::after {
 		content: "Action area";
 	}
-	.wp-coupons-popup__coupon::after {
+	.unique-coupons-popup__coupon::after {
 		content: "Success area";
 	}
-	.wp-coupons-popup__value::after {
+	.unique-coupons-popup__value::after {
 		content: "Coupon value";
 	}
-	.wp-coupons-popup__expires-at::after {
+	.unique-coupons-popup__expires-at::after {
 		content: "Expiry date";
 	}
 `;

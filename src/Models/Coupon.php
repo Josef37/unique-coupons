@@ -1,10 +1,10 @@
 <?php
-namespace WPCoupons\Models;
+namespace UniqueCoupons\Models;
 
-use WPCoupons\Options;
+use UniqueCoupons\Options;
 
 class Coupon {
-	const POST_TYPE_KEY = 'wp_coupon';
+	const POST_TYPE_KEY = 'unique_coupon';
 
 	/**
 	 * The post id for the coupon custom post type.

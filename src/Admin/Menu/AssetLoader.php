@@ -1,5 +1,5 @@
 <?php
-namespace WPCoupons\Admin\Menu;
+namespace UniqueCoupons\Admin\Menu;
 
 /**
  * Loads assets for the React admin frontend.
@@ -98,19 +98,19 @@ abstract class AssetLoader {
 
 		$handle = $this->scripts[0]['handle'];
 
-		$object_name = 'WP_COUPONS';
+		$object_name = 'UNIQUE_COUPONS';
 
 		$object = array(
 			'PUBLIC_URL' => $this->assets_url,
 			'strings'    => array(
-				'saved' => __( 'Settings Saved', 'wp-coupons' ),
-				'error' => __( 'Error', 'wp-coupons' ),
+				'saved' => __( 'Settings Saved', 'unique-coupons' ),
+				'error' => __( 'Error', 'unique-coupons' ),
 			),
 			'api'        => array(
 				'nonce'   => wp_create_nonce( 'wp_rest' ),
-				'coupons' => esc_url( rest_url( 'wp-coupons/v1/coupons' ) ),
-				'group'   => esc_url( rest_url( 'wp/v2/wp_coupon_group' ) ),
-				'options' => esc_url( rest_url( 'wp-coupons/v1/options' ) ),
+				'coupons' => esc_url( rest_url( 'unique-coupons/v1/coupons' ) ),
+				'group'   => esc_url( rest_url( 'wp/v2/unique_coupon_group' ) ),
+				'options' => esc_url( rest_url( 'unique-coupons/v1/options' ) ),
 			),
 		);
 

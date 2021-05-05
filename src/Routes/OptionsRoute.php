@@ -1,9 +1,9 @@
 <?php
-namespace WPCoupons\Routes;
+namespace UniqueCoupons\Routes;
 
-use WPCoupons\Models\CouponGroup;
-use WPCoupons\Options;
-use WPCoupons\Services\PopupService;
+use UniqueCoupons\Models\CouponGroup;
+use UniqueCoupons\Options;
+use UniqueCoupons\Services\PopupService;
 
 class OptionsRoute extends \WP_REST_Controller {
 	public function __construct( $namespace ) {

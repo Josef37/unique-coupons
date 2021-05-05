@@ -1,6 +1,6 @@
 import { set } from "lodash-es";
 
-const WP_API = window.WP_COUPONS.api;
+const WP_API = window.UNIQUE_COUPONS.api;
 
 class WpRest {
 	addGroup = async (couponGroup) => {

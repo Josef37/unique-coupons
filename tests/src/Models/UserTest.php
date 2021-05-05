@@ -1,14 +1,14 @@
 <?php
 
-use WPCoupons\Models\Coupon;
-use WPCoupons\Models\User;
+use UniqueCoupons\Models\Coupon;
+use UniqueCoupons\Models\User;
 
 class UserTest extends WP_UnitTestCase {
 	public function test_is_authorized_for_coupons() {
 		$is_authorized_for_coupons = function ( $is_authorized, $user_id ) {
 			return $user_id >= 2;
 		};
-		add_filter( 'wp_coupons_user_is_authorized_for_coupons', $is_authorized_for_coupons, 10, 2 );
+		add_filter( 'unique_coupons_user_is_authorized_for_coupons', $is_authorized_for_coupons, 10, 2 );
 
 		$this->assertEquals( ( new User( 0 ) )->is_authorized_for_coupons(), false );
 		$this->assertEquals( ( new User( 1 ) )->is_authorized_for_coupons(), false );

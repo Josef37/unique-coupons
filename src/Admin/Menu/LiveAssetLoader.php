@@ -1,5 +1,5 @@
 <?php
-namespace WPCoupons\Admin\Menu;
+namespace UniqueCoupons\Admin\Menu;
 
 /**
  * Loads assets for the React admin frontend from the `build` folder (via `asset-manifest.json`).
@@ -35,7 +35,7 @@ class LiveAssetLoader extends AssetLoader {
 	 */
 	protected function get_entrypoints() {
 		$asset_manifest_url = $this->assets_url . '/asset-manifest.json';
-		$asset_manifest     = \WPCoupons\Utils::get_json( $asset_manifest_url );
+		$asset_manifest     = \UniqueCoupons\Utils::get_json( $asset_manifest_url );
 		return $asset_manifest['entrypoints'];
 	}
 
@@ -56,7 +56,7 @@ class LiveAssetLoader extends AssetLoader {
 		return array_filter(
 			$assets,
 			function( $asset ) use ( $tail ) {
-				return \WPCoupons\Utils::ends_with( $asset['url'], $tail );
+				return \UniqueCoupons\Utils::ends_with( $asset['url'], $tail );
 			}
 		);
 	}

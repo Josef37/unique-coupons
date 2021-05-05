@@ -1,5 +1,5 @@
 {
-  "name": "wp-coupons-admin",
+  "name": "unique-coupons-admin",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.2",

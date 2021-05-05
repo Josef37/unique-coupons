@@ -1,8 +1,8 @@
 <?php
-namespace WPCoupons\Routes;
+namespace UniqueCoupons\Routes;
 
-use WPCoupons\Models\CouponGroup;
-use WPCoupons\Services\PopupService;
+use UniqueCoupons\Models\CouponGroup;
+use UniqueCoupons\Services\PopupService;
 
 class RetrieveCouponRoute extends \WP_REST_Controller {
 	public function __construct( $namespace ) {

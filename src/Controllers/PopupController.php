@@ -1,9 +1,9 @@
 <?php
-namespace WPCoupons\Controllers;
+namespace UniqueCoupons\Controllers;
 
-use WPCoupons\Models\CouponGroup;
-use WPCoupons\Models\User;
-use WPCoupons\Services\PopupService;
+use UniqueCoupons\Models\CouponGroup;
+use UniqueCoupons\Models\User;
+use UniqueCoupons\Services\PopupService;
 
 /**
  * Gets called when an automatic popup could be loaded on a page.
@@ -41,8 +41,8 @@ class PopupController {
 		add_action(
 			'wp_enqueue_scripts',
 			function() {
-				wp_enqueue_style( 'wp-coupons-popup' );
-				wp_enqueue_script( 'wp-coupons-popup' );
+				wp_enqueue_style( 'unique-coupons-popup' );
+				wp_enqueue_script( 'unique-coupons-popup' );
 			}
 		);
 	}

@@ -1,7 +1,7 @@
 <?php
-namespace WPCoupons\Routes;
+namespace UniqueCoupons\Routes;
 
-use WPCoupons\Controllers\CouponsAdminRestController;
+use UniqueCoupons\Controllers\CouponsAdminRestController;
 
 class CouponsAdminRoute {
 	public function __construct( $namespace ) {

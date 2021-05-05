@@ -1,5 +1,5 @@
 <?php
-namespace WPCoupons\Admin\Menu;
+namespace UniqueCoupons\Admin\Menu;
 
 /**
  * Loads assets for the React admin frontend from the Webpack Dev Server.
@@ -15,15 +15,15 @@ class DevAssetLoader extends AssetLoader {
 
 		$this->scripts = array(
 			array(
-				'handle' => 'wp-coupons-dev-script-1',
+				'handle' => 'unique-coupons-dev-script-1',
 				'url'    => $this->assets_url . '/static/js/bundle.js',
 			),
 			array(
-				'handle' => 'wp-coupons-dev-script-2',
+				'handle' => 'unique-coupons-dev-script-2',
 				'url'    => $this->assets_url . '/static/js/0.chunk.js',
 			),
 			array(
-				'handle' => 'wp-coupons-dev-script-3',
+				'handle' => 'unique-coupons-dev-script-3',
 				'url'    => $this->assets_url . '/static/js/main.chunk.js',
 			),
 		);

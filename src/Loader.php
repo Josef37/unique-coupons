@@ -1,5 +1,5 @@
 <?php
-namespace WPCoupons;
+namespace UniqueCoupons;
 
 /**
  * Bootstraps the plugin.
@@ -21,7 +21,7 @@ class Loader {
 		$this->plugin_version  = $plugin_version;
 		$this->plugin_root_dir = $plugin_root_dir;
 		$this->plugin_root_url = $plugin_root_url;
-		$this->plugin_name     = 'wp-coupons';
+		$this->plugin_name     = 'unique-coupons';
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Loader {
 
 	private function load_admin() {
 		$react_assets_url = $this->plugin_root_url . 'src/Admin/view/build';
-		$root_element_id  = 'wp-coupons-root';
+		$root_element_id  = 'unique-coupons-root';
 
 		$asset_loader = new Admin\Menu\LiveAssetLoader( $react_assets_url );
 		$menu         = new Admin\Menu\Menu( $root_element_id, $asset_loader );
@@ -85,22 +85,22 @@ class Loader {
 				wp_register_style( 'jquery-modal', $assets_url . 'jquery.modal.min.css', array(), '0.9.2' );
 				wp_register_script( 'jquery-modal', $assets_url . 'jquery.modal.min.js', array( 'jquery' ), '0.9.2', true );
 
-				wp_register_style( 'wp-coupons-popup', false, array( 'jquery-modal' ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+				wp_register_style( 'unique-coupons-popup', false, array( 'jquery-modal' ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 				wp_register_script(
-					'wp-coupons-popup',
+					'unique-coupons-popup',
 					$assets_url . 'popup.js',
 					array( 'jquery-modal' ),
 					filemtime( $assets_dir . 'popup.js' ),
 					true
 				);
 				wp_localize_script(
-					'wp-coupons-popup',
-					'wpCouponsPopup',
+					'unique-coupons-popup',
+					'uniqueCouponsPopup',
 					array(
 						'timeoutInMs' => Options::get_seconds_from_page_load_to_popup(),
 						'api'         => array(
 							'nonce'          => wp_create_nonce( 'wp_rest' ),
-							'retrieveCoupon' => esc_url( rest_url( 'wp-coupons/v1/retrieve-coupon' ) ),
+							'retrieveCoupon' => esc_url( rest_url( 'unique-coupons/v1/retrieve-coupon' ) ),
 						),
 					)
 				);

@@ -47,7 +47,7 @@ Now you're ready to go. But you may want to have a look at the default settings.
 
 == Customization ==
 
-Most of the user-facing customization can be done in the group editor. If you want to change the users which should be able to get coupons, you can hook into the `wp_coupons_user_is_authorized_for_coupons` filter. Currently, there is no way to distribute coupons to anonymous users (keeping track is done server-side). So even if you allow this through this filter, it will not work.
+Most of the user-facing customization can be done in the group editor. If you want to change the users which should be able to get coupons, you can hook into the `unique_coupons_user_is_authorized_for_coupons` filter. Currently, there is no way to distribute coupons to anonymous users (keeping track is done server-side). So even if you allow this through this filter, it will not work.
 
 == Shortcomings/Bugs ==
 
@@ -56,13 +56,13 @@ Most of the user-facing customization can be done in the group editor. If you wa
 -   Because the group determines the popup's content, the group has to be decided for on page load. When there is only one coupon left and two users visit a page simultaneously, one gets the coupon and the other one will get an empty message.
     A proper error message will be shown in an upcoming version. And I'm also planning on reserving coupons, when a user visits a page, to avoid this race condition all together.
 -   Activation and deactivation hooks are missing. Data from this plugin will stay around after deleting it for now.
--   You can't explicitly filter when the popup shouldn't be shown. The best workaround is to hook into `wp_coupons_user_is_authorized_for_coupons`.
+-   You can't explicitly filter when the popup shouldn't be shown. The best workaround is to hook into `unique_coupons_user_is_authorized_for_coupons`.
 -   The plugin records a popup as "seen", when it is enqueued for displaying. Even if a user leaves the page before it is shown, it will be recorded as "seen".
 
 == Contributing ==
 
-The source code is hosted on [Josef37/wp-coupons](https://github.com/Josef37/wp-coupons).
+The source code is hosted on [Josef37/unique-coupons](https://github.com/Josef37/unique-coupons).
 Feel free to create a new issue, when you have questions or feature requests, or consider making a pull request.
-There is a separate [developer README](https://github.com/Josef37/wp-coupons/blob/main/README_DEV.md), which helps you set up the development environment.
+There is a separate [developer README](https://github.com/Josef37/unique-coupons/blob/main/README_DEV.md), which helps you set up the development environment.
 
 If this plugin helped you in any way, I'd like to hear your feedback.

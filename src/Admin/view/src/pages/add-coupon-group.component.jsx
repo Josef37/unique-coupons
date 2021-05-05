@@ -58,13 +58,13 @@ const defaultTemplate = `
 	Clicking the four buttons above the content will toggle the functionality for the selected text.
 </p>
 <p style="text-align: center;">
-	<button class="wp-coupons-popup__button">Clicking this button will fetch the coupon.</button>
+	<button class="unique-coupons-popup__button">Clicking this button will fetch the coupon.</button>
 </p>
-<div class="wp-coupons-popup__coupon" style="text-align: center;">
+<div class="unique-coupons-popup__coupon" style="text-align: center;">
   This area will be hidden, until the coupon was successfully fetched.
   Make sure to have the value marked up somewhere, or your users won't be very happy. For example:
-	Your coupon is <span class="wp-coupons-popup__value">value</span>
-  and expires at <span class="wp-coupons-popup__expires-at" style="white-space: nowrap;">date</span>.
+	Your coupon is <span class="unique-coupons-popup__value">value</span>
+  and expires at <span class="unique-coupons-popup__expires-at" style="white-space: nowrap;">date</span>.
 	"value" and "date" will be replaced with the according data.
 </div>
 `;
