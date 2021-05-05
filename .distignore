@@ -44,6 +44,7 @@ phpcs.xml.dist
 phpunit.xml
 phpunit.xml.dist
 README.md
+README_DEV.md
 tests
 Thumbs.db
 webpack.config.js
