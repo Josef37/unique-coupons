@@ -7,6 +7,10 @@
     "start": "grunt default",
     "readme": "grunt readme",
     "i18n": "grunt i18n",
+    "build:admin": "cd src/Admin/view && npm run build",
+    "start:admin": "cd src/Admin/view && npm run start",
+    "test": "phpunit",
+    "test:setup": "bash bin/install-wp-tests.sh wp_coupons_test root root localhost latest",
     "prezip": "cd ./src/Admin/view && npm run build",
     "zip": "wp dist-archive ."
   },

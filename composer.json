@@ -9,10 +9,6 @@
       "email": "josef.wittmann@tutanota.com"
     }
   ],
-  "scripts": {
-    "test": "phpunit",
-    "test:setup": "bash bin/install-wp-tests.sh wp_coupons_test root root localhost latest"
-  },
   "autoload": {
     "psr-4": {
       "WPCoupons\\": "src/",
