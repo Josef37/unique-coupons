@@ -1,17 +1,17 @@
-# Unique Coupons #
+# Unique Coupons
 
 **Contributors:** josefwittmann
 **Tags:** coupon, coupons, unique
 **Requires at least:** 5.3
 **Tested up to:** 5.7
 **Requires PHP:** 7.1
-**Stable tag:** 0.1.0
+**Stable tag:** 0.1.1
 **License:** GPLv2 or later
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
 
 Distribute unique coupons to your users.
 
-## Description ##
+## Description
 
 Allows you to upload a set of coupon codes you want to distribute to your users. Each coupon is assumed to be used only once.
 
@@ -19,13 +19,13 @@ You can manage multiple sets of coupons from different sources.
 
 Your users are shown a popup next time they visit the site. They have are only shown the coupon after clicking a button, to ensure interest.
 
-## Installation ##
+## Installation
 
 Install like any plugin (via wp-admin or uploading the plugin manually).
 
 You'll find a new menu item in the admin area near the bottom called 'Coupons'. All administration is done from there.
 
-## Usage ##
+## Usage
 
 After installing, you'll find a new menu item in the admin area near the bottom called 'Coupons'. All administration is done from there.
 
@@ -45,11 +45,11 @@ Save the group and add some coupons. You can add multiple coupons with the same 
 
 Now you're ready to go. But you may want to have a look at the default settings. There you can adjust delays between events to not spam your users.
 
-## Customization ##
+## Customization
 
 Most of the user-facing customization can be done in the group editor. If you want to change the users which should be able to get coupons, you can hook into the `unique_coupons_user_is_authorized_for_coupons` filter. Currently, there is no way to distribute coupons to anonymous users (keeping track is done server-side). So even if you allow this through this filter, it will not work.
 
-## Shortcomings/Bugs ##
+## Shortcomings/Bugs
 
 -   There is no way to preview the popup. This is one of the next feature, I'll work on.
     In the meantime, copy the content into a post and inspect it there.
@@ -59,7 +59,7 @@ Most of the user-facing customization can be done in the group editor. If you wa
 -   You can't explicitly filter when the popup shouldn't be shown. The best workaround is to hook into `unique_coupons_user_is_authorized_for_coupons`.
 -   The plugin records a popup as "seen", when it is enqueued for displaying. Even if a user leaves the page before it is shown, it will be recorded as "seen".
 
-## Contributing ##
+## Contributing
 
 The source code is hosted on [Josef37/unique-coupons](https://github.com/Josef37/unique-coupons).
 Feel free to create a new issue, when you have questions or feature requests, or consider making a pull request.

@@ -7,13 +7,13 @@
  * Author URI:      https://josefwittmann.dev/
  * Text Domain:     unique-coupons
  * Domain Path:     /languages
- * Version:         0.1.0
+ * Version:         0.1.1
  */
 
 require __DIR__ . '/vendor/autoload.php';
 
 function unique_coupons_load_plugin() {
-	$version         = '0.1.0';
+	$version         = '0.1.1';
 	$plugin_root_dir = plugin_dir_path( __FILE__ );
 	$plugin_root_url = plugin_dir_url( __FILE__ );
 	$loader          = new UniqueCoupons\Loader( $version, $plugin_root_dir, $plugin_root_url );
