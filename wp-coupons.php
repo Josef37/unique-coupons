@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:     Coupons for WordPress
+ * Plugin Name:     Unique Coupons
  * Plugin URI:      PLUGIN SITE HERE
  * Description:     Distribute unique coupons to your users
  * Author:          Josef Wittmann <josef.wittmann@tutanota.com>
