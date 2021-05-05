@@ -57,6 +57,7 @@ Most of the user-facing customization can be done in the group editor. If you wa
     A proper error message will be shown in an upcoming version. And I'm also planning on reserving coupons, when a user visits a page, to avoid this race condition all together.
 -   Activation and deactivation hooks are missing. Data from this plugin will stay around after deleting it for now.
 -   You can't explicitly filter when the popup shouldn't be shown. The best workaround is to hook into `wp_coupons_user_is_authorized_for_coupons`.
+-   The plugin records a popup as "seen", when it is enqueued for displaying. Even if a user leaves the page before it is shown, it will be recorded as "seen".
 
 ## Contributing ##
 
