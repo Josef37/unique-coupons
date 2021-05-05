@@ -55,7 +55,8 @@ Most of the user-facing customization can be done in the group editor. If you wa
     In the meantime, copy the content into a post and inspect it there.
 -   Because the group determines the popup's content, the group has to be decided for on page load. When there is only one coupon left and two users visit a page simultaneously, one gets the coupon and the other one will get an empty message.
     A proper error message will be shown in an upcoming version. And I'm also planning on reserving coupons, when a user visits a page, to avoid this race condition all together.
--   Activation and deactivation hooks are missing
+-   Activation and deactivation hooks are missing. Data from this plugin will stay around after deleting it for now.
+-   You can't explicitly filter when the popup shouldn't be shown. The best workaround is to hook into `wp_coupons_user_is_authorized_for_coupons`.
 
 ## Contributing ##
 
