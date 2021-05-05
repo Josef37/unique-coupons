@@ -60,6 +60,8 @@ Most of the user-facing customization can be done in the group editor. If you wa
 
 ## Contributing ##
 
-The source code is hosted on [Josef37/wp-coupons](https://github.com/Josef37/wp-coupons). Feel free to create a new issue, when you have questions or feature requests, or consider making a pull request.
+The source code is hosted on [Josef37/wp-coupons](https://github.com/Josef37/wp-coupons).
+Feel free to create a new issue, when you have questions or feature requests, or consider making a pull request.
+There is a separate [developer README](https://github.com/Josef37/wp-coupons/blob/main/README_DEV.md), which helps you set up the development environment.
 
 If this plugin helped you in any way, I'd like to hear your feedback.
