@@ -15,6 +15,7 @@ class Options {
 			'seconds_between_same_retrieval'   => strtotime( '30 days', 0 ),
 			'seconds_valid_after_distribution' => strtotime( '3 days', 0 ),
 			'seconds_from_page_load_to_popup'  => strtotime( '10 seconds', 0 ),
+			'modal_z_index'                    => '9999',
 		);
 	}
 
@@ -52,6 +53,9 @@ class Options {
 	}
 	public static function get_seconds_from_page_load_to_popup() {
 		return self::get_option( 'seconds_from_page_load_to_popup' );
+	}
+	public static function get_modal_z_index() {
+		return self::get_option( 'modal_z_index' );
 	}
 
 	public static function set_options( $options ) {

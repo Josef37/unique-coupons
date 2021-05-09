@@ -30,14 +30,14 @@ class PopupController {
 			)
 		);
 		$this->enqueue_template( $group );
-		$this->enqueue_script();
+		$this->enqueue_assets();
 	}
 
 	private function enqueue_template( CouponGroup $group ) {
 		add_action( 'wp_footer', array( $group, 'echo_popup' ) );
 	}
 
-	private function enqueue_script() {
+	private function enqueue_assets() {
 		add_action(
 			'wp_enqueue_scripts',
 			function() {

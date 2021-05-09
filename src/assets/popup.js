@@ -98,7 +98,11 @@
 
 		queuePopup = () => {
 			setTimeout(() => {
-				$(this.elements.container).modal({ fadeDuration: 300, fadeDelay: 0 });
+				$(this.elements.container).modal({
+					fadeDuration: 300,
+					fadeDelay: 0,
+					blockerClass: "unique-coupons-jquery-modal",
+				});
 			}, uniqueCouponsPopup.timeoutInMs);
 		};
 
