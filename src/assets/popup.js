@@ -8,6 +8,7 @@
 		elements = {};
 		groupId;
 		canFetch;
+		isFetching;
 
 		constructor(element) {
 			this.elements.container = element;
@@ -21,6 +22,7 @@
 			this.selectDomElements();
 			this.hideSuccessArea();
 			this.setCanFetch(true);
+			this.setIsFetching(false);
 			this.addButtonListener();
 			this.queuePopup();
 		};
@@ -34,6 +36,10 @@
 			].forEach(({ name, selector }) => {
 				this.elements[name] = this.elements.container.querySelector(selector);
 			});
+			this.elements.spinner = $.parseHTML(
+				'<div class="unique-coupons-popup__spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>'
+			)[0];
+			this.elements.button.appendChild(this.elements.spinner);
 		};
 
 		hideSuccessArea = () => {
@@ -49,12 +55,14 @@
 		handleRetrieval = () => {
 			if (!this.canFetch) return;
 			this.setCanFetch(false);
+			this.setIsFetching(true);
 
 			this.fetchCoupon()
 				.then(this.checkResponseStatus)
 				.then((response) => response.json())
 				.then(this.showCoupon)
-				.catch(this.handleResponseError);
+				.catch(this.handleResponseError)
+				.finally(() => this.setIsFetching(false));
 		};
 
 		fetchCoupon = () => {
@@ -109,7 +117,13 @@
 		setCanFetch(canFetch) {
 			this.canFetch = canFetch;
 			this.elements.button.disabled = !canFetch;
+			this.elements.button.style.pointerEvents = canFetch ? "" : "none";
 			this.elements.button.style.cursor = canFetch ? "pointer" : "default";
+		}
+
+		setIsFetching(isFetching) {
+			this.isFetching = isFetching;
+			this.elements.spinner.style.opacity = isFetching ? 1 : 0;
 		}
 	}
 })(jQuery);
