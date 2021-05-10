@@ -50,7 +50,7 @@ const AddCouponGroupPage = () => {
 
 const defaultTemplate = `
 <p style="text-align: center;">
-	This is some introduction text. It will be visible all the time.
+	This is some introduction text. It will be visible all the time. [shortcodes] are supported!
 </p>
 <p style="text-align: center;">
 	Text with functionality is highlighted with a dashed border around (which won't be shown to the user).
