@@ -26,7 +26,7 @@ class CouponGroup {
 	/** @todo maybe move to Popup service provider */
 	public function echo_popup() {
 		echo '<div class="unique-coupons-popup" data-group-id=' . esc_attr( $this->group_id ) . '>'
-			. wp_kses_post( $this->get_template() )
+			. do_shortcode( wp_kses_post( $this->get_template() ) )
 			. '</div>';
 	}
 

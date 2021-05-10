@@ -34,6 +34,35 @@ class CouponGroupTest extends \WP_UnitTestCase {
 		);
 	}
 
+	public function test_template_with_shortcode() {
+		$shortcode_value = 'Hello World!';
+		add_shortcode(
+			'shortcode',
+			function() use ( $shortcode_value ) {
+				return $shortcode_value;
+			}
+		);
+
+		$group_id = CouponGroup::insert(
+			array(
+				'name'        => 'Coupon Group with Shortcode',
+				'description' => '',
+				'template'    => 'Shortcode: [shortcode]',
+				'is_active'   => true,
+			)
+		);
+		$group    = new CouponGroup( $group_id );
+
+		ob_start();
+		$group->echo_popup();
+		$popup_content = ob_get_clean();
+
+		$this->assertStringContainsString(
+			$shortcode_value,
+			$popup_content
+		);
+	}
+
 	public function test_get_and_insert() {
 		foreach ( array_map( null, $this->groups, $this->groups_data ) as list($group, $data) ) {
 			foreach ( $data as $key => $value ) {
