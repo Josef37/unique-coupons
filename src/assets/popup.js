@@ -1,6 +1,7 @@
 (function ($) {
 	window.addEventListener("DOMContentLoaded", (event) => {
 		const popupElement = document.querySelector(".unique-coupons-popup");
+		if (!popupElement) return;
 		new Popup(popupElement);
 	});
 
@@ -46,14 +47,18 @@
 		};
 
 		initElements = () => {
-			this.elements.button.appendChild(this.elements.spinner);
-			this.elements.coupon.style.display = "none";
+			if (this.elements.button) {
+				this.elements.button.appendChild(this.elements.spinner);
+			}
+			if (this.elements.coupon) this.elements.coupon.style.display = "none";
 		};
 
 		addButtonListener = () => {
-			this.elements.button.addEventListener("click", () =>
-				this.handleRetrieval()
-			);
+			if (this.elements.button) {
+				this.elements.button.addEventListener("click", () =>
+					this.handleRetrieval()
+				);
+			}
 		};
 
 		handleRetrieval = () => {
@@ -88,10 +93,12 @@
 		};
 
 		showCoupon = ({ value, expires_at }) => {
-			this.elements.coupon.style.display = "block";
-			this.elements.value.textContent = value;
-			this.elements.expiresAt.textContent = this.getDateText(expires_at);
-			this.elements.expiresAt.style.whiteSpace = "nowrap";
+			if (this.elements.coupon) this.elements.coupon.style.display = "block";
+			if (this.elements.value) this.elements.value.textContent = value;
+			if (this.elements.expiresAt) {
+				this.elements.expiresAt.textContent = this.getDateText(expires_at);
+				this.elements.expiresAt.style.whiteSpace = "nowrap";
+			}
 		};
 
 		getDateText(timestamp) {
@@ -120,9 +127,11 @@
 
 		setCanFetch(canFetch) {
 			this.canFetch = canFetch;
-			this.elements.button.disabled = !canFetch;
-			this.elements.button.style.pointerEvents = canFetch ? "" : "none";
-			this.elements.button.style.cursor = canFetch ? "pointer" : "default";
+			if (this.elements.button) {
+				this.elements.button.disabled = !canFetch;
+				this.elements.button.style.pointerEvents = canFetch ? "" : "none";
+				this.elements.button.style.cursor = canFetch ? "pointer" : "default";
+			}
 		}
 
 		setIsFetching(isFetching) {
