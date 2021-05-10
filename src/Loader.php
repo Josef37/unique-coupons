@@ -85,7 +85,12 @@ class Loader {
 				wp_register_style( 'jquery-modal', $assets_url . 'jquery.modal.min.css', array(), '0.9.2' );
 				wp_register_script( 'jquery-modal', $assets_url . 'jquery.modal.min.js', array( 'jquery' ), '0.9.2', true );
 
-				wp_register_style( 'unique-coupons-popup', false, array( 'jquery-modal' ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+				wp_register_style(
+					'unique-coupons-popup',
+					$assets_url . 'popup.css',
+					array( 'jquery-modal' ),
+					filemtime( $assets_dir . 'popup.css' )
+				);
 				$modal_z_index = Options::get_modal_z_index();
 				$inline_css    = ".unique-coupons-jquery-modal.blocker { z-index: ${modal_z_index}; }";
 				wp_add_inline_style( 'unique-coupons-popup', $inline_css );

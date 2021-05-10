@@ -1,6 +1,7 @@
 (function ($) {
 	window.addEventListener("DOMContentLoaded", (event) => {
 		const popupElement = document.querySelector(".unique-coupons-popup");
+		if (!popupElement) return;
 		new Popup(popupElement);
 	});
 
@@ -8,6 +9,7 @@
 		elements = {};
 		groupId;
 		canFetch;
+		isFetching;
 
 		constructor(element) {
 			this.elements.container = element;
@@ -19,8 +21,9 @@
 			if (!this.groupId) return;
 
 			this.selectDomElements();
-			this.hideSuccessArea();
+			this.initElements();
 			this.setCanFetch(true);
+			this.setIsFetching(false);
 			this.addButtonListener();
 			this.queuePopup();
 		};
@@ -34,27 +37,41 @@
 			].forEach(({ name, selector }) => {
 				this.elements[name] = this.elements.container.querySelector(selector);
 			});
+			this.elements.spinner = $.parseHTML(
+				`<div class="unique-coupons-popup__spinner">
+					<div class="bounce1"></div>
+					<div class="bounce2"></div>
+					<div class="bounce3"></div>
+				</div>`
+			)[0];
 		};
 
-		hideSuccessArea = () => {
-			this.elements.coupon.style.display = "none";
+		initElements = () => {
+			if (this.elements.button) {
+				this.elements.button.appendChild(this.elements.spinner);
+			}
+			if (this.elements.coupon) this.elements.coupon.style.display = "none";
 		};
 
 		addButtonListener = () => {
-			this.elements.button.addEventListener("click", () =>
-				this.handleRetrieval()
-			);
+			if (this.elements.button) {
+				this.elements.button.addEventListener("click", () =>
+					this.handleRetrieval()
+				);
+			}
 		};
 
 		handleRetrieval = () => {
 			if (!this.canFetch) return;
 			this.setCanFetch(false);
+			this.setIsFetching(true);
 
 			this.fetchCoupon()
-				.then(this.checkResponseStatus)
+				.then(this.assertResponseIsOk)
 				.then((response) => response.json())
 				.then(this.showCoupon)
-				.catch(this.handleResponseError);
+				.catch(this.handleResponseError)
+				.finally(() => this.setIsFetching(false));
 		};
 
 		fetchCoupon = () => {
@@ -70,16 +87,18 @@
 			});
 		};
 
-		checkResponseStatus = (response) => {
+		assertResponseIsOk = (response) => {
 			if (response.ok) return response;
 			throw new Error("Response not ok");
 		};
 
 		showCoupon = ({ value, expires_at }) => {
-			this.elements.coupon.style.display = "block";
-			this.elements.value.textContent = value;
-			this.elements.expiresAt.textContent = this.getDateText(expires_at);
-			this.elements.expiresAt.style.whiteSpace = "nowrap";
+			if (this.elements.coupon) this.elements.coupon.style.display = "block";
+			if (this.elements.value) this.elements.value.textContent = value;
+			if (this.elements.expiresAt) {
+				this.elements.expiresAt.textContent = this.getDateText(expires_at);
+				this.elements.expiresAt.style.whiteSpace = "nowrap";
+			}
 		};
 
 		getDateText(timestamp) {
@@ -108,8 +127,16 @@
 
 		setCanFetch(canFetch) {
 			this.canFetch = canFetch;
-			this.elements.button.disabled = !canFetch;
-			this.elements.button.style.cursor = canFetch ? "pointer" : "default";
+			if (this.elements.button) {
+				this.elements.button.disabled = !canFetch;
+				this.elements.button.style.pointerEvents = canFetch ? "" : "none";
+				this.elements.button.style.cursor = canFetch ? "pointer" : "default";
+			}
+		}
+
+		setIsFetching(isFetching) {
+			this.isFetching = isFetching;
+			this.elements.spinner.style.opacity = isFetching ? 1 : 0;
 		}
 	}
 })(jQuery);
