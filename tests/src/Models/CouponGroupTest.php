@@ -80,6 +80,9 @@ class CouponGroupTest extends \WP_UnitTestCase {
 		$group = $this->groups[0];
 		$users = array( new User( 123 ), new User( 234 ) );
 
+		$group->lock_coupon_for( $users[0], -1 ); // Create an expired lock.
+		$this->assertEquals( $group->get_number_of_locks(), 0 );
+
 		$group->lock_coupon_for( $users[0] );
 		$this->assertEquals( $group->get_number_of_locks(), 1 );
 
@@ -122,18 +125,6 @@ class CouponGroupTest extends \WP_UnitTestCase {
 
 		$group->lock_coupon_for( $user );
 		$this->assertFalse( $group->has_unlocked_coupons() );
-	}
-
-	public function test_remove_expired_locks() {
-		$group = $this->groups[0];
-		$users = array( new User( 123 ), new User( 234 ) );
-
-		$group->lock_coupon_for( $users[0], -1 ); // Create an expired lock.
-		$group->lock_coupon_for( $users[1] );
-		$group->remove_expired_locks();
-		$group->lock_coupon_for( $users[1] ); // Make sure we removed the right one.
-
-		$this->assertEquals( $group->get_number_of_locks(), 1 );
 	}
 
 	public function test_exists() {
