@@ -111,6 +111,7 @@ abstract class AssetLoader {
 				'coupons' => esc_url( rest_url( 'unique-coupons/v1/coupons' ) ),
 				'group'   => esc_url( rest_url( 'wp/v2/unique_coupon_group' ) ),
 				'options' => esc_url( rest_url( 'unique-coupons/v1/options' ) ),
+				'preview' => esc_url( add_query_arg( 'unique-coupons-preview', 'preview-group-id', home_url() ) ),
 			),
 		);
 

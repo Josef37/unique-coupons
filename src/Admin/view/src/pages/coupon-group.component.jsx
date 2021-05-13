@@ -1,8 +1,9 @@
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
+import { styled } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
+import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import { unwrapResult } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +16,7 @@ import TemplateEditor from "../components/template-editor.component";
 import {
 	editGroup,
 	getCoupons,
-	selectCouponGroupById
+	selectCouponGroupById,
 } from "../redux/coupons.slice";
 
 const CouponGroupPage = ({ groupId }) => {
@@ -24,8 +25,7 @@ const CouponGroupPage = ({ groupId }) => {
 	const [isFetching, setFetching] = useState(true);
 	const [isEditing, setEditing] = useState(false);
 	const [isSaving, setSaving] = useState(false);
-	const [error, setError] = useState("");
-	const classes = useStyles();
+	const [, setError] = useState("");
 	const dispatch = useDispatch();
 	React.useEffect(() => {
 		if (isValidGroupId) {
@@ -50,44 +50,55 @@ const CouponGroupPage = ({ groupId }) => {
 			initialValues={group}
 			handleSubmit={(values) => {
 				setSaving(true);
-				dispatch(editGroup({ groupId, ...values }))
-					.then(() => {
-						setEditing(false);
-						setSaving(false);
-					});
+				dispatch(editGroup({ groupId, ...values })).then(() => {
+					setEditing(false);
+					setSaving(false);
+				});
 			}}
 			submitButtonText="Save changes"
 			isLoading={isSaving}
 		/>
 	) : (
 		<div>
-			<div className={classes.header}>
-				<Typography variant="h3" className={classes.text}>
-					{name}
-				</Typography>
-				<Button
-					onClick={() => setEditing(true)}
-					variant="contained"
-					startIcon={<EditIcon />}
-					className={classes.button}
-				>
-					Edit
-				</Button>
-			</div>
-			{description && (
-				<Typography variant="subtitle1" className={classes.text}>
-					{description}
-				</Typography>
-			)}
-			<CouponGroupSwitch
-				isActive={isActive}
-				handleChange={(isActive) =>
-					dispatch(editGroup({ groupId, isActive }))
-				}
-			/>
+			<Header>
+				<HeaderMain>
+					<Text variant="h3">{name}</Text>
+					{description && <Text variant="subtitle1">{description}</Text>}
+					<CouponGroupSwitch
+						isActive={isActive}
+						handleChange={(isActive) =>
+							dispatch(editGroup({ groupId, isActive }))
+						}
+					/>
+				</HeaderMain>
+				<HeaderAside>
+					<Button
+						onClick={() => setEditing(true)}
+						endIcon={<EditIcon />}
+						variant="contained"
+					>
+						Edit
+					</Button>
+					<Button
+						href={window.UNIQUE_COUPONS.api.preview.replace(
+							"preview-group-id",
+							groupId
+						)}
+						target="_blank"
+						rel="noreferrer"
+						endIcon={<OpenInNewIcon />}
+						variant="contained"
+					>
+						Preview
+					</Button>
+				</HeaderAside>
+			</Header>
+
 			<TemplateEditor template={template} disabled />
 
-			<Typography variant="h4" gutterBottom>Coupons</Typography>
+			<Typography variant="h4" gutterBottom>
+				Coupons
+			</Typography>
 			<CouponTabs groupId={groupId} isFetching={isFetching} />
 
 			<ActionButton
@@ -101,17 +112,21 @@ const CouponGroupPage = ({ groupId }) => {
 	);
 };
 
-const useStyles = makeStyles((theme) => ({
-	text: {
-		padding: `7px 0 8px`,
-	},
-	header: {
-		display: "flex",
-		alignItems: "center",
-		"& > *:first-child": {
-			flexGrow: 1,
-		},
-	},
+const Text = styled(Typography)({
+	padding: `7px 0 8px`,
+});
+const Header = styled("div")({
+	display: "flex",
+	alignItems: "center",
+});
+const HeaderMain = styled("div")({
+	flexGrow: 1,
+});
+const HeaderAside = styled("div")(({ theme }) => ({
+	display: "flex",
+	flexDirection: "column",
+	alignItems: "flex-end",
+	gap: theme.spacing(2),
 }));
 
 export default CouponGroupPage;
