@@ -5,7 +5,7 @@
 **Requires at least:** 5.3  
 **Tested up to:** 5.7  
 **Requires PHP:** 7.1  
-**Stable tag:** 0.1.2  
+**Stable tag:** 0.1.3  
 **License:** GPLv2 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -45,13 +45,8 @@ Most of the user-facing customization can be done in the group editor. If you wa
 
 ### Shortcomings/Bugs ###
 
--   There is no way to preview the popup. This is one of the next feature, I'll work on.
-    In the meantime, copy the content into a post and inspect it there.
--   Because the group determines the popup's content, the group has to be decided for on page load. When there is only one coupon left and two users visit a page simultaneously, one gets the coupon and the other one will get an empty message.
-    A proper error message will be shown in an upcoming version. And I'm also planning on reserving coupons, when a user visits a page, to avoid this race condition all together.
--   Activation and deactivation hooks are missing. Data from this plugin will stay around after deleting it for now.
+-   For now, data from this plugin will stay around after deleting it.
 -   You can't explicitly filter when the popup shouldn't be shown. The best workaround is to hook into `unique_coupons_user_is_authorized_for_coupons`.
--   The plugin records a popup as "seen", when it is enqueued for displaying. Even if a user leaves the page before it is shown, it will be recorded as "seen".
 
 ### Contributing ###
 
@@ -83,6 +78,11 @@ You'll find a new menu item in the admin area near the bottom called 'Coupons'. 
 
 
 ## Changelog ##
+
+### 0.1.3 ###
+- Add popup preview mode
+- Avoid race condition between users: When the popup gets loaded, a coupon gets reserved for a user until he retrieves it, closes the popup or a timeout has elapsed.
+- Record popup on open instead of page load
 
 ### 0.1.2 ###
 - Allow settings z-index for popup
