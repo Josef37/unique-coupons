@@ -203,5 +203,19 @@ class CouponGroup {
 		if ( ! $is_successful ) {
 			throw new \Exception( 'Faild to register term meta "is_active" for taxonomy ' . self::TAXONOMY_KEY );
 		}
+
+		$is_successful = register_term_meta(
+			self::TAXONOMY_KEY,
+			'user_locks',
+			array(
+				'type'         => 'integer',
+				'description'  => 'Reserves a coupon in the group for the given user id.',
+				'single'       => false,
+				'show_in_rest' => false,
+			)
+		);
+		if ( ! $is_successful ) {
+			throw new \Exception( 'Faild to register term meta "user_locks" for taxonomy ' . self::TAXONOMY_KEY );
+		}
 	}
 }
