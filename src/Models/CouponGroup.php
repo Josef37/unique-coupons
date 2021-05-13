@@ -78,9 +78,7 @@ class CouponGroup {
 		}
 	}
 
-	/**
-	 * @throws \Exception
-	 */
+	/** @throws \Exception */
 	public function get_distributable_coupon(): Coupon {
 		$coupon = Utils::array_find(
 			$this->get_coupons(),
@@ -92,6 +90,33 @@ class CouponGroup {
 			throw new \Exception( 'No distributable coupon found in group ' . $this->group_id );
 		}
 		return $coupon;
+	}
+
+	public function lock_coupon_for( User $user ) {
+		$lock_timeout_in_seconds = 60;
+
+		$locks                   = $this->get_locks();
+		$locks[ $user->user_id ] = time() + $lock_timeout_in_seconds;
+		$this->set_locks( $locks );
+	}
+
+	public function release_lock_for( User $user ) {
+		$locks = $this->get_locks();
+		unset( $locks[ $user->user_id ] );
+		$this->set_locks( $locks );
+	}
+
+	public function get_number_of_locks() {
+		return count( $this->get_locks() );
+	}
+
+	private function get_locks(): array {
+		$locks = get_term_meta( $this->group_id, 'user_locks', true );
+		return is_array( $locks ) ? $locks : array();
+	}
+
+	private function set_locks( array $locks ) {
+		update_term_meta( $this->group_id, 'user_locks', $locks );
 	}
 
 	/** @return CouponGroup[] */
@@ -208,8 +233,8 @@ class CouponGroup {
 			self::TAXONOMY_KEY,
 			'user_locks',
 			array(
-				'type'         => 'integer',
-				'description'  => 'Reserves a coupon in the group for the given user id.',
+				'type'         => 'object',
+				'description'  => 'Locks for coupon groups. An array of the form [user_id => lock_expiration].',
 				'single'       => false,
 				'show_in_rest' => false,
 			)
