@@ -92,9 +92,7 @@ class CouponGroup {
 		return $coupon;
 	}
 
-	public function lock_coupon_for( User $user ) {
-		$lock_timeout_in_seconds = 60;
-
+	public function lock_coupon_for( User $user, $lock_timeout_in_seconds = 60 ) {
 		$locks                   = $this->get_locks();
 		$locks[ $user->user_id ] = time() + $lock_timeout_in_seconds;
 		$this->set_locks( $locks );
@@ -108,6 +106,18 @@ class CouponGroup {
 
 	public function get_number_of_locks() {
 		return count( $this->get_locks() );
+	}
+
+	public function remove_expired_locks() {
+		$now          = time();
+		$locks        = $this->get_locks();
+		$active_locks = array_filter(
+			$locks,
+			function( $time ) use ( $now ) {
+				return $now < $time;
+			}
+		);
+		$this->set_locks( $active_locks );
 	}
 
 	private function get_locks(): array {
