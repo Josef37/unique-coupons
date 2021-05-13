@@ -5,11 +5,6 @@ use UniqueCoupons\Models\CouponGroup;
 use UniqueCoupons\Models\User;
 use UniqueCoupons\Services\PopupService;
 
-/**
- * Gets called when an automatic popup could be loaded on a page.
- *
- * @todo refactor enqueuing scripts to only depend on a script loader.
- */
 class PopupController {
 	public function init_popup() {
 		try {

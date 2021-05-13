@@ -69,8 +69,23 @@ class Loader {
 	}
 
 	private function init_controllers() {
-		$popup_controller = new Controllers\PopupController();
-		add_action( 'init', array( $popup_controller, 'init_popup' ) );
+		add_filter(
+			'query_vars',
+			function( $query_vars ) {
+				$query_vars[] = 'unique-coupons-preview';
+				return $query_vars;
+			}
+		);
+		add_action(
+			'wp',
+			function() {
+				$preview_group_id = (int) get_query_var( 'unique-coupons-preview' );
+				$popup_controller = $preview_group_id
+					? new Controllers\PopupPreviewController( $preview_group_id )
+					: new Controllers\PopupController();
+				$popup_controller->init_popup();
+			}
+		);
 	}
 
 	/** @todo Use dedicated loader? */
