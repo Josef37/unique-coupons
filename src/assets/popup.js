@@ -1,8 +1,42 @@
 (function ($) {
-	window.addEventListener("DOMContentLoaded", (event) => {
+	const fetchCoupon = (groupId) => {
+		return fetch(uniqueCouponsPopup.api.retrieveCoupon, {
+			method: "POST",
+			body: JSON.stringify({ group_id: groupId }),
+			headers: {
+				"Content-Type": "application/json",
+				"X-WP-Nonce": uniqueCouponsPopup.api.nonce,
+			},
+		});
+	};
+
+	const getCoupon = async (groupId) => {
+		const response = await fetchCoupon(groupId);
+		if (!response.ok) throw new Error("Response is not ok");
+		const { value, expires_at: expiresAt } = await response.json();
+		return { value, expiresAt };
+	};
+
+	const previewGetCoupon = async (_groupId) => {
+		const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+		await sleep(1000);
+		return {
+			value: "Coupon-123",
+			expiresAt: Date.now() / 1000,
+		};
+	};
+
+	window.addEventListener("DOMContentLoaded", (_event) => {
 		const popupElement = document.querySelector(".unique-coupons-popup");
 		if (!popupElement) return;
-		new Popup(popupElement);
+
+		const urlParams = new URLSearchParams(window.location.search);
+		if (urlParams.get("unique-coupons-preview")) {
+			new Popup(popupElement, previewGetCoupon);
+		} else {
+			new Popup(popupElement, getCoupon, uniqueCouponsPopup.timeoutInSeconds);
+		}
 	});
 
 	class Popup {
@@ -10,9 +44,13 @@
 		groupId;
 		canFetch;
 		isFetching;
+		timeoutInSeconds;
+		getCoupon;
 
-		constructor(element) {
+		constructor(element, getCoupon, timeoutInSeconds = 0) {
 			this.elements.container = element;
+			this.getCoupon = getCoupon;
+			this.timeoutInSeconds = timeoutInSeconds;
 			this.init();
 		}
 
@@ -61,42 +99,26 @@
 			}
 		};
 
-		handleRetrieval = () => {
+		handleRetrieval = async () => {
 			if (!this.canFetch) return;
 			this.setCanFetch(false);
 			this.setIsFetching(true);
 
-			this.fetchCoupon()
-				.then(this.assertResponseIsOk)
-				.then((response) => response.json())
-				.then(this.showCoupon)
-				.catch(this.handleResponseError)
-				.finally(() => this.setIsFetching(false));
+			try {
+				const coupon = await this.getCoupon(this.groupId);
+				this.showCoupon(coupon);
+			} catch (error) {
+				this.handleResponseError();
+			} finally {
+				this.setIsFetching(false);
+			}
 		};
 
-		fetchCoupon = () => {
-			return fetch(uniqueCouponsPopup.api.retrieveCoupon, {
-				method: "POST",
-				body: JSON.stringify({
-					group_id: this.groupId,
-				}),
-				headers: {
-					"Content-Type": "application/json",
-					"X-WP-Nonce": uniqueCouponsPopup.api.nonce,
-				},
-			});
-		};
-
-		assertResponseIsOk = (response) => {
-			if (response.ok) return response;
-			throw new Error("Response not ok");
-		};
-
-		showCoupon = ({ value, expires_at }) => {
+		showCoupon = ({ value, expiresAt }) => {
 			if (this.elements.coupon) this.elements.coupon.style.display = "block";
 			if (this.elements.value) this.elements.value.textContent = value;
 			if (this.elements.expiresAt) {
-				this.elements.expiresAt.textContent = this.getDateText(expires_at);
+				this.elements.expiresAt.textContent = this.getDateText(expiresAt);
 				this.elements.expiresAt.style.whiteSpace = "nowrap";
 			}
 		};
@@ -122,7 +144,7 @@
 					fadeDelay: 0,
 					blockerClass: "unique-coupons-jquery-modal",
 				});
-			}, uniqueCouponsPopup.timeoutInMs);
+			}, this.timeoutInSeconds * 1000);
 		};
 
 		setCanFetch(canFetch) {
