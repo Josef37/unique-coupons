@@ -122,7 +122,7 @@
 					fadeDelay: 0,
 					blockerClass: "unique-coupons-jquery-modal",
 				});
-			}, uniqueCouponsPopup.timeoutInMs);
+			}, this.timeoutInSeconds * 1000);
 		};
 
 		setCanFetch(canFetch) {

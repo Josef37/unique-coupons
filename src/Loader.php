@@ -105,8 +105,8 @@ class Loader {
 					'unique-coupons-popup',
 					'uniqueCouponsPopup',
 					array(
-						'timeoutInMs' => Options::get_seconds_from_page_load_to_popup(),
-						'api'         => array(
+						'timeoutInSeconds' => Options::get_seconds_from_page_load_to_popup(),
+						'api'              => array(
 							'nonce'          => wp_create_nonce( 'wp_rest' ),
 							'retrieveCoupon' => esc_url( rest_url( 'unique-coupons/v1/retrieve-coupon' ) ),
 						),
