@@ -51,6 +51,7 @@ class Loader {
 		( new Routes\CouponsAdminRoute( $namespace ) )->register_routes();
 		( new Routes\RetrieveCouponRoute( $namespace ) )->register_routes();
 		( new Routes\OptionsRoute( $namespace ) )->register_routes();
+		( new Routes\PopupActionsRoute( $namespace ) )->register_routes();
 	}
 
 	private function load_admin() {
@@ -124,6 +125,8 @@ class Loader {
 						'api'              => array(
 							'nonce'          => wp_create_nonce( 'wp_rest' ),
 							'retrieveCoupon' => esc_url( rest_url( 'unique-coupons/v1/retrieve-coupon' ) ),
+							'onPopupOpen'    => esc_url( rest_url( 'unique-coupons/v1/on-popup-open' ) ),
+							'onPopupClose'   => esc_url( rest_url( 'unique-coupons/v1/on-popup-close' ) ),
 						),
 					)
 				);

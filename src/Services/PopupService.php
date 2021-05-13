@@ -64,4 +64,17 @@ class PopupService {
 
 		return $coupon;
 	}
+
+	public function on_popup_open( CouponGroup $group ) {
+		$this->user->record_popup(
+			array(
+				'group_id'  => $group->group_id,
+				'timestamp' => time(),
+			)
+		);
+	}
+
+	public function on_popup_close( CouponGroup $group ) {
+		$group->release_lock_for( $this->user );
+	}
 }
