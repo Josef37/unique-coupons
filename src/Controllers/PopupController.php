@@ -24,6 +24,8 @@ class PopupController {
 				'timestamp' => time(),
 			)
 		);
+		$group->lock_coupon_for( $user );
+
 		$this->enqueue_template( $group );
 		$this->enqueue_assets();
 	}
