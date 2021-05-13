@@ -115,10 +115,12 @@ const CouponGroupPage = ({ groupId }) => {
 const Text = styled(Typography)({
 	padding: `7px 0 8px`,
 });
-const Header = styled("div")({
-	display: "flex",
-	alignItems: "center",
-});
+const Header = styled("div")(({ theme }) => ({
+	[theme.breakpoints.up("sm")]: {
+		display: "flex",
+		alignItems: "center",
+	},
+}));
 const HeaderMain = styled("div")({
 	flexGrow: 1,
 });
