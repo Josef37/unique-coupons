@@ -92,6 +92,16 @@ class CouponGroup {
 		return $coupon;
 	}
 
+	public function get_number_of_distributable_coupons() {
+		$distributable_coupons = array_filter(
+			$this->get_coupons(),
+			function( $coupon ) {
+				return $coupon->is_distributable();
+			}
+		);
+		return count( $distributable_coupons );
+	}
+
 	public function lock_coupon_for( User $user, $lock_timeout_in_seconds = 60 ) {
 		$locks                   = $this->get_locks();
 		$locks[ $user->user_id ] = time() + $lock_timeout_in_seconds;
@@ -102,6 +112,10 @@ class CouponGroup {
 		$locks = $this->get_locks();
 		unset( $locks[ $user->user_id ] );
 		$this->set_locks( $locks );
+	}
+
+	public function has_unlocked_coupons() {
+		return $this->get_number_of_distributable_coupons() > $this->get_number_of_locks();
 	}
 
 	public function get_number_of_locks() {

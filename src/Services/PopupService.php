@@ -33,10 +33,11 @@ class PopupService {
 
 		$possible_group = Utils::array_find(
 			$active_groups,
-			function( $group ) {
+			function( CouponGroup $group ) {
 				return ! $this->user->has_recent_popup_for_group( $group )
 					&& ! $this->user->has_recent_retrieval_for_group( $group )
-					&& $group->has_distributable_coupons();
+					&& $group->has_distributable_coupons()
+					&& $group->has_unlocked_coupons();
 			}
 		);
 
