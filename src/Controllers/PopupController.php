@@ -18,12 +18,8 @@ class PopupController {
 	}
 
 	private function enqueue_popup( CouponGroup $group, User $user ) {
-		$user->record_popup(
-			array(
-				'group_id'  => $group->group_id,
-				'timestamp' => time(),
-			)
-		);
+		$group->lock_coupon_for( $user );
+
 		$this->enqueue_template( $group );
 		$this->enqueue_assets();
 	}

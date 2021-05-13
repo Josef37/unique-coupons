@@ -125,6 +125,9 @@ class User {
 
 		$coupon = new Coupon( $coupon_id );
 		$coupon->set_user_id( $this->user_id );
+
+		$group = new CouponGroup( $group_id );
+		$group->release_lock_for( $this );
 	}
 
 	public function record_popup( $data ) {

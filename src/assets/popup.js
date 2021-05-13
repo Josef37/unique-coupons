@@ -1,14 +1,16 @@
 (function ($) {
-	const fetchCoupon = (groupId) => {
-		return fetch(uniqueCouponsPopup.api.retrieveCoupon, {
+	const postApi = (url, body) =>
+		fetch(url, {
 			method: "POST",
-			body: JSON.stringify({ group_id: groupId }),
+			body: JSON.stringify(body),
 			headers: {
 				"Content-Type": "application/json",
 				"X-WP-Nonce": uniqueCouponsPopup.api.nonce,
 			},
 		});
-	};
+
+	const fetchCoupon = (groupId) =>
+		postApi(uniqueCouponsPopup.api.retrieveCoupon, { group_id: groupId });
 
 	const getCoupon = async (groupId) => {
 		const response = await fetchCoupon(groupId);
@@ -27,6 +29,15 @@
 		};
 	};
 
+	const addPopupEventHandlers = (popupElement, groupId) => {
+		$(popupElement).on($.modal.OPEN, () => {
+			postApi(uniqueCouponsPopup.api.onPopupOpen, { group_id: groupId });
+		});
+		$(popupElement).on($.modal.CLOSE, () => {
+			postApi(uniqueCouponsPopup.api.onPopupClose, { group_id: groupId });
+		});
+	};
+
 	window.addEventListener("DOMContentLoaded", (_event) => {
 		const popupElement = document.querySelector(".unique-coupons-popup");
 		if (!popupElement) return;
@@ -35,7 +46,12 @@
 		if (urlParams.get("unique-coupons-preview")) {
 			new Popup(popupElement, previewGetCoupon);
 		} else {
-			new Popup(popupElement, getCoupon, uniqueCouponsPopup.timeoutInSeconds);
+			new Popup(
+				popupElement,
+				getCoupon,
+				addPopupEventHandlers,
+				uniqueCouponsPopup.timeoutInSeconds
+			);
 		}
 	});
 
@@ -44,12 +60,19 @@
 		groupId;
 		canFetch;
 		isFetching;
-		timeoutInSeconds;
 		getCoupon;
+		addAdditionalEventListeners;
+		timeoutInSeconds;
 
-		constructor(element, getCoupon, timeoutInSeconds = 0) {
+		constructor(
+			element,
+			getCoupon,
+			addAdditionalEventListeners = (_container, _groupId) => {},
+			timeoutInSeconds = 0
+		) {
 			this.elements.container = element;
 			this.getCoupon = getCoupon;
+			this.addAdditionalEventListeners = addAdditionalEventListeners;
 			this.timeoutInSeconds = timeoutInSeconds;
 			this.init();
 		}
@@ -62,7 +85,7 @@
 			this.initElements();
 			this.setCanFetch(true);
 			this.setIsFetching(false);
-			this.addButtonListener();
+			this.addEventListeners();
 			this.queuePopup();
 		};
 
@@ -91,12 +114,13 @@
 			if (this.elements.coupon) this.elements.coupon.style.display = "none";
 		};
 
-		addButtonListener = () => {
+		addEventListeners = () => {
 			if (this.elements.button) {
 				this.elements.button.addEventListener("click", () =>
 					this.handleRetrieval()
 				);
 			}
+			this.addAdditionalEventListeners(this.elements.container, this.groupId);
 		};
 
 		handleRetrieval = async () => {

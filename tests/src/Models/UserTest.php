@@ -1,6 +1,7 @@
 <?php
 
 use UniqueCoupons\Models\Coupon;
+use UniqueCoupons\Models\CouponGroup;
 use UniqueCoupons\Models\User;
 
 class UserTest extends WP_UnitTestCase {
@@ -16,8 +17,8 @@ class UserTest extends WP_UnitTestCase {
 	}
 
 	public function test_has_recent_retrieval() {
-		$wp_user_id = $this->factory->user->create();
-		$user       = new User( $wp_user_id );
+		$user_id = $this->factory->user->create();
+		$user    = new User( $user_id );
 
 		$this->assertFalse( $user->has_recent_retrieval() );
 
@@ -32,10 +33,10 @@ class UserTest extends WP_UnitTestCase {
 	}
 
 	public function test_record_retrieval() {
-		$wp_user_id = $this->factory->user->create();
-		$user       = new User( $wp_user_id );
-
+		$user_id    = $this->factory->user->create();
+		$user       = new User( $user_id );
 		$group_id   = 123;
+		$group      = new CouponGroup( $group_id );
 		$retrievals = array(
 			array(
 				'coupon_id' => 1,
@@ -49,6 +50,7 @@ class UserTest extends WP_UnitTestCase {
 			),
 		);
 
+		$group->lock_coupon_for( $user );
 		$user->record_retrieval( $retrievals[0] );
 
 		$this->assertEquals(
@@ -71,9 +73,11 @@ class UserTest extends WP_UnitTestCase {
 		);
 		$this->assertEquals(
 			( new Coupon( $retrievals[0]['coupon_id'] ) )->get_user_id(),
-			$wp_user_id
+			$user_id
 		);
+		$this->assertEquals( $group->get_number_of_locks(), 0 );
 
+		$group->lock_coupon_for( $user );
 		$user->record_retrieval( $retrievals[1] );
 
 		$this->assertEquals(
@@ -100,13 +104,14 @@ class UserTest extends WP_UnitTestCase {
 		);
 		$this->assertEquals(
 			( new Coupon( $retrievals[1]['coupon_id'] ) )->get_user_id(),
-			$wp_user_id
+			$user_id
 		);
+		$this->assertEquals( $group->get_number_of_locks(), 0 );
 	}
 
-	public function test_recording() {
-		$wp_user_id = $this->factory->user->create();
-		$user       = new User( $wp_user_id );
+	public function test_record_popup_and_retrieval() {
+		$user_id = $this->factory->user->create();
+		$user    = new User( $user_id );
 
 		$group_id  = 123;
 		$retrieval = array(
@@ -119,8 +124,8 @@ class UserTest extends WP_UnitTestCase {
 			'timestamp' => 1,
 		);
 
-		$user->record_retrieval( $retrieval );
 		$user->record_popup( $popup );
+		$user->record_retrieval( $retrieval );
 
 		$this->assertEquals(
 			array(

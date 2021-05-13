@@ -2,6 +2,8 @@
 
 use UniqueCoupons\Models\Coupon;
 use UniqueCoupons\Models\CouponGroup;
+use UniqueCoupons\Models\User;
+use UniqueCouponsTest\Factory\CouponFactory;
 
 class CouponGroupTest extends \WP_UnitTestCase {
 	/** @var CouponGroup[] */
@@ -72,6 +74,66 @@ class CouponGroupTest extends \WP_UnitTestCase {
 				);
 			}
 		}
+	}
+
+	public function test_locks() {
+		$group = $this->groups[0];
+		$users = array( new User( 123 ), new User( 234 ) );
+
+		$group->lock_coupon_for( $users[0] );
+		$this->assertEquals( $group->get_number_of_locks(), 1 );
+
+		$group->lock_coupon_for( $users[0] );
+		$this->assertEquals( $group->get_number_of_locks(), 1 );
+
+		$group->lock_coupon_for( $users[1] );
+		$this->assertEquals( $group->get_number_of_locks(), 2 );
+
+		$group->release_lock_for( $users[0] );
+		$this->assertEquals( $group->get_number_of_locks(), 1 );
+
+		$group->release_lock_for( $users[1] );
+		$this->assertEquals( $group->get_number_of_locks(), 0 );
+	}
+
+	public function test_has_unlocked_coupons() {
+		$group = $this->groups[0];
+		$user  = new User( 123 );
+
+		$this->assertFalse( $group->has_unlocked_coupons() );
+
+		$coupon_id = CouponFactory::create_distributable_coupon( $group->group_id );
+		$this->assertTrue( $group->has_unlocked_coupons() );
+
+		$group->lock_coupon_for( $user );
+		$this->assertFalse( $group->has_unlocked_coupons() );
+
+		$group->release_lock_for( $user );
+		$this->assertTrue( $group->has_unlocked_coupons() );
+
+		$user->record_retrieval(
+			array(
+				'coupon_id' => $coupon_id,
+				'group_id'  => $group->group_id,
+				'timestamp' => time(),
+			)
+		);
+		$this->assertFalse( $group->has_unlocked_coupons() );
+
+		$group->lock_coupon_for( $user );
+		$this->assertFalse( $group->has_unlocked_coupons() );
+	}
+
+	public function test_remove_expired_locks() {
+		$group = $this->groups[0];
+		$users = array( new User( 123 ), new User( 234 ) );
+
+		$group->lock_coupon_for( $users[0], -1 ); // Create an expired lock.
+		$group->lock_coupon_for( $users[1] );
+		$group->remove_expired_locks();
+		$group->lock_coupon_for( $users[1] ); // Make sure we removed the right one.
+
+		$this->assertEquals( $group->get_number_of_locks(), 1 );
 	}
 
 	public function test_exists() {
